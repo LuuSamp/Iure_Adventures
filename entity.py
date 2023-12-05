@@ -42,8 +42,10 @@ class Entity(ABC, pg.sprite.Sprite):
         for square in pg.sprite.spritecollide(self, square_group, False):
             if self.direction.y > 0: 
                 self.rect.bottom = square.rect.top
+                self.direction.y = 0
             if self.direction.y < 0: 
                 self.rect.top = square.rect.bottom
+                self.direction.y = 0
         else: 
             self.on_ground = False
 
