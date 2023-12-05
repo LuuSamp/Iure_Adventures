@@ -1,0 +1,9 @@
+
+
+#geral
+GRAVITY = 0.8
+ENTITY_X_VEL = 6
+
+#player
+PLAYER_X_VEL = 8
+PLAYER_Y_VEL = -16
