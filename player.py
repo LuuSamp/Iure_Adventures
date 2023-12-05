@@ -6,9 +6,8 @@ class Player(Entity):
         super().__init__(position)
         
 
-    def change_direction(self, direction):
+    def move(self, direction):
         self.direction.x += self.x_vel*direction
-        
 
     def jump(self):
         if self.on_ground:

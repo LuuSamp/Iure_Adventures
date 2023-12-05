@@ -10,13 +10,13 @@ class InputHandler:
 
     def handle_event(self, event):
         if event.type == KEYDOWN:
-            if event.key == K_UP: self.player.jump()
-            if event.key == K_LEFT: self.player.move(-1)
-            if event.key == K_RIGHT: self.player.move(1)
+            if event.key == K_UP: self._player.jump()
+            if event.key == K_LEFT: self._player.move(-1)
+            if event.key == K_RIGHT: self._player.move(1)
         
         if event.type == KEYUP:
-            if event.key == K_LEFT: self.player.move(1)
-            if event.key == K_RIGHT: self.player.move(-1)
+            if event.key == K_LEFT: self._player.move(1)
+            if event.key == K_RIGHT: self._player.move(-1)
 
         if event.type == QUIT: 
             pg.quit()
