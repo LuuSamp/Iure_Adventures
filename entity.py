@@ -43,6 +43,7 @@ class Entity(ABC, pg.sprite.Sprite):
             if self.direction.y > 0: 
                 self.rect.bottom = square.rect.top
                 self.direction.y = 0
+                self.on_ground = True
             if self.direction.y < 0: 
                 self.rect.top = square.rect.bottom
                 self.direction.y = 0
