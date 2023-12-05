@@ -31,7 +31,7 @@ class Entity(ABC, pg.sprite.Sprite):
         self.rect.y += self.direction.y
 
     @abstractmethod
-    def moviment(self):
+    def movement(self):
         ...
 
     def update(self):
