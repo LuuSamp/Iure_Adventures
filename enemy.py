@@ -7,8 +7,8 @@ class Enemy(Entity):
         self.initial_pos = self.rect.x 
         self.image.fill("blue")
 
-    def move(self, direction=-1):
-        self.direction.x = self.x_vel*direction
+    def move(self):
+        self.direction.x = self.x_vel*self.facing
         self.rect.x += self.direction.x
 
     def natural_sound(self):
@@ -27,3 +27,10 @@ class Enemy(Entity):
             self.on_ground = True
             self.gravity = 0
             self.direction.y = 0
+
+        if self.rect.left > 400:
+            self.facing = -1
+        elif self.rect.left < 200:
+            self.facing = 1
+
+        self.move()
