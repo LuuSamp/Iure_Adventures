@@ -41,7 +41,7 @@ class Entity(ABC, pg.sprite.Sprite):
     def collide_with_square(self, square_group: pg.sprite.Group):
         self.on_ground = False
         for square in pg.sprite.spritecollide(self, square_group, False):
-            if self.direction.y + 3 > 0: 
+            if self.direction.y + 3 > 0 and self.rect.bottom - self.direction.y - 1 < square.rect.top: 
                 self.rect.bottom = square.rect.top
                 self.direction.y = 0
                 self.on_ground = True
