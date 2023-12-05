@@ -36,3 +36,4 @@ class Entity(ABC, pg.sprite.Sprite):
 
     def update(self):
         self.apply_gravity()
+        

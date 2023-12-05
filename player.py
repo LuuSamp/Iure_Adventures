@@ -6,7 +6,7 @@ class Player(Entity):
         super().__init__(position)
         
 
-    def movement(self, direction):
+    def move(self, direction):
         self.direction.x = self.x_vel*direction
         self.rect.x += self.direction.x
     

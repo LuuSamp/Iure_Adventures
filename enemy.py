@@ -1,18 +1,25 @@
 import pygame as pg  
 from entity import Entity
 
-class Enemies(Entity):
+class Enemy(Entity):
     def __init__(self, position):
         super().__init__(position)
         self.initial_pos = self.rect.x 
         self.image.fill("blue")
 
-    def move(self):
+    def move(self, direction=-1):
+        self.direction.x = self.x_vel*direction
+        self.rect.x += self.direction.x
+
+    def natural_sound(self):
+        pass
+
+    def to_die():
         pass
 
     def update(self):
         super().update()
-
+        self.move()
         if self.rect.bottomleft[1] < 200:
             self.on_ground = False
             self.gravity = 0.8
@@ -20,14 +27,3 @@ class Enemies(Entity):
             self.on_ground = True
             self.gravity = 0
             self.direction.y = 0
-
-        if self.rect.left == 300:
-            direction_a = 1
-
-        elif self.rect.left == 354:
-            direction_a = -1
-
-        dir = direction_a
-
-        self.direction.x = self.x_vel*dir
-        self.rect.x += self.direction.x
