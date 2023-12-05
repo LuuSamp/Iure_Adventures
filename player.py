@@ -25,11 +25,3 @@ class Player(Entity):
     def update(self):
         super().update()
         self.rect.x += self.direction.x
-
-        if self.rect.bottomleft[1] < 200:
-            self.on_ground = False
-            self.gravity = 0.8
-        else:
-            self.on_ground = True
-            self.gravity = 0
-            self.direction.y = 0
