@@ -1,5 +1,6 @@
 import pygame as pg  
 from entity import Entity
+from shot import Shot
 
 class Enemy(Entity):
 
@@ -48,9 +49,10 @@ class Enemy(Entity):
         self.sound.set_volume(0.2)
         self.sound.play()
 
-    def to_die(self):
+    def die(self):
         self.sound = pg.mixer.Sound("media/pixel-death-66829.mp3")
         self.sound.play()
+        self.kill()
 
         self.x_vel = 0
 
@@ -77,3 +79,31 @@ class Enemy(Entity):
         self.move()
         self.animation()
             
+
+class Enemy_Shooter(Enemy):
+
+    def __init__(self, position, shots):
+        super().__init__(position)
+
+        self.shots = shots
+
+        self.jump_counter = 0
+        self.jump_delay = 50
+
+        self.shot_counter = 0
+        self.shot_delay = 40
+
+    def move(self):
+        if self.on_ground and self.jump_counter >= self.jump_delay:
+            self.direction.y = -10
+            self.jump_counter = 0
+        self.jump_counter +=1
+
+    def animation(self):
+        self.shot_counter +=1
+        if self.shot_counter >= self.shot_delay:
+            self.shots.add(Shot((self.rect.x, self.rect.center[1])))
+            self.shot_counter = 0
+
+    def update(self):
+        super().update()

@@ -5,7 +5,7 @@ from enemy import Enemy
 from input_handler import check_event
 
 class Level:
-    def __init__(self, player, enemy) -> None:
+    def __init__(self, player, enemy, enemy_shooter) -> None:
 
         self.platform_list = pg.sprite.Group()
         self.player_list = pg.sprite.Group()
@@ -14,8 +14,10 @@ class Level:
         self.player = player
         self.player_list.add(self.player)
 
+        self.enemy_shooter = enemy_shooter
         self.enemy = enemy
         self.enemy_list.add(self.enemy)
+        self.enemy_list.add(self.enemy_shooter)
 
     def update(self):
         check_event(self.player)
@@ -32,8 +34,8 @@ class Level:
         self.enemy_list.draw(screen)
 
 class TestLevel(Level):
-    def __init__(self, player, enemy) -> None:
-        super().__init__(player, enemy)
+    def __init__(self, player, enemy, enemy_shooter) -> None:
+        super().__init__(player, enemy, enemy_shooter)
         
         for block in range(5):
             self.platform_list.add(Platform(70, 50, (100*block, 200)))
