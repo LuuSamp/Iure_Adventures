@@ -1,19 +1,36 @@
+from player import Player
 import pygame as pg
+from const import *
 
 class Shot(pg.sprite.Sprite):
-    def __init__(self, position):
+    """
+    classe criada para modelar o comportamento dos projéteis
+    """
+
+    def __init__(self, position:tuple) -> None: 
+        """
+        inicialização dos porjéteis
+
+        Parâmetros
+            position:
+                type: tuple
+                position: coordenadas de spawn do projétil
+        """
         super().__init__()
         
+        #configurando o som ao atirar o projétil
         self.sound = pg.mixer.Sound("media\sounds\shooting-sound-fx-159024.mp3")
         self.sound.play()
 
-        self.x_vel = 6
+        #atributos gerais
+        self.x_vel = VEL_BULLET
         self.image = pg.image.load("media\\bullet_images\B1.png")
-        self.image = pg.transform.scale(self.image, (25, 7))
+        self.image = pg.transform.scale(self.image, DIM_BULLET)
         self.rect = self.image.get_rect(topleft = position)
         self.initial_pos = self.rect.left
-        self.direction = -1
 
+        #atributos que configuram  o movimento e a animação da bala
+        self.direction = -1
         self.current_frame = 0
         self.animation_frames = [
             pg.image.load("media\\bullet_images\B1.png"),
@@ -22,7 +39,12 @@ class Shot(pg.sprite.Sprite):
         self.animation_counter = 0
         self.animation_delay = 15
 
-    def animation(self):
+    def animation(self) -> None:
+        """
+        gestão das animações dos projéteis
+        """
+
+        #atualiza as imagens do projétil levando em consideração um delay arbritário
         if self.animation_counter >= self.animation_delay:
             self.current_frame = (self.current_frame + 1) % len(self.animation_frames)
             frame = pg.transform.scale(self.animation_frames[self.current_frame], (self.rect.width, self.rect.height))
@@ -32,13 +54,37 @@ class Shot(pg.sprite.Sprite):
         self.animation_counter += 1
         
 
-    def collide_with_player(self, player):
+    def collide_with_player(self, player:Player) -> None:
+        """
+        veriricação da colisão com o jogador
+
+        Parâmetros
+            player:
+                type: Player
+                description: personagem jogável
+        """
+
+        #verifica se houve colisão e mata o player
         if pg.sprite.collide_rect(self, player):
             player.die()
 
-    def update(self, player):
+    def update(self, player:Player) -> None:
+        """
+        método de atualização
+
+        Parâmetros
+            player:
+                type: Player
+                description: personagem jogável
+        """
+
+        #movimento contínuo 
         self.rect.left += self.direction * self.x_vel
-        if self.initial_pos - self.rect.left > 300:
+
+        #range de atuação 
+        if self.initial_pos - self.rect.left > RANGE_BULLET:
             self.kill()
+        
+        #animação e colisão
         self.animation()
         self.collide_with_player(player)

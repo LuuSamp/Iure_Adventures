@@ -1,19 +1,20 @@
-
-
 import pygame as pg  
 from const import *
 from abc import ABC, abstractmethod
+from const import *
 
 class Entity(ABC, pg.sprite.Sprite):
     """
+    classe abstrata criada para modelar o comportamento genérico de entidades
     """
 
-    def __init__(self, position):
+    def __init__(self, position:tuple) -> None:
         """
+        inicialização das entidades genéricas
         """
+
         super().__init__()
-        self.image = pg.Surface((32,64))
-        self.image.fill("red")
+        self.image = pg.Surface(DIM_ENTITY)
         self.rect = self.image.get_rect(topleft = position)
         self.facing = 1
 
@@ -22,12 +23,15 @@ class Entity(ABC, pg.sprite.Sprite):
         self.gravity = GRAVITY
         self.x_vel = ENTITY_X_VEL
 
+        #atributos gerais
         self.on_ground = True
         self.is_alive = True
-        self.move_direction = 0
         self.collision = True
 
-    def apply_gravity(self):
+    def apply_gravity(self) -> None:
+        """
+        método que modela a gravidade das entidades
+        """
         #vai aplicar a todas as entidades a gravidade, alterando a posição vertical
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
@@ -35,13 +39,17 @@ class Entity(ABC, pg.sprite.Sprite):
     @abstractmethod
     def move(self):
         ...
-
-    def update(self, square_group: pg.sprite.Group):
-        self.apply_gravity()
-        self.collide_with_square(square_group)
-        if self.rect.top > 600: self.kill()
     
-    def collide_with_square(self, square_group: pg.sprite.Group):
+    def collide_with_square(self, square_group: pg.sprite.Group) -> None:
+        """
+        método que modela e verifica a colisão entre blocos do cenário e a entidade
+
+        Parâmetros 
+            square_group:
+                type: pg.sprite.Group
+                description: sprites do cenário para verificação da colisão
+        """
+
         self.on_ground = False
 
         if not self.collision: return 
@@ -62,7 +70,23 @@ class Entity(ABC, pg.sprite.Sprite):
             if self.direction.x < 0: 
                 self.rect.left = square.rect.right
     
-    def die(self):
+    def die(self) -> None:
+        """
+        modelagem da morte de todas as entidades
+        """
+
         self.is_alive = False
         self.collision = False
+
+        #para o movimento horizontal para que a queda seja reta
         self.x_vel = 0
+
+    def update(self, square_group: pg.sprite.Group) -> None:
+        """
+        método de atualização
+        """
+
+        self.apply_gravity()
+        self.collide_with_square(square_group)
+        if self.rect.top > 600: 
+            self.kill()
