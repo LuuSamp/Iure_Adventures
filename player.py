@@ -13,15 +13,21 @@ class Player(Entity):
             pg.image.load(path.join(media_dir, "walk", "player_walking_3.png"))
         ]
         self.standing_frame = pg.image.load(path.join(media_dir, "stand", "player_standing.png"))
+        self.jump_frame = pg.image.load(path.join(media_dir, "jump", "player_jumping.png"))
 
         self.current_frame = 0 
         self.animation_delay = 7
         self.animation_counter = 0
 
     def animation(self):
-        if self.direction.x == 0: 
+        if not self.on_ground:
+            self.animation_counter = 1
+            frame = pg.transform.scale(self.jump_frame, (self.rect.width, self.rect.height))
+
+        elif self.direction.x == 0: 
             self.animation_counter = 1
             frame = pg.transform.scale(self.standing_frame, (self.rect.width, self.rect.height))
+
         else: 
             self.animation_counter -= 1
 
@@ -49,10 +55,12 @@ class Player(Entity):
 
         #atualiza a imagem
         self.image = frame
+        print(self.facing)
 
     def move(self, direction):
         self.direction.x += self.x_vel*direction
-        self.facing = direction
+        if self.direction.x != 0:
+            self.facing = direction
 
     def jump(self):
         if self.on_ground:
