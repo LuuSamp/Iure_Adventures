@@ -56,8 +56,8 @@ class Enemy(Entity):
 
         self.x_vel = 0
 
-    def update(self):
-        super().update()
+    def update(self, square_group):
+        super().update(square_group)
 
         #impedindo ele de cair além da plataforma
         if self.rect.bottomleft[1] < 200:
@@ -105,5 +105,5 @@ class Enemy_Shooter(Enemy):
             self.shots.add(Shot((self.rect.x, self.rect.center[1])))
             self.shot_counter = 0
 
-    def update(self):
-        super().update()
+    def update(self, square_group):
+        super().update(square_group)
