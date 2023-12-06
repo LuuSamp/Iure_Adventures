@@ -1,6 +1,7 @@
 from player import Player
 import pygame as pg
 from const import *
+from os import path
 
 class Shot(pg.sprite.Sprite):
     """
@@ -17,14 +18,16 @@ class Shot(pg.sprite.Sprite):
                 position: coordenadas de spawn do projétil
         """
         super().__init__()
+        current_dir = path.dirname(path.abspath(__file__))
+        media_dir = path.join(current_dir, "media")
         
         #configurando o som ao atirar o projétil
-        self.sound = pg.mixer.Sound("media\sounds\shooting-sound-fx-159024.mp3")
+        self.sound = pg.mixer.Sound(path.join(media_dir, "sounds/shooting-sound-fx-159024.mp3"))
         self.sound.play()
 
         #atributos gerais
         self.x_vel = VEL_BULLET
-        self.image = pg.image.load("media\\bullet_images\B1.png")
+        self.image = pg.image.load(path.join(media_dir, "bullet_images/B1.png"))
         self.image = pg.transform.scale(self.image, DIM_BULLET)
         self.rect = self.image.get_rect(topleft = position)
         self.initial_pos = self.rect.left
@@ -33,8 +36,8 @@ class Shot(pg.sprite.Sprite):
         self.direction = -1
         self.current_frame = 0
         self.animation_frames = [
-            pg.image.load("media\\bullet_images\B1.png"),
-            pg.image.load("media\\bullet_images\B2.png")                                                 
+            pg.image.load(path.join(media_dir, "bullet_images/B1.png")),
+            pg.image.load(path.join(media_dir, "bullet_images/B2.png"))                                                 
         ]
         self.animation_counter = 0
         self.animation_delay = 15
