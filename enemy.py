@@ -24,7 +24,7 @@ class Enemy(Entity):
         self.animation_counter += 1
         
         #uma forma de ajustar um delay
-        if self.animation_counter >= self.animation_delay:
+        if self.animation_counter >= self.animation_delay and self.x_vel != 0:
             #muda de frame
             self.current_frame = (self.current_frame + 1) % len(self.walk_frames)
             
@@ -73,12 +73,9 @@ class Enemy_Shooter(Enemy):
 
     def __init__(self, position, shots):
         super().__init__(position)
-
         self.shots = shots
-
         self.jump_counter = 0
         self.jump_delay = 50
-
         self.shot_counter = 0
         self.shot_delay = 40
 
