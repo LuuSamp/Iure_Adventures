@@ -1,10 +1,13 @@
 import pygame as pg
 from entity import Entity
+from os import path
 
 class Player(Entity):
     def __init__(self, position):
         super().__init__(position)
+        current_dir = path.dirname(path.abspath(__file__))
         
+
     def move(self, direction):
         self.direction.x += self.x_vel*direction
 
@@ -19,6 +22,7 @@ class Player(Entity):
                 enemy.rect.collidepoint(self.rect.midbottom) or
                 enemy.rect.collidepoint(self.rect.bottomleft)):
                     enemy.die()
+                    self.direction.y = -5
                 else:
                     self.die()
 
