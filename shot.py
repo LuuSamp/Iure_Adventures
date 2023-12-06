@@ -32,8 +32,13 @@ class Shot(pg.sprite.Sprite):
         self.animation_counter += 1
         
 
-    def update(self):
+    def collide_with_player(self, player):
+        if pg.sprite.collide_rect(self, player):
+            player.die()
+
+    def update(self, player):
         self.rect.left += self.direction * self.x_vel
         if self.initial_pos - self.rect.left > 300:
             self.kill()
         self.animation()
+        self.collide_with_player(player)
