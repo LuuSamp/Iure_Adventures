@@ -6,7 +6,7 @@ SCREEN_HEIGHT = 600
 #geral
 GRAVITY = 0.8
 ENTITY_X_VEL = 2
-DIM_ENTITY = (32, 32)
+DIM_ENTITY = (64, 64)
 
 #player
 PLAYER_X_VEL = 8
