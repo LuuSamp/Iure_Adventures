@@ -52,21 +52,10 @@ class Enemy(Entity):
     def die(self):
         self.sound = pg.mixer.Sound("media/pixel-death-66829.mp3")
         self.sound.play()
-        self.kill()
-
-        self.x_vel = 0
+        super().die()
 
     def update(self, square_group):
         super().update(square_group)
-
-        #impedindo ele de cair além da plataforma
-        if self.rect.bottomleft[1] < 200:
-            self.on_ground = False
-            self.gravity = 0.8
-        else:
-            self.on_ground = True
-            self.gravity = 0
-            self.direction.y = 0
 
         #movimento contínuo do inimigo
         if self.rect.right > self.initial_pos + 100:
