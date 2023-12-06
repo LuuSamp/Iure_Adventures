@@ -2,6 +2,7 @@ import pygame as pg
 from entity import Entity
 from shot import Shot
 from const import * 
+from os import path
 
 class Enemy(Entity):
     """
@@ -20,19 +21,21 @@ class Enemy(Entity):
 
         #atributos padrões de entidades
         super().__init__(position)
+        self.current_dir = path.dirname(path.abspath(__file__))
+        self.media_dir = path.join(self.current_dir, "media")
 
         #atributos iniciais
         self.initial_pos = self.rect.left
         self.x_vel = VEL_ENEMY_DEFAULT
 
         #som padrão
-        self.sound = pg.mixer.Sound("media/sounds/monster-death-grunt-131480.mp3")
+        self.sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/monster-death-grunt-131480.mp3"))
 
         #atributos de animação
         self.walk_frames = [
-            pg.image.load("media/enemy_images/1.png"),
-            pg.image.load("media/enemy_images/2.png"),
-            pg.image.load("media/enemy_images/3.png")
+            pg.image.load(path.join(self.media_dir, "enemy_images/1.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_images/2.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_images/3.png"))
         ]
         self.current_frame = 0 
         self.animation_delay = 7
@@ -57,7 +60,7 @@ class Enemy(Entity):
 
         #caso o inimigo morra, a imagem dele muda
         if not self.is_alive:
-            death_image = pg.image.load("media/enemy_images/4.png")
+            death_image = pg.image.load(path.join(self.media_dir, "enemy_images/4.png"))
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
             frame = pg.transform.flip(frame, True, False)
             self.image = frame
@@ -86,7 +89,7 @@ class Enemy(Entity):
         """
 
         #configuração do som de "morte"
-        self.sound = pg.mixer.Sound("media/sounds/pixel-death-66829.mp3")
+        self.sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/pixel-death-66829.mp3"))
         self.sound.play()
 
         super().die()
@@ -131,6 +134,8 @@ class EnemyShooter(Enemy):
         """
 
         super().__init__(position)
+        self.current_dir = path.dirname(path.abspath(__file__))
+        self.media_dir = path.join(self.current_dir, "media")
 
         #atributos de animação e de lançamento de projéteis
         self.shots = shots
@@ -142,10 +147,10 @@ class EnemyShooter(Enemy):
         self.shot_delay = 40
 
         self.walk_frames = [
-            pg.image.load("media\enemy_shoter_images\J_3-removebg-preview.png"),
-            pg.image.load("media\enemy_shoter_images\J_1-removebg-preview.png"),
-            pg.image.load("media\enemy_shoter_images\J_4-removebg-preview.png"),
-            pg.image.load("media\enemy_shoter_images\J_2-removebg-preview.png")
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_3-removebg-preview.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_1-removebg-preview.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_4-removebg-preview.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_2-removebg-preview.png"))
         ]
 
     def move(self) -> None:
@@ -188,7 +193,7 @@ class EnemyShooter(Enemy):
 
         #modelagem das animações (caso esteja morto)
         else:
-            death_image = pg.image.load("media\enemy_shoter_images\J_5-removebg-preview.png")
+            death_image = pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_5-removebg-preview.png"))
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
 
         #inversão e atualização da imagem
