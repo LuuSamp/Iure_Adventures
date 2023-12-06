@@ -55,7 +55,6 @@ class Player(Entity):
 
         #atualiza a imagem
         self.image = frame
-        print(self.facing)
 
     def move(self, direction):
         self.direction.x += self.x_vel*direction
