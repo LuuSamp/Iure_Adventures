@@ -25,6 +25,7 @@ class Entity(ABC, pg.sprite.Sprite):
         self.on_ground = True
         self.alive = True
         self.move_direction = 0
+        self.collision = True
 
     def apply_gravity(self):
         #vai aplicar a todas as entidades a gravidade, alterando a posição vertical
@@ -37,9 +38,13 @@ class Entity(ABC, pg.sprite.Sprite):
 
     def update(self):
         self.apply_gravity()
+        if self.rect.top > 600: self.kill()
     
     def collide_with_square(self, square_group: pg.sprite.Group):
         self.on_ground = False
+
+        if not self.collision: return 
+        
         for square in pg.sprite.spritecollide(self, square_group, False):
             if self.direction.y + 3 > 0 and self.rect.bottom - self.direction.y - 1 < square.rect.top: 
                 self.rect.bottom = square.rect.top
@@ -55,3 +60,7 @@ class Entity(ABC, pg.sprite.Sprite):
                 self.rect.right = square.rect.left
             if self.direction.x < 0: 
                 self.rect.left = square.rect.right
+    
+    def die(self):
+        self.collision = False
+        self.x_vel = 0
