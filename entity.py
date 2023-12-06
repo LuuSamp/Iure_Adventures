@@ -78,9 +78,10 @@ class Entity(ABC, pg.sprite.Sprite):
 
         self.is_alive = False
         self.collision = False
-
+        
         #para o movimento horizontal para que a queda seja reta
         self.x_vel = 0
+        self.direction.y = -4
 
     def update(self, square_group: pg.sprite.Group) -> None:
         """

@@ -95,7 +95,9 @@ class Player(Entity):
         Parâmetros:
             enemy_group (pg.sprite.Group): O grupo de sprites Enemy
         """
+        if self.collision == False: return
         for enemy in pg.sprite.spritecollide(self, enemy_group, False):
+            if enemy.collision == False: continue
             if pg.sprite.collide_rect(self, enemy):
                 if (enemy.rect.collidepoint(self.rect.bottomright) or
                         enemy.rect.collidepoint(self.rect.midbottom) or
