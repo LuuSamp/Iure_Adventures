@@ -22,6 +22,10 @@ class Player(Entity):
                 else:
                     self.die()
 
-    def update(self):
-        super().update()
+    def update(self, square_group: pg.sprite.Group):
+        super().update(square_group)
         self.rect.x += self.direction.x
+
+    def die(self):
+        self.direction.x = 0
+        super().die()
