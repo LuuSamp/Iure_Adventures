@@ -18,15 +18,19 @@ class Player(Entity):
             position (Tuple[int]): a posição inicial do jogador (x, y).
         """
         super().__init__(position)
+
         current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "media", "player_images")
+        media_dir = path.join(current_dir, "media")
+        self.image_dir = path.join(media_dir, "player_images")
+        self.sound_dir = path.join(media_dir, "sounds")
+
         self.walk_frames = [
-            pg.image.load(path.join(media_dir, "walk", "player_walking_1.png")),
-            pg.image.load(path.join(media_dir, "walk", "player_walking_2.png")),
-            pg.image.load(path.join(media_dir, "walk", "player_walking_3.png"))
+            pg.image.load(path.join(self.image_dir, "walk", "player_walking_1.png")),
+            pg.image.load(path.join(self.image_dir, "walk", "player_walking_2.png")),
+            pg.image.load(path.join(self.image_dir, "walk", "player_walking_3.png"))
         ]
-        self.standing_frame = pg.image.load(path.join(media_dir, "stand", "player_standing.png"))
-        self.jump_frame = pg.image.load(path.join(media_dir, "jump", "player_jumping.png"))
+        self.standing_frame = pg.image.load(path.join(self.image_dir, "stand", "player_standing.png"))
+        self.jump_frame = pg.image.load(path.join(self.image_dir, "jump", "player_jumping.png"))
 
         self.current_frame = 0
         self.animation_delay = 7
@@ -80,6 +84,7 @@ class Player(Entity):
         """
         if self.on_ground:
             self.direction.y = -10
+            pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3")).play()
 
     def collide_with_enemy(self, enemy_group: pg.sprite.Group):
         """
