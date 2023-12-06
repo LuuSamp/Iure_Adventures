@@ -22,6 +22,7 @@ class Entity(ABC, pg.sprite.Sprite):
         self.direction = pg.math.Vector2(0, 0)
         self.gravity = GRAVITY
         self.x_vel = ENTITY_X_VEL
+        self.jump_height = JUMP_HEIGHT
 
         #atributos gerais
         self.on_ground = True
@@ -60,14 +61,14 @@ class Entity(ABC, pg.sprite.Sprite):
                 self.direction.y = 0
                 self.on_ground = True
 
-            if self.direction.y < 0: 
+            elif self.direction.y < 0 and self.rect.top  - self.direction.y >= square.rect.bottom: 
                 self.rect.top = square.rect.bottom
                 self.direction.y = 0
 
         for square in pg.sprite.spritecollide(self, square_group, False):
-            if self.direction.x > 0: 
+            if self.direction.x > 0 and self.rect.right - self.direction.x <= square.rect.left: 
                 self.rect.right = square.rect.left
-            if self.direction.x < 0: 
+            if self.direction.x < 0 and self.rect.left - self.direction.x >= square.rect.right: 
                 self.rect.left = square.rect.right
     
     def die(self) -> None:
