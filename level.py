@@ -1,7 +1,7 @@
 import pygame as pg
 from platforms import Platform
 from player import Player
-from enemies import Enemies
+from enemy import Enemy
 
 class Level:
     def __init__(self) -> None:
@@ -25,21 +25,3 @@ class TestLevel(Level):
         
         for block in range(5):
             self.platform_list.add(Platform(70, 50, (100*block, 200)))
-
-
-if __name__ == "__main__":
-    pg.init()
-    player = Player((100, 0))
-    player_group = pg.sprite.Group(player)
-
-    level = TestLevel()
-    screen = pg.display.set_mode((500, 600))
-    clock = pg.time.Clock()
-
-    while True:
-        level.update()
-        level.draw(screen)
-        player_group.update()
-        player_group.draw(screen)
-        pg.display.update()
-        clock.tick(30)

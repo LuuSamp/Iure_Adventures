@@ -2,7 +2,7 @@
 
 #geral
 GRAVITY = 0.8
-ENTITY_X_VEL = 6
+ENTITY_X_VEL = 2
 
 #player
 PLAYER_X_VEL = 8
