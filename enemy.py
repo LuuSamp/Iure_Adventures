@@ -24,7 +24,7 @@ class Enemy(Entity):
         self.animation_counter += 1
         
         #uma forma de ajustar um delay
-        if self.animation_counter >= self.animation_delay and self.x_vel != 0:
+        if self.animation_counter >= self.animation_delay and self.x_vel != 0 and self.is_alive:
             #muda de frame
             self.current_frame = (self.current_frame + 1) % len(self.walk_frames)
             
@@ -40,6 +40,12 @@ class Enemy(Entity):
 
             #reinicia a contagem
             self.animation_counter = 0
+
+        if not self.is_alive:
+            death_image = pg.image.load("media/enemy_images/4.png")
+            frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
+            frame = pg.transform.flip(frame, True, False)
+            self.image = frame
 
     def move(self):
         self.direction.x = self.x_vel*self.facing
@@ -98,21 +104,28 @@ class EnemyShooter(Enemy):
             self.shots.add(Shot((self.rect.x, self.rect.center[1])))
             self.shot_counter = 0
 
-        if self.on_ground == True and self.shot_counter == 0:
-            self.current_frame = 0
-        
-        elif self.on_ground == True and self.shot_counter != 0:
-            self.current_frame = 1
+        if self.is_alive:
+            if self.on_ground == True and self.shot_counter == 0:
+                self.current_frame = 0
+            
+            elif self.on_ground == True and self.shot_counter != 0:
+                self.current_frame = 1
 
-        elif self.on_ground == False and self.shot_counter == 0:
-            self.current_frame = 2
+            elif self.on_ground == False and self.shot_counter == 0:
+                self.current_frame = 2
 
-        elif self.on_ground == False and self.shot_counter != 0:
-            self.current_frame = 3
+            elif self.on_ground == False and self.shot_counter != 0:
+                self.current_frame = 3
 
-        frame = pg.transform.scale(self.walk_frames[self.current_frame], (self.rect.width, self.rect.height))
-        frame = pg.transform.flip(frame, True, False)
-        self.image = frame
+            frame = pg.transform.scale(self.walk_frames[self.current_frame], (self.rect.width, self.rect.height))
+            frame = pg.transform.flip(frame, True, False)
+            self.image = frame
+
+        else:
+            death_image = pg.image.load("media\enemy_shoter_images\J_5-removebg-preview.png")
+            frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
+            frame = pg.transform.flip(frame, True, False)
+            self.image = frame
 
     def update(self, square_group):
         super().update(square_group)
