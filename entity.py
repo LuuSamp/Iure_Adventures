@@ -36,8 +36,9 @@ class Entity(ABC, pg.sprite.Sprite):
     def move(self):
         ...
 
-    def update(self):
+    def update(self, square_group: pg.sprite.Group):
         self.apply_gravity()
+        self.collide_with_square(square_group)
         if self.rect.top > 600: self.kill()
     
     def collide_with_square(self, square_group: pg.sprite.Group):
