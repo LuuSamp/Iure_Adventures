@@ -39,7 +39,7 @@ class Enemy(Entity):
         ]
         self.current_frame = 0 
         self.animation_delay = 7
-        self.animation_counter = 0
+        self.animation_counter = 7
 
     def animation(self) -> None:
         """
@@ -171,7 +171,7 @@ class EnemyShooter(Enemy):
 
         #modelagem dos projéteis levando em conta um delay
         self.shot_counter +=1
-        if self.shot_counter >= self.shot_delay:
+        if self.shot_counter >= self.shot_delay and self.is_alive:
             self.shots.add(Shot((self.rect.x, self.rect.center[1])))
             self.shot_counter = 0
         
