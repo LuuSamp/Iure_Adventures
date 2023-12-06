@@ -18,9 +18,9 @@ class Player(Entity):
                 if (enemy.rect.collidepoint(self.rect.bottomright) or 
                 enemy.rect.collidepoint(self.rect.midbottom) or
                 enemy.rect.collidepoint(self.rect.bottomleft)):
-                    enemy.kill()
+                    enemy.die()
                 else:
-                    self.kill()
+                    self.die()
 
     def update(self):
         super().update()
