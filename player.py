@@ -83,7 +83,7 @@ class Player(Entity):
         Faz o Player pular se estiver no chão.
         """
         if self.on_ground:
-            self.direction.y = -10
+            self.direction.y = self.jump_height
             pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3")).play()
 
     def collide_with_enemy(self, enemy_group: pg.sprite.Group):

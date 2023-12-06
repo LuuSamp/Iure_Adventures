@@ -1,7 +1,6 @@
 import pygame as pg
 from platforms import Platform
-from player import Player
-from enemy import Enemy
+from const import *
 
 class Level:
     def __init__(self) -> None:
@@ -23,5 +22,7 @@ class TestLevel(Level):
     def __init__(self) -> None:
         super().__init__()
         
-        for block in range(5):
-            self.platform_list.add(Platform(70, 50, (100*block, 200)))
+        for block in range(20):
+            self.platform_list.add(Platform(*DIM_ENTITY, (32*block, 264)))
+        for block in range(20):
+            self.platform_list.add(Platform(*DIM_ENTITY, (128*block, 200)))
