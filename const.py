@@ -1,4 +1,7 @@
 
+#dimensões da tela
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 
 #geral
 GRAVITY = 0.8
