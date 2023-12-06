@@ -5,6 +5,7 @@ from enemies import Enemies
 
 class Level:
     def __init__(self) -> None:
+
         self.platform_list = pg.sprite.Group()
         self.enemie_list = pg.sprite.Group()
 
@@ -29,13 +30,16 @@ class TestLevel(Level):
 if __name__ == "__main__":
     pg.init()
     player = Player((100, 0))
-    enemie = Enemies((300, 0))
-    level = TestLevel(player, enemie)
+    player_group = pg.sprite.Group(player)
+
+    level = TestLevel()
     screen = pg.display.set_mode((500, 600))
     clock = pg.time.Clock()
 
     while True:
         level.update()
         level.draw(screen)
+        player_group.update()
+        player_group.draw(screen)
         pg.display.update()
         clock.tick(30)
