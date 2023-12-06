@@ -4,11 +4,11 @@ class Shot(pg.sprite.Sprite):
     def __init__(self, position):
         super().__init__()
         
-        self.sound = pg.mixer.Sound("media\shooting-sound-fx-159024.mp3")
+        self.sound = pg.mixer.Sound("media\sounds\shooting-sound-fx-159024.mp3")
         self.sound.play()
 
         self.x_vel = 6
-        self.image = pg.image.load("media\B1.png")
+        self.image = pg.image.load("media\\bullet_images\B1.png")
         self.image = pg.transform.scale(self.image, (25, 7))
         self.rect = self.image.get_rect(topleft = position)
         self.initial_pos = self.rect.left
@@ -16,8 +16,8 @@ class Shot(pg.sprite.Sprite):
 
         self.current_frame = 0
         self.animation_frames = [
-            pg.image.load("media\B1.png"),
-            pg.image.load("media\B2.png")                                                 
+            pg.image.load("media\\bullet_images\B1.png"),
+            pg.image.load("media\\bullet_images\B2.png")                                                 
         ]
         self.animation_counter = 0
         self.animation_delay = 15
@@ -32,8 +32,13 @@ class Shot(pg.sprite.Sprite):
         self.animation_counter += 1
         
 
-    def update(self):
+    def collide_with_player(self, player):
+        if pg.sprite.collide_rect(self, player):
+            player.die()
+
+    def update(self, player):
         self.rect.left += self.direction * self.x_vel
         if self.initial_pos - self.rect.left > 300:
             self.kill()
         self.animation()
+        self.collide_with_player(player)

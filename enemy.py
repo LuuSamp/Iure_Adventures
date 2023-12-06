@@ -8,12 +8,12 @@ class Enemy(Entity):
         super().__init__(position)
         self.initial_pos = self.rect.left
         self.image.fill("black")
-        self.sound = pg.mixer.Sound("media/monster-death-grunt-131480.mp3")
+        self.sound = pg.mixer.Sound("media/sounds/monster-death-grunt-131480.mp3")
 
         self.walk_frames = [
-            pg.image.load("media/1.png"),
-            pg.image.load("media/2.png"),
-            pg.image.load("media/3.png")
+            pg.image.load("media/enemy_images/1.png"),
+            pg.image.load("media/enemy_images/2.png"),
+            pg.image.load("media/enemy_images/3.png")
         ]
 
         self.current_frame = 0 
@@ -24,7 +24,7 @@ class Enemy(Entity):
         self.animation_counter += 1
         
         #uma forma de ajustar um delay
-        if self.animation_counter >= self.animation_delay:
+        if self.animation_counter >= self.animation_delay and self.x_vel != 0 and self.is_alive:
             #muda de frame
             self.current_frame = (self.current_frame + 1) % len(self.walk_frames)
             
@@ -41,6 +41,12 @@ class Enemy(Entity):
             #reinicia a contagem
             self.animation_counter = 0
 
+        if not self.is_alive:
+            death_image = pg.image.load("media/enemy_images/4.png")
+            frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
+            frame = pg.transform.flip(frame, True, False)
+            self.image = frame
+
     def move(self):
         self.direction.x = self.x_vel*self.facing
         self.rect.x += self.direction.x
@@ -50,7 +56,7 @@ class Enemy(Entity):
         self.sound.play()
 
     def die(self):
-        self.sound = pg.mixer.Sound("media/pixel-death-66829.mp3")
+        self.sound = pg.mixer.Sound("media/sounds/pixel-death-66829.mp3")
         self.sound.play()
         super().die()
 
@@ -69,18 +75,22 @@ class Enemy(Entity):
         self.animation()
             
 
-class Enemy_Shooter(Enemy):
+class EnemyShooter(Enemy):
 
     def __init__(self, position, shots):
         super().__init__(position)
-
         self.shots = shots
-
         self.jump_counter = 0
         self.jump_delay = 50
-
         self.shot_counter = 0
         self.shot_delay = 40
+
+        self.walk_frames = [
+            pg.image.load("media\enemy_shoter_images\J_3-removebg-preview.png"),
+            pg.image.load("media\enemy_shoter_images\J_1-removebg-preview.png"),
+            pg.image.load("media\enemy_shoter_images\J_4-removebg-preview.png"),
+            pg.image.load("media\enemy_shoter_images\J_2-removebg-preview.png")
+        ]
 
     def move(self):
         if self.on_ground and self.jump_counter >= self.jump_delay:
@@ -93,6 +103,29 @@ class Enemy_Shooter(Enemy):
         if self.shot_counter >= self.shot_delay:
             self.shots.add(Shot((self.rect.x, self.rect.center[1])))
             self.shot_counter = 0
+
+        if self.is_alive:
+            if self.on_ground == True and self.shot_counter == 0:
+                self.current_frame = 0
+            
+            elif self.on_ground == True and self.shot_counter != 0:
+                self.current_frame = 1
+
+            elif self.on_ground == False and self.shot_counter == 0:
+                self.current_frame = 2
+
+            elif self.on_ground == False and self.shot_counter != 0:
+                self.current_frame = 3
+
+            frame = pg.transform.scale(self.walk_frames[self.current_frame], (self.rect.width, self.rect.height))
+            frame = pg.transform.flip(frame, True, False)
+            self.image = frame
+
+        else:
+            death_image = pg.image.load("media\enemy_shoter_images\J_5-removebg-preview.png")
+            frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
+            frame = pg.transform.flip(frame, True, False)
+            self.image = frame
 
     def update(self, square_group):
         super().update(square_group)

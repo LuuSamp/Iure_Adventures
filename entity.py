@@ -23,7 +23,7 @@ class Entity(ABC, pg.sprite.Sprite):
         self.x_vel = ENTITY_X_VEL
 
         self.on_ground = True
-        self.alive = True
+        self.is_alive = True
         self.move_direction = 0
         self.collision = True
 
@@ -63,5 +63,6 @@ class Entity(ABC, pg.sprite.Sprite):
                 self.rect.left = square.rect.right
     
     def die(self):
+        self.is_alive = False
         self.collision = False
         self.x_vel = 0
