@@ -131,7 +131,7 @@ class BossShot(pg.sprite.Sprite):
         #verifica se houve colisão e mata o player
         if pg.sprite.collide_rect(self, player):
             self.explosion.add(Explosion((self.rect.center[0], self.rect.center[1])))
-            
+            player.die()
             self.kill()
 
     def update(self, player:Player, offset:int) -> None:
@@ -151,7 +151,7 @@ class Explosion(pg.sprite.Sprite):
 
     def __init__(self, position:tuple) -> None:
         super().__init__()
-        self.image = pg.Surface((40, 40))
+        self.image = pg.Surface((120, 120))
         self.image.fill("blue")
         self.rect = self.image.get_rect(center=position)
 
@@ -176,7 +176,7 @@ class Explosion(pg.sprite.Sprite):
         else:
             self.kill()
         try:
-            self.image = pg.transform.scale(self.frames[frame], (40, 40))
+            self.image = pg.transform.scale(self.frames[frame], (120, 120))
             self.explosion_counter += 1
         except:
             return
