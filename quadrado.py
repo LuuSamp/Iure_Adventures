@@ -1,6 +1,7 @@
 import pygame as pg
 from player import Player
 from const import *
+from entity import Entity
 import time
 
 class Rect(pg.sprite.Sprite):
@@ -24,36 +25,24 @@ class StaticSquare(Square):
         self.image = frame
 
 
-class TimerSquare(StaticSquare):
-    def __init__(self, x, y, size, image_path):
-        super().__init__(x, y, size, image_path)
+class ColisionSquare(Entity):
+    def __init__(self, position):
+        super().__init__(position)
         self.timer = 3
-        self.gravity = GRAVITY
-        self.direction = pg.math.Vector2(0, 0)
-        self.init_x = x
-        self.init_y = y
+        self._init_y = position[1]
 
+    def move():
+        pass
 
-    def apply_gravity(self) -> None:
-        self.direction.y += self.gravity
-        self.rect.y += self.direction.y
+    def _reset_square(self):
+        self.on_ground = True
+        self.is_alive = True
+        self.collision = True
+        self.rect.y = self._init_y
 
+    def update(self, square_group: pg.sprite.Group):
+        self.collide_with_square(square_group)
+        if pg.sprite.spritecollide(self, square_group):
+            pass
 
-    def collide_with_player(self, player:Player) -> None:
-        if pg.sprite.collide_rect(self, player):
-            return True
-        else:
-            return False
-
-
-    def update(self, player:Player) -> None:
-        if self.collide_with_player(player=player):
-            time.sleep(self.timer)
-
-            start_time = time.time()
-            while time.time() - start_time <= 5:
-                self.apply_gravity()
-            
-            self.rect.x = self.init_x 
-            self.rect.y = self.init_y
 
