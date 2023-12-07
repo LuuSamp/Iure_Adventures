@@ -31,7 +31,9 @@ class Level:
         # enemy 
         enemy_layout = import_csv_layout('level/enemies.csv')
         self.bullet_group = pygame.sprite.Group()
+        self.explosion_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
+
 
     def create_terrain(self, layout, type):
         squares = pygame.sprite.Group()
@@ -65,7 +67,7 @@ class Level:
                     enemies.add(EnemyShooter((x, y), self.bullet_group))
                 
                 elif val == '2':
-                    enemies.add(FinalBoss((x, y), self.player))
+                    enemies.add(FinalBoss((x, y), self.player, self.bullet_group, self.explosion_group))
                     enemies.add(enemies.sprites()[-1].gun)
         
         return enemies
@@ -87,6 +89,7 @@ class Level:
         self.player.collide_with_enemy(self.enemy_position)
         self.player.update(self.terrain_position, self.world_shift)
         self.bullet_group.update(self.player, self.world_shift)
+        self.explosion_group.update()
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
@@ -94,6 +97,7 @@ class Level:
         self.coin_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
         self.bullet_group.draw(self.display_surface)
+        self.explosion_group.draw(self.display_surface)
 
     def run(self):
             self.draw_elements()

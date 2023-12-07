@@ -91,3 +91,95 @@ class Shot(pg.sprite.Sprite):
         #animação e colisão
         self.animation()
         self.collide_with_player(player)
+
+class BossShot(pg.sprite.Sprite):
+    """
+    """
+
+    def __init__(self, position:tuple, player:Player, vector_player:pg.math.Vector2, explosion:pg.sprite.Group) -> None:
+        """
+        """
+
+        super().__init__()
+
+        #configurando os paths
+        current_dir = path.dirname(path.abspath(__file__))
+        media_dir = path.join(current_dir, "media")
+
+        #atributos gerais
+        self.vector_player = vector_player
+        self.shot_vel = 10
+        self.image = pg.Surface((30, 30))
+        self.image = pg.transform.scale(pg.image.load("media/fireball0.png"), (30, 30))
+        self.rect = self.image.get_rect(topleft=position)
+        self.explosion = explosion
+
+    def animation(self) -> None:
+        """
+        """
+
+    def move(self) -> None:
+        """
+        """
+        self.rect.x -= (self.vector_player.x) * (self.shot_vel)
+        self.rect.y -= (self.vector_player.y) * (self.shot_vel)
+
+    def collide_with_player(self, player:Player) -> None:
+        """
+        """
+
+        #verifica se houve colisão e mata o player
+        if pg.sprite.collide_rect(self, player):
+            self.explosion.add(Explosion((self.rect.center[0], self.rect.center[1])))
+            
+            self.kill()
+
+    def update(self, player:Player, offset:int) -> None:
+        """
+        """
+        self.rect.x += offset
+
+        if self.rect.x < 0 or self.rect.x > SCREEN_WIDTH or self.rect.y < 0 or self.rect.y > SCREEN_HEIGHT:
+            self.kill()
+
+        self.move()
+        self.collide_with_player(player)
+
+class Explosion(pg.sprite.Sprite):
+    """
+    """
+
+    def __init__(self, position:tuple) -> None:
+        super().__init__()
+        self.image = pg.Surface((40, 40))
+        self.image.fill("blue")
+        self.rect = self.image.get_rect(center=position)
+
+        self.frames = [pg.image.load("media/S_1.png"),
+                       pg.image.load("media/S_2.png"),
+                       pg.image.load("media/S_3.png"),
+                       pg.image.load("media/S_4.png")]
+        
+        self.explosion_counter = 0
+
+    def animation(self):
+        """
+        """
+        if self.explosion_counter < 8:
+            frame = 0
+        elif self.explosion_counter < 16:
+            frame = 1
+        elif self.explosion_counter < 24:
+            frame = 2
+        elif self.explosion_counter < 32:
+            frame = 3
+        else:
+            self.kill()
+        try:
+            self.image = pg.transform.scale(self.frames[frame], (40, 40))
+            self.explosion_counter += 1
+        except:
+            return
+        
+    def update(self):
+        self.animation()
