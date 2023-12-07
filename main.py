@@ -3,10 +3,10 @@ import sys
 from level import Level
 from player import Player
 from input_handler import InputHandler
+from const import *
 
-square_size = 64
-screen_width = 1200
-screen_height = 11 * square_size
+screen_width = SCREEN_WIDTH
+screen_height = SCREEN_HEIGHT
 
 # Pygame setup
 pygame.init()
