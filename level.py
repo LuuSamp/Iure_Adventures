@@ -6,7 +6,7 @@ from enemy import Enemy, EnemyShooter
 from const import *
 import os
 import sys
-
+from final_boss import FinalBoss
 
 os.chdir(os.getcwd())
 
@@ -63,6 +63,10 @@ class Level:
 
                 elif val == '1':
                     enemies.add(EnemyShooter((x, y), self.bullet_group))
+                
+                elif val == '2':
+                    enemies.add(FinalBoss((x, y), self.player))
+                    enemies.add(enemies.sprites()[-1].gun)
         
         return enemies
     
