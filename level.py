@@ -10,8 +10,6 @@ import sys
 
 os.chdir(os.getcwd())
 
-square_size = 64
-
 class Level:
     def __init__(self, surface, player: Player):
         #setup geral
@@ -39,15 +37,15 @@ class Level:
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
                 if val != '-1':
-                    x = col_index * square_size
-                    y = row_index * square_size
+                    x = col_index * SQUARE_SIZE
+                    y = row_index * SQUARE_SIZE
 
                     if type == 'terrain':
-                        square = StaticSquare(x, y, square_size, './imagens/madeira.jpg')
+                        square = StaticSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg')
                     elif type == 'fall_block':
-                        square = ColisionSquare(x, y, square_size, './imagens/madeira.jpg', self.player)
+                        square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
                     elif type == 'coins':
-                        square = StaticSquare(x, y, square_size, './imagens/coin.png')
+                        square = StaticSquare(x, y, SQUARE_SIZE, './imagens/coin.png')
 
                     squares.add(square)
 
@@ -58,8 +56,8 @@ class Level:
 
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
-                x = col_index * square_size
-                y = row_index * square_size
+                x = col_index * SQUARE_SIZE
+                y = row_index * SQUARE_SIZE
                 if val == '0':
                     enemies.add(Enemy((x, y)))
 
