@@ -44,6 +44,7 @@ class FinalBoss(Enemy):
     def update(self, square_group: pg.sprite.Group, offset) -> None:
         self.initial_pos += offset
 
+        self.rect.x += offset
         self.apply_gravity()
         self.collide_with_square(square_group)
         if self.rect.top > SCREEN_HEIGHT: 
@@ -65,7 +66,6 @@ class FinalBoss(Enemy):
             self.delay()
 
         self.move()
-        self.gun.update()
 
 class BossGun(pg.sprite.Sprite):
     def __init__(self, holder: FinalBoss, player: Player) -> None:
@@ -74,20 +74,16 @@ class BossGun(pg.sprite.Sprite):
         self.player = player
 
         self.aim_vector = pg.math.Vector2(self.holder.rect.center) - pg.math.Vector2(self.player.rect.center)
-        self.still_vector = pg.math.Vector2(0, 1)
+        self.still_vector = pg.math.Vector2(1, 0)
         self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
 
-        self.image = pg.Surface((32,64))
-        self.image.fill("black")
-        self.rect = self.image.get_rect(center= self.holder.rect.center)
+        self.initial_image = pg.transform.scale(pg.image.load("media/bullet_images/B1.png"), (64, 32))
+        self.rect = self.initial_image.get_rect(center= self.holder.rect.center)
 
-        self.image = pg.transform.rotate(self.image, self.angle_to_player)
+        self.image = pg.transform.rotate(self.initial_image, -self.angle_to_player)
 
-    def update(self):
+    def update(self, *args):
         self.rect.center = self.holder.rect.center
         self.aim_vector = pg.math.Vector2(self.holder.rect.center) - pg.math.Vector2(self.player.rect.center)
         self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
-        self.image = pg.transform.rotate(self.image, self.angle_to_player)
-    
-    def draw(self, screen: pg.surface.Surface):
-        screen.blit(self.image, self.rect)
+        self.image = pg.transform.rotate(self.initial_image, -self.angle_to_player)
