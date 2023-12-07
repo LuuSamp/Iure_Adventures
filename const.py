@@ -1,7 +1,8 @@
 
-#dimensões da tela
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+#dimensões
+SQUARE_SIZE = 64
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 11 * SQUARE_SIZE
 
 #geral
 GRAVITY = 0.8
