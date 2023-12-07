@@ -202,7 +202,7 @@ class EnemyShooter(Enemy):
 
         #modelagem das animações (caso esteja morto)
         else:
-            death_image = pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_5-removebg-preview.png"))
+            death_image = pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter6.png"))
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
 
         self.image = frame
