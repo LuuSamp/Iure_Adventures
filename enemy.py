@@ -206,15 +206,3 @@ class EnemyShooter(Enemy):
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
 
         self.image = frame
-
-    def update(self, square_group:pg.sprite.Group) -> None:
-        """
-        método de atualização
-
-        Parâmetros
-            square_group:
-                type: pg.sprite.Group
-                description: sprites do cenário para verificação da colisão
-        """
-
-        super().update(square_group)
