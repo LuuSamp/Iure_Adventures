@@ -54,7 +54,13 @@ class ColisionSquare(StaticSquare):
 
         if self._player_collision() == True:
             self.cooldown += 1
-        if self.cooldown >= FPS * 2:
-            self.fall()
         elif self.cooldown > 0:
             self.cooldown += 1
+
+        if self.cooldown >= FPS * 5:
+            self.cooldown = 0
+            self._reset_block()
+            self.collision = True
+        elif self.cooldown >= FPS * 2:
+            self.fall()
+
