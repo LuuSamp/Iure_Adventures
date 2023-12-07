@@ -2,8 +2,10 @@ import pygame
 from layout import import_csv_layout
 from quadrado import StaticSquare
 import os
+import sys
 
-os.chdir('/home/gustavo/codigos/Iure_Adventures')
+
+os.chdir(os.getcwd())
 
 square_size = 64
 
@@ -35,11 +37,11 @@ class Level:
                     y = row_index * square_size
 
                     if type == 'terrain':
-                        square = StaticSquare(x, y, square_size, '/home/gustavo/codigos/Iure_Adventures/imagens/madeira.jpg')
+                        square = StaticSquare(x, y, square_size, './imagens/madeira.jpg')
                     if type == 'coins':
-                        square = StaticSquare(x, y, square_size, '/home/gustavo/codigos/Iure_Adventures/imagens/coin.png')
+                        square = StaticSquare(x, y, square_size, './imagens/coin.png')
                     if type == 'enemies':
-                        square = StaticSquare(x, y, square_size, '/home/gustavo/codigos/Iure_Adventures/imagens/mario.png')
+                        square = StaticSquare(x, y, square_size, './imagens/mario.png')
 
                     squares.add(square)
 
