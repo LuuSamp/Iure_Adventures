@@ -16,7 +16,7 @@ class Level:
     def __init__(self, surface, player: Player):
         #setup geral
         self.display_surface = surface
-        self.world_shift = 0
+        self.world_shift = -1
         self.player = player
         self.player_group = pygame.sprite.Group(self.player)
         
@@ -30,6 +30,7 @@ class Level:
 
         # enemy 
         enemy_layout = import_csv_layout('level/enemies.csv')
+        self.bullet_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
 
     def create_terrain(self, layout, type):
@@ -55,11 +56,13 @@ class Level:
 
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
-                if val != '-1':
-                    x = col_index * square_size
-                    y = row_index * square_size
-
+                x = col_index * square_size
+                y = row_index * square_size
+                if val == '0':
                     enemies.add(Enemy((x, y)))
+
+                elif val == '1':
+                    enemies.add(EnemyShooter((x, y), self.bullet_group))
         
         return enemies
 
@@ -67,14 +70,16 @@ class Level:
         self.terrain_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
+        self.player.collide_with_enemy(self.enemy_position)
         self.player.update(self.terrain_position, self.world_shift)
+        self.bullet_group.update(self.player)
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
         self.enemy_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
-        self.player.collide_with_enemy(self.enemy_position)
+        self.bullet_group.draw(self.display_surface)
 
     def run(self):
             self.draw_elements()
