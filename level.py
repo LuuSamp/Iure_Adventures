@@ -60,3 +60,13 @@ class Level:
     def run(self):
             self.draw_elements()
             self.update_elements()
+
+            
+class TestLevel(Level):
+    def __init__(self) -> None:
+        super().__init__()
+        
+        for block in range(20):
+            self.platform_list.add(Platform(*DIM_ENTITY, (32*block, 264)))
+        for block in range(20):
+            self.platform_list.add(Platform(*DIM_ENTITY, (128*block, 200)))
