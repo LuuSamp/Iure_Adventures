@@ -2,6 +2,7 @@ import pygame as pg
 from enemy import Enemy
 from player import Player
 from const import *
+from entity import Entity
 
 class FinalBoss(Enemy):
     """
@@ -11,10 +12,12 @@ class FinalBoss(Enemy):
         super().__init__(position)
 
         self.image.fill("blue")
-
+        
         self.player = player
         self.facing = 1
         self.initial_pos = self.rect.left
+
+        self.gun = BossGun(self, player)
 
         self.move_range = 100
         self.move_counter = 0
@@ -62,3 +65,29 @@ class FinalBoss(Enemy):
             self.delay()
 
         self.move()
+        self.gun.update()
+
+class BossGun(pg.sprite.Sprite):
+    def __init__(self, holder: FinalBoss, player: Player) -> None:
+        super().__init__()
+        self.holder = holder
+        self.player = player
+
+        self.aim_vector = pg.math.Vector2(self.holder.rect.center) - pg.math.Vector2(self.player.rect.center)
+        self.still_vector = pg.math.Vector2(0, 1)
+        self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
+
+        self.image = pg.Surface((32,64))
+        self.image.fill("black")
+        self.rect = self.image.get_rect(center= self.holder.rect.center)
+
+        self.image = pg.transform.rotate(self.image, self.angle_to_player)
+
+    def update(self):
+        self.rect.center = self.holder.rect.center
+        self.aim_vector = pg.math.Vector2(self.holder.rect.center) - pg.math.Vector2(self.player.rect.center)
+        self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
+        self.image = pg.transform.rotate(self.image, self.angle_to_player)
+    
+    def draw(self, screen: pg.surface.Surface):
+        screen.blit(self.image, self.rect)
