@@ -1,6 +1,8 @@
 import pygame
 from layout import import_csv_layout
 from quadrado import StaticSquare
+from platforms import Platform
+from const import *
 import os
 import sys
 
@@ -61,7 +63,7 @@ class Level:
             self.draw_elements()
             self.update_elements()
 
-            
+
 class TestLevel(Level):
     def __init__(self) -> None:
         super().__init__()
