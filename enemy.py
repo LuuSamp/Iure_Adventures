@@ -147,10 +147,12 @@ class EnemyShooter(Enemy):
         self.shot_delay = 40
 
         self.walk_frames = [
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_3-removebg-preview.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_1-removebg-preview.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_4-removebg-preview.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_2-removebg-preview.png"))
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter0.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter1.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter2.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter3.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter4.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter5.png")),
         ]
 
     def move(self) -> None:
@@ -178,16 +180,22 @@ class EnemyShooter(Enemy):
         #modelagem das animações (caso esteja vivo)
         if self.is_alive:
             if self.on_ground == True and self.shot_counter == 0:
-                self.current_frame = 0
+                self.current_frame = 2
             
-            elif self.on_ground == True and self.shot_counter != 0:
+            elif self.on_ground == True and self.shot_counter > 0 and self.shot_counter <= 25:
+                self.current_frame = 0
+
+            elif self.on_ground == True and self.shot_counter > 3 and self.shot_counter >= self.animation_delay:
                 self.current_frame = 1
 
-            elif self.on_ground == False and self.shot_counter == 0:
-                self.current_frame = 2
-
-            elif self.on_ground == False and self.shot_counter != 0:
+            if self.on_ground == False and self.shot_counter == 0:
+                self.current_frame = 5
+            
+            elif self.on_ground == False and self.shot_counter > 0 and self.shot_counter <= 20:
                 self.current_frame = 3
+
+            elif self.on_ground == False and self.shot_counter > 3 and self.shot_counter >= self.animation_delay:
+                self.current_frame = 4
 
             frame = pg.transform.scale(self.walk_frames[self.current_frame], (self.rect.width, self.rect.height))
 
@@ -196,8 +204,6 @@ class EnemyShooter(Enemy):
             death_image = pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_5-removebg-preview.png"))
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
 
-        #inversão e atualização da imagem
-        frame = pg.transform.flip(frame, True, False)
         self.image = frame
 
     def update(self, square_group:pg.sprite.Group) -> None:
