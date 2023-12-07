@@ -71,7 +71,7 @@ class Shot(pg.sprite.Sprite):
         if pg.sprite.collide_rect(self, player):
             player.die()
 
-    def update(self, player:Player) -> None:
+    def update(self, player:Player, offset) -> None:
         """
         método de atualização
 
@@ -82,10 +82,10 @@ class Shot(pg.sprite.Sprite):
         """
 
         #movimento contínuo 
-        self.rect.left += self.direction * self.x_vel
+        self.rect.left += self.direction * self.x_vel + offset
 
         #range de atuação 
-        if self.initial_pos - self.rect.left > RANGE_BULLET:
+        if self.initial_pos + offset - self.rect.left > RANGE_BULLET:
             self.kill()
         
         #animação e colisão

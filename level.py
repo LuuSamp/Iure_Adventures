@@ -72,7 +72,7 @@ class Level:
         self.coin_position.update(self.world_shift)
         self.player.collide_with_enemy(self.enemy_position)
         self.player.update(self.terrain_position, self.world_shift)
-        self.bullet_group.update(self.player)
+        self.bullet_group.update(self.player, self.world_shift)
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
