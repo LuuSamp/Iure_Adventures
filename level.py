@@ -16,7 +16,7 @@ class Level:
     def __init__(self, surface, player: Player):
         #setup geral
         self.display_surface = surface
-        self.world_shift = -1
+        self.world_shift = 0
         self.player = player
         self.player_group = pygame.sprite.Group(self.player)
         
@@ -65,8 +65,18 @@ class Level:
                     enemies.add(EnemyShooter((x, y), self.bullet_group))
         
         return enemies
+    
+    def _update_world_shift(self):
+        player_pos = self.player.rect.left
+        if player_pos < 100:
+            self.world_shift = 5
+        elif player_pos >= 100 and player_pos <= 400:
+            self.world_shift = 0
+        else:
+            self.world_shift = -5
 
     def update_elements(self):
+        self._update_world_shift()
         self.terrain_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
