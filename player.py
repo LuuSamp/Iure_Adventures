@@ -110,14 +110,14 @@ class Player(Entity):
                 else:
                     self.die()
 
-    def update(self, square_group: pg.sprite.Group):
+    def update(self, square_group: pg.sprite.Group, offset):
         """
         Atualiza o Player
 
         Parâmetros:
             square_group (pg.sprite.Group): O grupo de sprites Square.
         """
-        super().update(square_group)
+        super().update(square_group, offset)
         self.rect.x += self.direction.x
         self.animation()
 

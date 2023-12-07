@@ -30,7 +30,7 @@ class Level:
 
         # enemy 
         enemy_layout = import_csv_layout('level/enemies.csv')
-        self.enemy_position = self.create_terrain(enemy_layout, 'enemies')
+        self.enemy_position = self.create_enemies(enemy_layout)
 
     def create_terrain(self, layout, type):
         squares = pygame.sprite.Group()
@@ -45,18 +45,29 @@ class Level:
                         square = StaticSquare(x, y, square_size, './imagens/madeira.jpg')
                     if type == 'coins':
                         square = StaticSquare(x, y, square_size, './imagens/coin.png')
-                    if type == 'enemies':
-                        square = Enemy((x, y))
 
                     squares.add(square)
 
         return squares
 
+    def create_enemies(self, layout):
+        enemies = pygame.sprite.Group()
+
+        for row_index, row in enumerate(layout):
+            for col_index, val in enumerate(row):
+                if val != '-1':
+                    x = col_index * square_size
+                    y = row_index * square_size
+
+                    enemies.add(Enemy((x, y)))
+        
+        return enemies
+
     def update_elements(self):
         self.terrain_position.update(self.world_shift)
-        self.enemy_position.update(self.terrain_position)
+        self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
-        self.player.update(self.terrain_position)
+        self.player.update(self.terrain_position, self.world_shift)
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)

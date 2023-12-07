@@ -83,10 +83,12 @@ class Entity(ABC, pg.sprite.Sprite):
         self.x_vel = 0
         self.direction.y = -4
 
-    def update(self, square_group: pg.sprite.Group) -> None:
+    def update(self, square_group: pg.sprite.Group, offset) -> None:
         """
         método de atualização
         """
+        
+        self.rect.x += offset
 
         self.apply_gravity()
         self.collide_with_square(square_group)
