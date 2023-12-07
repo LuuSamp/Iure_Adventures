@@ -12,7 +12,7 @@ DIM_ENTITY = (64, 64)
 
 #player
 PLAYER_X_VEL = 5
-PLAYER_Y_VEL = -16
+PLAYER_Y_VEL = -20
 
 #shot
 VEL_BULLET = 6
