@@ -33,9 +33,9 @@ class Enemy(Entity):
 
         #atributos de animação
         self.walk_frames = [
-            pg.image.load(path.join(self.media_dir, "enemy_images/1.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_images/2.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_images/3.png"))
+            pg.image.load(path.join(self.media_dir, "enemy_images/enemy0.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_images/enemy1.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_images/enemy2.png"))
         ]
         self.current_frame = 0 
         self.animation_delay = 7
@@ -60,7 +60,7 @@ class Enemy(Entity):
 
         #caso o inimigo morra, a imagem dele muda
         if not self.is_alive:
-            death_image = pg.image.load(path.join(self.media_dir, "enemy_images/4.png"))
+            death_image = pg.image.load(path.join(self.media_dir, "enemy_images/enemy3.png"))
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
             frame = pg.transform.flip(frame, True, False)
             self.image = frame
@@ -202,7 +202,7 @@ class EnemyShooter(Enemy):
 
         #modelagem das animações (caso esteja morto)
         else:
-            death_image = pg.image.load(path.join(self.media_dir, "enemy_shoter_images/J_5-removebg-preview.png"))
+            death_image = pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter6.png"))
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
 
         self.image = frame
