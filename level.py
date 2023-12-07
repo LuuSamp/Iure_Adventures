@@ -65,9 +65,9 @@ class Level:
 
     def update_elements(self):
         self.terrain_position.update(self.world_shift)
-        self.enemy_position.update(self.terrain_position)
+        self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
-        self.player.update(self.terrain_position)
+        self.player.update(self.terrain_position, self.world_shift)
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)

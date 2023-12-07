@@ -94,7 +94,7 @@ class Enemy(Entity):
 
         super().die()
 
-    def update(self, square_group:pg.sprite.Group) -> None:
+    def update(self, square_group:pg.sprite.Group, offset) -> None:
         """
         método de atualização
 
@@ -103,8 +103,9 @@ class Enemy(Entity):
                 type: pg.sprite.Group
                 description: sprites do cenário para verificação da colisão
         """
-        super().update(square_group)
-
+        super().update(square_group, offset)
+        self.initial_pos += offset
+        
         #movimento contínuo do inimigo delimitado por uma range
         if self.rect.right > self.initial_pos + RANGE_ENEMY_DEFAULT:
             self.facing = -1
