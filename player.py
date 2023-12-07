@@ -27,13 +27,14 @@ class Player(Entity):
         self.walk_frames = [
             pg.image.load(path.join(self.image_dir, "walk", "player_walking_1.png")),
             pg.image.load(path.join(self.image_dir, "walk", "player_walking_2.png")),
-            pg.image.load(path.join(self.image_dir, "walk", "player_walking_3.png"))
+            pg.image.load(path.join(self.image_dir, "walk", "player_walking_3.png")),
+            pg.image.load(path.join(self.image_dir, "walk", "player_walking_4.png"))
         ]
         self.standing_frame = pg.image.load(path.join(self.image_dir, "stand", "player_standing.png"))
         self.jump_frame = pg.image.load(path.join(self.image_dir, "jump", "player_jumping.png"))
 
         self.current_frame = 0
-        self.animation_delay = 7
+        self.animation_delay = 2
         self.animation_counter = 0
 
     def animation(self):
