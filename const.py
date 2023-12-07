@@ -9,7 +9,7 @@ ENTITY_X_VEL = 2
 DIM_ENTITY = (64, 64)
 
 #player
-PLAYER_X_VEL = 8
+PLAYER_X_VEL = 5
 PLAYER_Y_VEL = -16
 
 #shot

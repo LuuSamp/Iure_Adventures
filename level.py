@@ -1,7 +1,8 @@
 import pygame
 from layout import import_csv_layout
 from quadrado import StaticSquare
-from platforms import Platform
+from player import Player
+from enemy import Enemy, EnemyShooter
 from const import *
 import os
 import sys
@@ -12,11 +13,13 @@ os.chdir(os.getcwd())
 square_size = 64
 
 class Level:
-    def __init__(self, surface):
+    def __init__(self, surface, player: Player):
         #setup geral
         self.display_surface = surface
         self.world_shift = 0
-
+        self.player = player
+        self.player_group = pygame.sprite.Group(self.player)
+        
         # terrain setup
         terrain_layout = import_csv_layout('level/terrain.csv')
         self.terrain_position = self.create_terrain(terrain_layout, 'terrain')
@@ -43,7 +46,7 @@ class Level:
                     if type == 'coins':
                         square = StaticSquare(x, y, square_size, './imagens/coin.png')
                     if type == 'enemies':
-                        square = StaticSquare(x, y, square_size, './imagens/mario.png')
+                        square = Enemy((x, y))
 
                     squares.add(square)
 
@@ -51,24 +54,17 @@ class Level:
 
     def update_elements(self):
         self.terrain_position.update(self.world_shift)
-        self.enemy_position.update(self.world_shift)
+        self.enemy_position.update(self.terrain_position)
         self.coin_position.update(self.world_shift)
+        self.player.update(self.terrain_position)
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
         self.enemy_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
+        self.player_group.draw(self.display_surface)
+        self.player.collide_with_enemy(self.enemy_position)
 
     def run(self):
             self.draw_elements()
             self.update_elements()
-
-
-class TestLevel(Level):
-    def __init__(self) -> None:
-        super().__init__()
-        
-        for block in range(20):
-            self.platform_list.add(Platform(*DIM_ENTITY, (32*block, 264)))
-        for block in range(20):
-            self.platform_list.add(Platform(*DIM_ENTITY, (128*block, 200)))

@@ -1,6 +1,8 @@
 import pygame
 import sys
 from level import Level
+from player import Player
+from input_handler import InputHandler
 
 square_size = 64
 screen_width = 1200
@@ -10,13 +12,11 @@ screen_height = 11 * square_size
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
-level = Level(screen)
-
+player = Player((70, 0))
+level = Level(screen, player)
+input_handler = InputHandler(player)
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+    input_handler.update()
     
     screen.fill('black')
     level.run()

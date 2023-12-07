@@ -2,6 +2,7 @@ import pygame as pg
 from entity import Entity
 from os import path
 from typing import Tuple
+from const import *
 
 class Player(Entity):
     """
@@ -33,6 +34,7 @@ class Player(Entity):
         self.standing_frame = pg.image.load(path.join(self.image_dir, "stand", "player_standing.png"))
         self.jump_frame = pg.image.load(path.join(self.image_dir, "jump", "player_jumping.png"))
 
+        self.x_vel = PLAYER_X_VEL
         self.current_frame = 0
         self.animation_delay = 2
         self.animation_counter = 0
