@@ -92,5 +92,5 @@ class Entity(ABC, pg.sprite.Sprite):
 
         self.apply_gravity()
         self.collide_with_square(square_group)
-        if self.rect.top > 600: 
+        if self.rect.top > SCREEN_HEIGHT: 
             self.kill()
