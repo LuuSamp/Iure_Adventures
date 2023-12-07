@@ -86,8 +86,8 @@ class Level:
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
-        self.enemy_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
+        self.enemy_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
         self.bullet_group.draw(self.display_surface)
 
