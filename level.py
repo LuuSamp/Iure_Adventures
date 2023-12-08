@@ -1,6 +1,6 @@
 import pygame
 from layout import import_csv_layout
-from quadrado import StaticSquare, ColisionSquare
+from quadrado import StaticSquare, ColisionSquare, CoinSquare
 from player import Player
 from enemy import Enemy, EnemyShooter
 from const import *
@@ -45,7 +45,7 @@ class Level:
                     elif type == 'fall_block':
                         square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
                     elif type == 'coins':
-                        square = StaticSquare(x, y, SQUARE_SIZE, './imagens/coin.png')
+                        square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
 
                     squares.add(square)
 
