@@ -5,7 +5,24 @@ from entity import Entity
 import time
 
 class Rect(pg.sprite.Sprite):
-    def __init__(self, x, y, size_x, size_y):
+    """
+    Classe padrão de objetos de cenário.
+
+    """
+    def __init__(self, x: int, y: int, size_x:int, size_y:int) -> None:
+        """Ininicializa o objeto de cenário com sua posição e tamanho.
+
+        Parameters
+        ----------
+        x : int
+            posição em relação ao eixo x
+        y : int
+            posição em relação ao eixo y
+        size_x : int
+            tamanho em relação ao eixo x
+        size_y : int
+            tamanho em relação ao eixo y
+        """
         super().__init__()
         self.image = pg.Surface((size_x, size_y))
         self.rect = self.image.get_rect(topleft=(x, y))
@@ -14,7 +31,7 @@ class Rect(pg.sprite.Sprite):
         self.rect.x += shift
         
 class Square(Rect):
-    def __init__(self, x, y, size):
+    def __init__(self, x:int, y:int, size:int) -> None:
         super().__init__(x, y, size, size)
 
 class StaticSquare(Square):
