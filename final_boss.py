@@ -3,6 +3,7 @@ from enemy import Enemy
 from player import Player
 from const import *
 from shot import BossShot
+from os import path
 
 class FinalBoss(Enemy):
     """
@@ -11,9 +12,12 @@ class FinalBoss(Enemy):
     def __init__(self, position: tuple, player:Player, shots:pg.sprite.Group, explosion:pg.sprite.Group) -> None:
         super().__init__(position)
 
+        current_dir = path.dirname(path.abspath(__file__))
+        media_dir = path.join(current_dir, "media")
+        self.image_dir = path.join(media_dir, "final_boss", "boss")
+        initial_image = path.join(self.image_dir, "final_boss_0.png")
 
-        self.image = pg.Surface((128, 128))
-        self.image.fill("blue")
+        self.image = pg.transform.scale(pg.image.load(initial_image), (64, 128))
         self.rect = self.image.get_rect(topleft = position)
         
         self.player = player
@@ -104,15 +108,22 @@ class BossGun(pg.sprite.Sprite):
         self.shots = shots
         self.explosion = explosion
         self.collision = False
-
+        
         self.aim_vector = (pg.math.Vector2(self.holder.rect.center) - pg.math.Vector2(self.player.rect.center)).normalize()
-        self.still_vector = pg.math.Vector2(1, 0)
+        self.still_vector = pg.math.Vector2(0, -1)
         self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
 
-        self.initial_image = pg.transform.scale(pg.image.load("media/bullet_images/B1.png"), (64, 32))
-        self.rect = self.initial_image.get_rect(center= self.holder.rect.center)
+        current_dir = path.dirname(path.abspath(__file__))
+        media_dir = path.join(current_dir, "media")
+        self.image_dir = path.join(media_dir, "final_boss", "gun")
+        initial_image = path.join(self.image_dir, "boss_gun_0.png")
+
+        self.initial_image = pg.transform.scale(pg.image.load(initial_image), (32, 120))
+        self.position_on_holder = (self.holder.rect.left + 4 * 4, self.holder.rect.top + 15 * 4)
 
         self.image = pg.transform.rotate(self.initial_image, -self.angle_to_player)
+        self.rect = self.initial_image.get_rect(center= self.position_on_holder)
+        self.image.get_rect()
 
     def shot(self) -> None:
         """
@@ -122,7 +133,10 @@ class BossGun(pg.sprite.Sprite):
 
 
     def update(self, *args):
-        self.rect.center = self.holder.rect.center
+
         self.aim_vector = (pg.math.Vector2(self.holder.rect.center) - pg.math.Vector2(self.player.rect.center)).normalize()
         self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
         self.image = pg.transform.rotate(self.initial_image, -self.angle_to_player)
+        self.rect = self.image.get_rect()
+        self.position_on_holder = (self.holder.rect.left + 4 * 4, self.holder.rect.top + 14 * 4 - 1)
+        self.rect.center = self.position_on_holder
