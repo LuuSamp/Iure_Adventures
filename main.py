@@ -1,34 +1,38 @@
-import pygame as pg
+import pygame
 import sys
 from menu import *
 from level import Level
+from player import Player
+from input_handler import InputHandler
 
+pygame.init()
 
-pg.init()
-
+# pygame setup
 square_size = 64
 screen_width = 1200
 screen_height = 11 * square_size
-screen = pg.display.set_mode((screen_width, screen_height))
-clock = pg.time.Clock()
+screen = pygame.display.set_mode((screen_width, screen_height))
+clock = pygame.time.Clock()
+
+# creating variables
 is_running = True
-#is_in_menu = True
 game_state = "menu"
-
-level = Level(screen)
-
-play_img = pg.image.load("media/button_images/play.png")
-exit_img = pg.image.load("media/button_images/quit.png")
+ 
+# creating used objects
+play_img = pygame.image.load("media/button_images/play.png")
+exit_img = pygame.image.load("media/button_images/quit.png")
 play_button = Button(400, 200, play_img, 0.8)
 exit_button = Button(400, 400, exit_img, 0.8)
-
+player = Player((70, 0))
+level = Level(screen, player)
+input_handler = InputHandler(player)
 
 while is_running:
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
             is_running = False
-        if event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE or event.key == pg.K_SPACE:
+        if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_SPACE:
                     game_state = "menu"
 
     if game_state == "menu":
@@ -40,13 +44,15 @@ while is_running:
             is_running = False
             
     if game_state == "playing": #roda o jogo
-        screen.fill("black")
+        input_handler.update()
+    
+        screen.fill('black')
         level.run()
 
-    pg.display.flip()
+    pygame.display.update()
 
     clock.tick(60)
 
 
-pg.quit()
+pygame.quit()
 sys.exit()
