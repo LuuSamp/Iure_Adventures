@@ -17,12 +17,13 @@ class FinalBoss(Enemy):
         self.facing = 1
         self.initial_pos = self.rect.left
 
+        self.health = 2
         self.gun = BossGun(self, player, shots, explosion)
 
         self.move_range = 100
         self.move_counter = 0
         self.on_move = True
-        self.shot_delay = 0
+        self.rest_time = 0
 
         self.shooting = True
 
@@ -37,10 +38,10 @@ class FinalBoss(Enemy):
             self.rect.x += self.direction.x
 
     def delay(self):
-        self.shot_delay += 1
-        if self.shot_delay == FPS * 5:
+        self.rest_time += 1
+        if self.rest_time == FPS * 5:
             self.move_range = 100
-            self.shot_delay = 0
+            self.rest_time = 0
             self.move_counter = 0
             self.on_move = True
 
@@ -59,11 +60,13 @@ class FinalBoss(Enemy):
         if self.rect.left > self.initial_pos + self.move_range and self.on_move and self.shooting:
             self.facing = -1
             self.move_counter += 1
+            self.x_vel = ENTITY_X_VEL
             self.gun.shot()
 
         elif self.rect.left < self.initial_pos - self.move_range and self.on_move and self.shooting:
             self.facing = 1
             self.move_counter += 1
+            self.x_vel = ENTITY_X_VEL
             self.gun.shot()
 
         elif self.move_counter == 4:
@@ -77,6 +80,17 @@ class FinalBoss(Enemy):
         print(self.move_counter)
 
         self.move()
+
+    def die(self):
+        self.health -= 1
+        self.move_counter = 0
+        self.x_vel *= 2
+        self.rest_time = 0
+        self.on_move = True
+        self.move_range = 100
+
+        if self.health == 0:
+            super().die()
 
 class BossGun(pg.sprite.Sprite):
     def __init__(self, holder: FinalBoss, player: Player, shots:pg.sprite.Group, explosion:pg.sprite.Group) -> None:
