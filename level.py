@@ -1,6 +1,6 @@
 import pygame
 from layout import import_csv_layout
-from quadrado import StaticSquare
+from quadrado import StaticSquare, ColisionSquare
 from player import Player
 from enemy import Enemy, EnemyShooter
 from const import *
@@ -9,8 +9,6 @@ import sys
 from final_boss import FinalBoss
 
 os.chdir(os.getcwd())
-
-square_size = 64
 
 class Level:
     def __init__(self, surface, player: Player):
@@ -41,13 +39,15 @@ class Level:
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
                 if val != '-1':
-                    x = col_index * square_size
-                    y = row_index * square_size
+                    x = col_index * SQUARE_SIZE
+                    y = row_index * SQUARE_SIZE
 
                     if type == 'terrain':
-                        square = StaticSquare(x, y, square_size, './imagens/madeira.jpg')
-                    if type == 'coins':
-                        square = StaticSquare(x, y, square_size, './imagens/coin.png')
+                        square = StaticSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg')
+                    elif type == 'fall_block':
+                        square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
+                    elif type == 'coins':
+                        square = StaticSquare(x, y, SQUARE_SIZE, './imagens/coin.png')
 
                     squares.add(square)
 
@@ -58,8 +58,8 @@ class Level:
 
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
-                x = col_index * square_size
-                y = row_index * square_size
+                x = col_index * SQUARE_SIZE
+                y = row_index * SQUARE_SIZE
                 if val == '0':
                     enemies.add(Enemy((x, y)))
 
@@ -93,8 +93,8 @@ class Level:
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
-        self.enemy_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
+        self.enemy_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
         self.bullet_group.draw(self.display_surface)
         self.explosion_group.draw(self.display_surface)
