@@ -20,7 +20,7 @@ class FinalBoss(Enemy):
         self.health = 2
         self.gun = BossGun(self, player, shots, explosion)
 
-        self.move_range = 100
+        self.move_range = INITIAL_RANGE
         self.move_counter = 0
         self.on_move = True
         self.rest_time = 0
@@ -38,10 +38,11 @@ class FinalBoss(Enemy):
             self.rect.x += self.direction.x
 
     def delay(self):
+
         self.rest_time += 1
         if self.rest_time == FPS * 5:
-            self.move_range = 100
             self.rest_time = 0
+            self.move_range = INITIAL_RANGE
             self.move_counter = 0
             self.on_move = True
 
@@ -70,7 +71,7 @@ class FinalBoss(Enemy):
             self.gun.shot()
 
         elif self.move_counter == 4:
-            self.move_range = 200
+            self.move_range = FINAL_RANGE
 
         elif self.move_counter == 5:
             self.on_move = False
@@ -87,7 +88,7 @@ class FinalBoss(Enemy):
         self.x_vel *= 2
         self.rest_time = 0
         self.on_move = True
-        self.move_range = 100
+        self.move_range = INITIAL_RANGE
 
         if self.health == 0:
             super().die()

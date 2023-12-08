@@ -113,6 +113,8 @@ class BossShot(pg.sprite.Sprite):
         self.image = pg.transform.scale(pg.image.load("media/fireball0.png"), (30, 30))
         self.rect = self.image.get_rect(topleft=position)
         self.explosion = explosion
+        self.sound = pg.mixer.Sound("media\sounds\shooting-sound-fx-159024.mp3")
+        self.sound.play()
 
     def animation(self) -> None:
         """
@@ -127,7 +129,6 @@ class BossShot(pg.sprite.Sprite):
     def collide_with_player(self, player:Player) -> None:
         """
         """
-
         #verifica se houve colisão e mata o player
         if pg.sprite.collide_rect(self, player):
             self.explosion.add(Explosion((self.rect.center[0], self.rect.center[1])))
