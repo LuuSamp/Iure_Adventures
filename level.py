@@ -1,27 +1,60 @@
-import pygame as pg
-from platforms import Platform
-from player import Player
-from enemy import Enemy
+import pygame
+from layout import import_csv_layout
+from quadrado import StaticSquare
+import os
+
+#os.chdir('/home/gustavo/codigos/Iure_Adventures')
+
+square_size = 64
 
 class Level:
-    def __init__(self) -> None:
+    def __init__(self, surface):
+        #setup geral
+        self.display_surface = surface
+        self.world_shift = 0
 
-        self.platform_list = pg.sprite.Group()
-        self.enemie_list = pg.sprite.Group()
+        # terrain setup
+        terrain_layout = import_csv_layout('level_csv/terrain.csv')
+        self.terrain_position = self.create_terrain(terrain_layout, 'terrain')
 
-    def update(self):
-        self.platform_list.update()
-        self.enemie_list.update()
-        
+        # coins 
+        coin_layout = import_csv_layout('level_csv/coins.csv')
+        self.coin_position = self.create_terrain(coin_layout, 'coins')
 
-    def draw(self, screen: pg.Surface):
-        screen.fill("white")
-        self.platform_list.draw(screen)
-        self.enemie_list.draw(screen)
+        # enemy 
+        enemy_layout = import_csv_layout('level_csv/enemies.csv')
+        self.enemy_position = self.create_terrain(enemy_layout, 'enemies')
 
-class TestLevel(Level):
-    def __init__(self) -> None:
-        super().__init__()
-        
-        for block in range(5):
-            self.platform_list.add(Platform(70, 50, (100*block, 200)))
+    def create_terrain(self, layout, type):
+        squares = pygame.sprite.Group()
+
+        for row_index, row in enumerate(layout):
+            for col_index, val in enumerate(row):
+                if val != '-1':
+                    x = col_index * square_size
+                    y = row_index * square_size
+
+                    if type == 'terrain':
+                        square = StaticSquare(x, y, square_size, 'imagens/madeira.jpg')
+                    if type == 'coins':
+                        square = StaticSquare(x, y, square_size, 'imagens/coin.png')
+                    if type == 'enemies':
+                        square = StaticSquare(x, y, square_size, 'imagens/mario.png')
+
+                    squares.add(square)
+
+        return squares
+
+    def update_elements(self):
+        self.terrain_position.update(self.world_shift)
+        self.enemy_position.update(self.world_shift)
+        self.coin_position.update(self.world_shift)
+
+    def draw_elements(self):
+        self.terrain_position.draw(self.display_surface)
+        self.enemy_position.draw(self.display_surface)
+        self.coin_position.draw(self.display_surface)
+
+    def run(self):
+            self.draw_elements()
+            self.update_elements()
