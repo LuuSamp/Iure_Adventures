@@ -24,6 +24,8 @@ class FinalBoss(Enemy):
         self.on_move = True
         self.shot_delay = 0
 
+        self.shooting = True
+
     def animation(self) -> None:
         pass
 
@@ -37,6 +39,7 @@ class FinalBoss(Enemy):
     def delay(self):
         self.shot_delay += 1
         if self.shot_delay == FPS * 5:
+            self.move_range = 100
             self.shot_delay = 0
             self.move_counter = 0
             self.on_move = True
@@ -50,19 +53,28 @@ class FinalBoss(Enemy):
         if self.rect.top > SCREEN_HEIGHT: 
             self.kill()
 
-        if self.rect.left > self.initial_pos + self.move_range and self.on_move:
+        if self.rect.left == self.initial_pos:
+            self.shooting = True
+
+        if self.rect.left > self.initial_pos + self.move_range and self.on_move and self.shooting:
             self.facing = -1
             self.move_counter += 1
             self.gun.shot()
 
-        elif self.rect.left < self.initial_pos - self.move_range and self.on_move:
+        elif self.rect.left < self.initial_pos - self.move_range and self.on_move and self.shooting:
             self.facing = 1
             self.move_counter += 1
             self.gun.shot()
 
+        elif self.move_counter == 4:
+            self.move_range = 200
+
         elif self.move_counter == 5:
             self.on_move = False
+            self.shooting = False
             self.delay()
+
+        print(self.move_counter)
 
         self.move()
 

@@ -151,14 +151,18 @@ class Explosion(pg.sprite.Sprite):
 
     def __init__(self, position:tuple) -> None:
         super().__init__()
+
+        current_dir = path.dirname(path.abspath(__file__))
+        media_dir = path.join(current_dir, "media")
+
         self.image = pg.Surface((120, 120))
         self.image.fill("blue")
         self.rect = self.image.get_rect(center=position)
 
-        self.frames = [pg.image.load("media/S_1.png"),
-                       pg.image.load("media/S_2.png"),
-                       pg.image.load("media/S_3.png"),
-                       pg.image.load("media/S_4.png")]
+        self.frames = [pg.image.load(path.join(media_dir, "explosion_images/S_1.png")),
+                       pg.image.load(path.join(media_dir, "explosion_images/S_2.png")),
+                       pg.image.load(path.join(media_dir, "explosion_images/S_3.png")),
+                       pg.image.load(path.join(media_dir, "explosion_images/S_4.png"))]
         
         self.explosion_counter = 0
 
