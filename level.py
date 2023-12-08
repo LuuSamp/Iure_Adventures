@@ -14,7 +14,6 @@ class Level:
     def __init__(self, surface, player: Player, level_path='level'):
         #setup geral
         self.display_surface = surface
-        self.world_shift = 0
         self.player = player
         self.player_group = pygame.sprite.Group(self.player)
 
@@ -32,6 +31,10 @@ class Level:
         enemy_layout = import_csv_layout(f'{level_path}/enemies.csv')
         self.bullet_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
+
+        self.world_shift = 0
+        self.first_x = 0
+        self.last_x = SQUARE_SIZE * len(terrain_layout[0])
 
     def create_terrain(self, layout, type):
         squares = pygame.sprite.Group()
@@ -70,12 +73,17 @@ class Level:
     
     def _update_world_shift(self):
         player_pos = self.player.rect.left
-        if player_pos < 100:
+        if player_pos < 100 and self.first_x < 0:
             self.world_shift = 5
-        elif player_pos >= 100 and player_pos <= 400:
-            self.world_shift = 0
-        else:
+        elif player_pos > 400 and self.last_x > SCREEN_WIDTH:
             self.world_shift = -5
+        else:
+            self.world_shift = 0
+        
+        self.first_x += self.world_shift
+        self.last_x += self.world_shift
+        print("First", self.first_x)
+        print("Last", self.last_x)
 
     def update_elements(self):
         self.terrain_position.update(self.world_shift)
