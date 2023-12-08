@@ -39,11 +39,11 @@ class Rect(pg.sprite.Sprite):
         
 class Square(Rect):
     """
-    Objeto padrão de cenário de retângulo.
+    Objeto padrão de cenário de quadrado.
 
     """
     def __init__(self, x:int, y:int, size:int) -> None:
-        """Inicializa o retângulo
+        """Inicializa o quadrado
 
         Parameters
         ----------
@@ -57,7 +57,24 @@ class Square(Rect):
         super().__init__(x, y, size, size)
 
 class StaticSquare(Square):
-    def __init__(self, x, y, size, image_path):
+    """
+    Objeto de cenário quadrado com uma imagem fixa.
+
+    """
+    def __init__(self, x:int, y:int, size:int, image_path:str) -> None:
+        """_summary_
+
+        Parameters
+        ----------
+        x : int
+            posição em relação ao eixo x
+        y : int
+            posição em relação ao eixo y
+        size : int
+            lado do retângulo
+        image_path : str
+            caminho onde a imagem do objeto se localiza
+        """
         super().__init__(x, y, size)
         image = pg.image.load(image_path)
         frame = pg.transform.scale(image, (size, size))
