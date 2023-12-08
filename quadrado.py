@@ -62,7 +62,7 @@ class StaticSquare(Square):
 
     """
     def __init__(self, x:int, y:int, size:int, image_path:str) -> None:
-        """_summary_
+        """Inicializa o quadrado com uma imagem
 
         Parameters
         ----------
@@ -81,7 +81,26 @@ class StaticSquare(Square):
         self.image = frame
 
 class ColisionSquare(StaticSquare):
-    def __init__(self, x, y, size, image_path, player: Player):
+    """
+    Objeto de cenário que, ao entrar em contato com o jogador, irá cair e depois reaparecer.
+
+    """
+    def __init__(self, x: int, y: int, size: int, image_path: str, player: Player) -> None:
+        """Inicializa o bloco que reage a colisões.
+
+        Parameters
+        ----------
+        x : int
+            posição em relação ao eixo x
+        y : int
+            posição em relação ao eixo y
+        size : int
+            lado do retângulo
+        image_path : str
+            caminho onde a imagem do objeto se localiza
+        player : Player
+            jogador com que as colisões ocorrerão
+        """
         super().__init__(x, y, size, image_path)
         self.player = player
         self.speed_y = 0
@@ -91,6 +110,13 @@ class ColisionSquare(StaticSquare):
         self.cooldown = 0
 
     def _player_collision(self) -> bool:
+        """ Verifica se houve colisão entre o jogador e o objeto
+
+        Returns
+        -------
+        bool
+            True caso sim e False caso não
+        """
         if self.collision == False:
             return False
         elif self.player.rect.right >= self.rect.left and self.player.rect.left <= self.rect.right and self.player.rect.bottom == self.rect.top:
@@ -99,13 +125,25 @@ class ColisionSquare(StaticSquare):
             return False
 
     def fall(self) -> None:
+        """Faz com que o objeto caia quando desejado.
+        """
         self.speed_y = 4
         self.rect.y += self.speed_y
 
-    def _reset_block(self):
+    def _reset_block(self) -> None:
+        """Retorna o objeto a sua posição de altura inicial.
+        """
         self.rect.y = self.init_y
     
-    def update(self, shift):
+    def update(self, shift:int) -> None:
+        """Inicia um timer caso haja uma colisão entre o jogador e a parte superior do bloco,
+        após alguns instantes o bloco cai e logo após volta a aparecer onde estava inciialmente.
+
+        Parameters
+        ----------
+        shift : int
+            deslocamento horizontal
+        """
         self.rect.x += shift
 
         if self._player_collision() == True:
