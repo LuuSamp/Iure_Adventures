@@ -27,11 +27,33 @@ class Rect(pg.sprite.Sprite):
         self.image = pg.Surface((size_x, size_y))
         self.rect = self.image.get_rect(topleft=(x, y))
         
-    def update(self, shift):
+    def update(self, shift:int) -> None:
+        """Atualiza a posição do objeto em relação a movimentação do cenário.
+
+        Parameters
+        ----------
+        shift : int
+            movimentação realizada.
+        """
         self.rect.x += shift
         
 class Square(Rect):
+    """
+    Objeto padrão de cenário de retângulo.
+
+    """
     def __init__(self, x:int, y:int, size:int) -> None:
+        """Inicializa o retângulo
+
+        Parameters
+        ----------
+        x : int
+            posição em relação ao eixo x
+        y : int
+            posição em relação ao eixo y
+        size : int
+            lado do retângulo
+        """
         super().__init__(x, y, size, size)
 
 class StaticSquare(Square):
