@@ -11,7 +11,7 @@ import sys
 os.chdir(os.getcwd())
 
 class Level:
-    def __init__(self, surface, player: Player):
+    def __init__(self, surface, player: Player, level_path='level'):
         #setup geral
         self.display_surface = surface
         self.world_shift = 0
@@ -19,15 +19,15 @@ class Level:
         self.player_group = pygame.sprite.Group(self.player)
         
         # terrain setup
-        terrain_layout = import_csv_layout('level/terrain.csv')
+        terrain_layout = import_csv_layout(f'{level_path}/terrain.csv')
         self.terrain_position = self.create_terrain(terrain_layout, 'terrain')
 
         # coins 
-        coin_layout = import_csv_layout('level/coins.csv')
+        coin_layout = import_csv_layout(f'{level_path}/coins.csv')
         self.coin_position = self.create_terrain(coin_layout, 'coins')
 
         # enemy 
-        enemy_layout = import_csv_layout('level/enemies.csv')
+        enemy_layout = import_csv_layout(f'{level_path}/enemies.csv')
         self.bullet_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
 
@@ -92,5 +92,13 @@ class Level:
         self.bullet_group.draw(self.display_surface)
 
     def run(self):
-            self.draw_elements()
-            self.update_elements()
+        self.draw_elements()
+        self.update_elements()
+
+
+class BossLevel(Level):
+    def __init__(self, surface, player: Player, level_path='boss_level'):
+        super().__init__(surface, player, level_path)
+
+    def run(self):
+        self.draw_elements()
