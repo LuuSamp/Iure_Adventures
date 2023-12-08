@@ -160,20 +160,56 @@ class ColisionSquare(StaticSquare):
 
 
 class CoinSquare(StaticSquare):
+    """
+    Objeto de cenário que, ao entrar em contato com o jogador, irá desaparecer e aumentará a
+    contagem de moedas coletadas do jogador.
+
+    """
     def __init__(self, x: int, y: int, size: int, image_path: str, player: Player) -> None:
+        """_summary_
+
+        Parameters
+        ----------
+        x : int
+            posição em relação ao eixo x
+        y : int
+            posição em relação ao eixo y
+        size : int
+            lado do retângulo
+        image_path : str
+            caminho onde a imagem do objeto se localiza
+        player : Player
+            jogador com que as colisões ocorrerão
+        """
         super().__init__(x, y, size, image_path)
         self._player = player
         self._coin_sound = pg.mixer.Sound(path.join(self._player.sound_dir, "coin_sound.mp3"))
 
     def _player_collision(self) -> bool:
+        """Verifica se houve colisão entre o objeto e o player
+
+        Returns
+        -------
+        bool
+            True caso sim e False caso não
+        """
         return pg.sprite.collide_rect(self, self._player)
     
     def __coin_catch(self) -> None:
+        """O Player aumenta em um sua contagem de moedas, o objeto é excluído e há som sonoro confirmando o evento
+        """
         self._player.add_coin()
         self.kill()
         self._coin_sound.play()
 
     def update(self, shift: int) -> None:
+        """Verifica se houve colisão e inicia o coin_catch caso sim
+
+        Parameters
+        ----------
+        shift : int
+            o deslocamento horizontal do player
+        """
         self.rect.x += shift
 
         if self._player_collision():

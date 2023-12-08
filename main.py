@@ -1,6 +1,6 @@
 import pygame
 import sys
-from level import Level
+from level import Level, BossLevel
 from player import Player
 from input_handler import InputHandler
 from const import *
