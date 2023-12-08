@@ -25,3 +25,7 @@ RANGE_ENEMY_DEFAULT = 100
 
 #enemy_shooter
 JUMP_HEIGHT = -12
+
+#final boss
+INITIAL_RANGE = 100
+FINAL_RANGE = 200
