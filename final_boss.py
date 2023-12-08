@@ -81,18 +81,18 @@ class FinalBoss(Enemy):
             self.shooting = False
             self.delay()
 
-        print(self.move_counter)
-
         self.move()
 
     def die(self):
+        if self.move_counter == 0: return
+
         self.health -= 1
         self.move_counter = 0
         self.x_vel *= 2
         self.rest_time = 0
         self.on_move = True
         self.move_range = INITIAL_RANGE
-        self.player.direction.y -= 10
+        
         if self.health == 0:
             super().die()
 
