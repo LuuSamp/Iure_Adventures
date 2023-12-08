@@ -11,13 +11,16 @@ class FinalBoss(Enemy):
     def __init__(self, position: tuple, player:Player, shots:pg.sprite.Group, explosion:pg.sprite.Group) -> None:
         super().__init__(position)
 
+
+        self.image = pg.Surface((128, 128))
         self.image.fill("blue")
+        self.rect = self.image.get_rect(topleft = position)
         
         self.player = player
         self.facing = 1
         self.initial_pos = self.rect.left
 
-        self.health = 2
+        self.health = 3
         self.gun = BossGun(self, player, shots, explosion)
 
         self.move_range = INITIAL_RANGE
@@ -78,18 +81,18 @@ class FinalBoss(Enemy):
             self.shooting = False
             self.delay()
 
-        print(self.move_counter)
-
         self.move()
 
     def die(self):
+        if self.move_counter == 0: return
+
         self.health -= 1
         self.move_counter = 0
         self.x_vel *= 2
         self.rest_time = 0
         self.on_move = True
         self.move_range = INITIAL_RANGE
-
+        
         if self.health == 0:
             super().die()
 
@@ -100,6 +103,7 @@ class BossGun(pg.sprite.Sprite):
         self.player = player
         self.shots = shots
         self.explosion = explosion
+        self.collision = False
 
         self.aim_vector = (pg.math.Vector2(self.holder.rect.center) - pg.math.Vector2(self.player.rect.center)).normalize()
         self.still_vector = pg.math.Vector2(1, 0)
