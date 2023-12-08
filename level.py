@@ -17,7 +17,9 @@ class Level:
         self.world_shift = 0
         self.player = player
         self.player_group = pygame.sprite.Group(self.player)
-        
+
+        self.fonte = pygame.font.Font(None, 36)
+
         # terrain setup
         terrain_layout = import_csv_layout(f'{level_path}/terrain.csv')
         self.terrain_position = self.create_terrain(terrain_layout, 'terrain')
@@ -83,12 +85,18 @@ class Level:
         self.player.update(self.terrain_position, self.world_shift)
         self.bullet_group.update(self.player, self.world_shift)
 
+    def _draw_coin_text(self):
+        texto = self.fonte.render(f"Coins: {self.player.coin_count}", True, "#f0f8ff")
+        text_rect = texto.get_rect(topleft=(10, 10))
+        self.display_surface.blit(texto, text_rect)
+
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
         self.enemy_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
         self.bullet_group.draw(self.display_surface)
+        self._draw_coin_text()
 
     def run(self):
         self.draw_elements()
