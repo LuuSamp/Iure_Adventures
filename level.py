@@ -76,7 +76,6 @@ class Level:
             self.world_shift = -5
 
     def update_elements(self):
-        self._update_world_shift()
         self.terrain_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
@@ -93,6 +92,7 @@ class Level:
 
     def run(self):
         self.draw_elements()
+        self._update_world_shift()
         self.update_elements()
 
 
@@ -102,3 +102,4 @@ class BossLevel(Level):
 
     def run(self):
         self.draw_elements()
+        self.update_elements()
