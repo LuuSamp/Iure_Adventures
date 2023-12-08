@@ -2,7 +2,7 @@ import pygame as pg
 from player import Player
 from const import *
 from entity import Entity
-import time
+from os import path
 
 class Rect(pg.sprite.Sprite):
     """
@@ -163,6 +163,7 @@ class CoinSquare(StaticSquare):
     def __init__(self, x: int, y: int, size: int, image_path: str, player: Player) -> None:
         super().__init__(x, y, size, image_path)
         self._player = player
+        self._coin_sound = pg.mixer.Sound(path.join(self._player.sound_dir, "coin_sound.mp3"))
 
     def _player_collision(self) -> bool:
         return pg.sprite.collide_rect(self, self._player)
@@ -170,6 +171,7 @@ class CoinSquare(StaticSquare):
     def __coin_catch(self) -> None:
         self._player.add_coin()
         self.kill()
+        self._coin_sound.play()
 
     def update(self, shift: int) -> None:
         self.rect.x += shift
