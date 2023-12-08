@@ -34,8 +34,32 @@ class FinalBoss(Enemy):
 
         self.shooting = True
 
+        self.sel_frame = 0
+        self.frames = [[pg.image.load(path.join(self.image_dir, "final_boss_2.png")), pg.image.load(path.join(self.image_dir, "final_boss_5.png"))],
+                       [pg.image.load(path.join(self.image_dir, "final_boss_1.png")), pg.image.load(path.join(self.image_dir, "final_boss_4.png"))],
+                       [pg.image.load(path.join(self.image_dir, "final_boss_0.png")), pg.image.load(path.join(self.image_dir, "final_boss_3.png"))]
+        ]
+
+        self.animation_counter = 0
+        self.animation_delay = 10
+
     def animation(self) -> None:
-        pass
+        if self.animation_counter >= self.animation_delay/(self.x_vel + 1) and self.is_alive == True and self.on_move == True:
+
+            if self.sel_frame == 0:
+                self.image = pg.transform.scale(self.frames[self.health - 1][self.sel_frame], (64, 128))
+                self.sel_frame = 1
+
+            elif self.sel_frame == 1:
+                self.image = pg.transform.scale(self.frames[self.health - 1][self.sel_frame], (64, 128))
+                self.sel_frame = 0
+
+            if self.facing == -1:
+                self.image = pg.transform.flip(self.image, True, False)
+
+            self.animation_counter = 0
+        self.animation_counter += 1
+        
 
     def move(self) -> None:
         """
@@ -68,12 +92,14 @@ class FinalBoss(Enemy):
         if self.rect.left > self.initial_pos + self.move_range and self.on_move and self.shooting:
             self.facing = -1
             self.move_counter += 1
+            self.image = pg.transform.flip(self.image, True, False)
             self.x_vel = ENTITY_X_VEL
             self.gun.shot()
 
         elif self.rect.left < self.initial_pos - self.move_range and self.on_move and self.shooting:
             self.facing = 1
             self.move_counter += 1
+            self.image = pg.transform.flip(self.image, True, False)
             self.x_vel = ENTITY_X_VEL
             self.gun.shot()
 
@@ -86,6 +112,7 @@ class FinalBoss(Enemy):
             self.delay()
 
         self.move()
+        self.animation()
 
     def die(self):
         if self.move_counter == 0: return
@@ -118,6 +145,12 @@ class BossGun(pg.sprite.Sprite):
         self.image_dir = path.join(media_dir, "final_boss", "gun")
         initial_image = path.join(self.image_dir, "boss_gun_0.png")
 
+        self.frames = [
+            pg.image.load(path.join(self.image_dir, "boss_gun_2.png")),
+            pg.image.load(path.join(self.image_dir, "boss_gun_1.png")),
+            pg.image.load(path.join(self.image_dir, "boss_gun_0.png"))
+        ]
+
         self.initial_image = pg.transform.scale(pg.image.load(initial_image), (32, 120))
         self.position_on_holder = (self.holder.rect.left + 4 * 4, self.holder.rect.top + 15 * 4)
 
@@ -131,12 +164,24 @@ class BossGun(pg.sprite.Sprite):
         if self.player.alive():
             self.shots.add(BossShot((self.rect.center[0], self.rect.center[1]), self.player, self.aim_vector, self.explosion))
 
+    def update_image(self) -> None:
+        """
+        """
+        if self.holder.health == 0:
+            self.initial_image = pg.transform.scale(self.frames[self.holder.health ], (32, 120))
+        else:
+            self.initial_image = pg.transform.scale(self.frames[self.holder.health - 1], (32, 120))
+
+
 
     def update(self, *args):
-
+        self.update_image()
         self.aim_vector = (pg.math.Vector2(self.holder.rect.center) - pg.math.Vector2(self.player.rect.center)).normalize()
         self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
         self.image = pg.transform.rotate(self.initial_image, -self.angle_to_player)
         self.rect = self.image.get_rect()
-        self.position_on_holder = (self.holder.rect.left + 4 * 4, self.holder.rect.top + 14 * 4 - 1)
+        if self.holder.facing == 1:
+            self.position_on_holder = (self.holder.rect.left + 4 * 4, self.holder.rect.top + 14 * 4 - 1)
+        else:
+            self.position_on_holder = (self.holder.rect.right - 4 * 4, self.holder.rect.top + 14 * 4 - 1)
         self.rect.center = self.position_on_holder
