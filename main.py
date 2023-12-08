@@ -4,13 +4,13 @@ from menu import *
 from level import Level
 from player import Player
 from input_handler import InputHandler
+from const import *
 
 pygame.init()
 
 # pygame setup
-square_size = 64
-screen_width = 1200
-screen_height = 11 * square_size
+screen_width = SCREEN_WIDTH
+screen_height = SCREEN_HEIGHT
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 
@@ -23,7 +23,7 @@ play_img = pygame.image.load("media/button_images/play.png")
 exit_img = pygame.image.load("media/button_images/quit.png")
 play_button = Button(400, 200, play_img, 0.8)
 exit_button = Button(400, 400, exit_img, 0.8)
-player = Player((70, 0))
+player = Player((200, 0))
 level = Level(screen, player)
 input_handler = InputHandler(player)
 
@@ -51,8 +51,8 @@ while is_running:
 
     pygame.display.update()
 
-    clock.tick(60)
-
+    clock.tick(FPS)
 
 pygame.quit()
 sys.exit()
+    

@@ -35,6 +35,7 @@ class Player(Entity):
         self.jump_frame = pg.image.load(path.join(self.image_dir, "jump", "player_jumping.png"))
 
         self.x_vel = PLAYER_X_VEL
+        self.jump_height = PLAYER_Y_VEL
         self.current_frame = 0
         self.animation_delay = 2
         self.animation_counter = 0
