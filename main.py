@@ -1,25 +1,25 @@
 import pygame
 import sys
-from level import Level
+from level import Level, BossLevel
+from player import Player
+from input_handler import InputHandler
+from const import *
 
-square_size = 64
-screen_width = 1200
-screen_height = 11 * square_size
+screen_width = SCREEN_WIDTH
+screen_height = SCREEN_HEIGHT
 
 # Pygame setup
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
-level = Level(screen)
-
+player = Player((200, 500))
+level = Level(screen, player)
+input_handler = InputHandler(player)
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+    input_handler.update()
     
     screen.fill('black')
     level.run()
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(FPS)
