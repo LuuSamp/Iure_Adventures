@@ -80,7 +80,7 @@ class Enemy(Entity):
         """
 
         #configuração e ativação do som
-        self.sound.set_volume(0.2)
+        self.sound.set_volume(0.1)
         self.sound.play()
 
     def die(self) -> None:

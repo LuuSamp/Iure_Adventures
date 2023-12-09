@@ -140,7 +140,7 @@ class BossShot(pg.sprite.Sprite):
         self.explosion = explosion
 
         #criação do atributo de som 
-        self.sound = pg.mixer.Sound("media\sounds\shooting-sound-fx-159024.mp3")
+        self.sound = pg.mixer.Sound(path.join(current_dir, "media/sounds/blaster-multiple-14893 (mp3cut.net).mp3"))
         self.sound.play()
 
     def move(self) -> None:
@@ -204,6 +204,10 @@ class Explosion(pg.sprite.Sprite):
                        pg.image.load(path.join(media_dir, "explosion_images/S_4.png"))]
         
         self.explosion_counter = 0
+
+        self.sound = pg.mixer.Sound(path.join(current_dir, "media\sounds\mixkit-arcade-game-explosion-2759.mp3"))
+        self.sound.set_volume(2)
+        self.sound.play()
 
     def animation(self):
         """
