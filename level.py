@@ -50,6 +50,10 @@ class Level:
         self.level_completed = False
         self.end_timer = 0
 
+        self.winning_song = pygame.mixer.Sound('./media/sounds/level_completed.mp3')
+        self.winning_song.set_volume(0.3)
+
+
     def reset(self):
         self.__init__(self.display_surface, self.player, self.level_path)
 
@@ -110,23 +114,21 @@ class Level:
     
     def _update_world_shift(self):
         player_pos = self.player.rect.left
-        if player_pos < 100 and self.first_x < 0:
+        if player_pos < SCREEN_WIDTH/2 - 50 and self.first_x < 0:
             self.world_shift = 5
-        elif player_pos > 400 and self.last_x > SCREEN_WIDTH:
+        elif player_pos > SCREEN_WIDTH/2 + 50 and self.last_x > SCREEN_WIDTH:
             self.world_shift = -5
         else:
             self.world_shift = 0
         
         self.first_x += self.world_shift
         self.last_x += self.world_shift
-        # print("First", self.first_x)
-        # print("Last", self.last_x)
 
     def update_elements(self):
         if not self.player.alive(): 
             self.player.reset()
             self.reset()
-            
+
         self.terrain_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
@@ -165,10 +167,7 @@ class Level:
         return state
     
     def _play_winning_song(self):
-        pygame.mixer.init()
-        pygame.mixer.music.load('./media/sounds/level_completed.mp3')
-        pygame.mixer.music.set_volume(0.4)
-        pygame.mixer.music.play()
+        self.winning_song.play()
 
     def _game_finishing(self):
         self._play_winning_song()
@@ -190,6 +189,8 @@ class Level:
 
         fade_image.set_alpha(fade_alpha)
         self.display_surface.blit(fade_image, fade)
+
+
 
     def run(self):
         if not self._check_game_completed():

@@ -40,6 +40,8 @@ class Player(Entity):
         self.animation_delay = 2
         self.animation_counter = 0
         self._coin_count = 0
+        self.jump_sound = pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3"))
+        self.jump_sound.set_volume(0.2)
 
     def reset(self):
         self.__init__()
@@ -103,7 +105,8 @@ class Player(Entity):
         """
         if self.on_ground:
             self.direction.y = self.jump_height
-            pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3")).play()
+            self.jump_sound.play()
+
 
     def collide_with_enemy(self, enemy_group: pg.sprite.Group):
         """
