@@ -144,7 +144,3 @@ class Level:
 class BossLevel(Level):
     def __init__(self, surface, player: Player, level_path='boss_level'):
         super().__init__(surface, player, level_path)
-
-    def run(self):
-        self.draw_elements()
-        self.update_elements()
