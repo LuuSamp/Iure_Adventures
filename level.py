@@ -63,7 +63,7 @@ class Level:
                     elif type == 'coins':
                         square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
                     elif type == 'door':
-                        square = LevelDoor(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
+                        square = LevelDoor(x, y, SQUARE_SIZE * 2, './imagens/coin.png', self.player)
                         self.doors.append(square)
 
                     squares.add(square)
