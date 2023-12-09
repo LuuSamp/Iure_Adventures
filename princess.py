@@ -27,12 +27,12 @@ class PrincessPinho(pg.sprite.Sprite):
                         pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_5.png")),
                         pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_6.png"))],
 
-                       [pg.image.load(path.join(self.princess_dir, "livre/pinho_solto0.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_solto1.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_solto2.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_solto3.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_solto4.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_solto5.png"))],
+                       [pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz0.png")),
+                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz1.png")),
+                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz0.png")),
+                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz1.png")),
+                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz0.png")),
+                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz1.png"))],
                         
                         [pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_7.png")),
                          pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_8.png")),
@@ -41,7 +41,7 @@ class PrincessPinho(pg.sprite.Sprite):
         
         self.animation_counter = 0
         self.animation_delay = 120
-        self.animation_list = 0
+        self.animation_list = 1
 
         self.image = pg.Surface((100, 100))
         self.rect = self.image.get_rect(center=position)
@@ -86,8 +86,7 @@ class PrincessPinho(pg.sprite.Sprite):
 
             self.animation_counter += 1
         
-
-    def update(self, nada) -> None:
+    def update(self) -> None:
         """
         método de atualizações
         """
