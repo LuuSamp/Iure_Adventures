@@ -29,7 +29,8 @@ class Enemy(Entity):
         self.x_vel = VEL_ENEMY_DEFAULT
 
         #som padrão
-        self.sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/monster-death-grunt-131480.mp3"))
+        self.death_sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/pixel-death-66829.mp3"))
+        self.death_sound.set_volume(0.5)
 
         #atributos de animação
         self.walk_frames = [
@@ -89,8 +90,7 @@ class Enemy(Entity):
         """
 
         #configuração do som de "morte"
-        self.sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/pixel-death-66829.mp3"))
-        self.sound.play()
+        self.death_sound.play()
 
         super().die()
 
@@ -109,10 +109,8 @@ class Enemy(Entity):
         #movimento contínuo do inimigo delimitado por uma range
         if self.rect.right > self.initial_pos + RANGE_ENEMY_DEFAULT:
             self.facing = -1
-            self.natural_sound()
         elif self.rect.left < self.initial_pos - RANGE_ENEMY_DEFAULT:
             self.facing = 1
-            self.natural_sound()
 
         #moviemnto e animação
         self.move()
@@ -148,12 +146,12 @@ class EnemyShooter(Enemy):
         self.shot_delay = 40
 
         self.walk_frames = [
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter0.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter1.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter2.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter3.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter4.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter5.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter0.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter1.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter2.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter3.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter4.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter5.png")),
         ]
 
     def move(self) -> None:
@@ -202,7 +200,7 @@ class EnemyShooter(Enemy):
 
         #modelagem das animações (caso esteja morto)
         else:
-            death_image = pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter6.png"))
+            death_image = pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter6.png"))
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
 
         self.image = frame

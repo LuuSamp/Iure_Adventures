@@ -11,7 +11,7 @@ class Player(Entity):
     Recebe herança da classe Entity e usa seus métodos padrões.
     """
 
-    def __init__(self, position: Tuple[int]):
+    def __init__(self, position: Tuple[int] = (0,0)):
         """
         Inicializa o objeto Player. Carrega as imagens do jogador.
 
@@ -40,6 +40,11 @@ class Player(Entity):
         self.animation_delay = 2
         self.animation_counter = 0
         self._coin_count = 0
+        self.jump_sound = pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3"))
+        self.jump_sound.set_volume(0.2)
+
+    def reset(self):
+        self.__init__()
 
     @property
     def coin_count(self) -> int:
@@ -83,14 +88,14 @@ class Player(Entity):
 
         self.image = frame
 
-    def move(self, direction: int):
+    def move(self, direction: int = 0):
         """
         Move o Player na direção dada.
 
         Args:
             direction (int): A direção do movimento (-1 para esquerda, 1 para direita).
         """
-        self.direction.x += self.x_vel * direction
+        self.direction.x = self.x_vel * direction
         if self.direction.x != 0:
             self.facing = direction
 
@@ -100,7 +105,8 @@ class Player(Entity):
         """
         if self.on_ground:
             self.direction.y = self.jump_height
-            pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3")).play()
+            self.jump_sound.play()
+
 
     def collide_with_enemy(self, enemy_group: pg.sprite.Group):
         """
@@ -133,6 +139,7 @@ class Player(Entity):
         super().update(square_group, offset)
         self.rect.x += self.direction.x
         self.animation()
+        self.move()
 
     def die(self):
         """
