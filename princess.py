@@ -68,9 +68,16 @@ class PrincessPinho(pg.sprite.Sprite):
 
 class Smoke(pg.sprite.Sprite):
     """
+    classe para modelar o comportamento da fumaça
     """
     def __init__(self, position:tuple) -> None:
         """
+        método de inicialização da fumaça
+
+        Parâmetros
+            position:
+                type: tuple
+                description: posição onde vai ser criada a fumaça
         """
 
         super().__init__()
@@ -89,8 +96,9 @@ class Smoke(pg.sprite.Sprite):
         
         self.smoke_counter = 40
 
-    def animation(self):
+    def animation(self) -> None:
         """
+        método para modelar a animação da fumaça
         """
 
         if self.smoke_counter < 8:
@@ -109,5 +117,9 @@ class Smoke(pg.sprite.Sprite):
         except:
             return
         
-    def update(self):
+    def update(self) -> None:
+        """
+        método de atualização
+        """
+
         self.animation()
