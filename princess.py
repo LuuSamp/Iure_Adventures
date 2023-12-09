@@ -1,5 +1,4 @@
 import pygame as pg
-from pygame.sprite import _Group
 from final_boss import FinalBoss
 from os import path
 
