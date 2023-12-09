@@ -59,7 +59,7 @@ class Level:
                     if type == 'terrain':
                         square = StaticSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg')
                     elif type == 'fall_block':
-                        square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
+                        square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco_11.png', self.player)
                     elif type == 'coins':
                         square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
                     elif type == 'door':
@@ -96,17 +96,15 @@ class Level:
     
     def _update_world_shift(self):
         player_pos = self.player.rect.left
-        if player_pos < 100 and self.first_x < 0:
+        if player_pos < SCREEN_WIDTH/2 - 50 and self.first_x < 0:
             self.world_shift = 5
-        elif player_pos > 400 and self.last_x > SCREEN_WIDTH:
+        elif player_pos > SCREEN_WIDTH/2 + 50 and self.last_x > SCREEN_WIDTH:
             self.world_shift = -5
         else:
             self.world_shift = 0
         
         self.first_x += self.world_shift
         self.last_x += self.world_shift
-        # print("First", self.first_x)
-        # print("Last", self.last_x)
 
     def update_elements(self):
         self.terrain_position.update(self.world_shift)
