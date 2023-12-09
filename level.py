@@ -64,9 +64,12 @@ class Level:
                     y = row_index * SQUARE_SIZE
 
                     if type == 'terrain':
-                        square = StaticSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg')
+                        try:
+                            square = StaticSquare(x, y, SQUARE_SIZE, f'./media/blocos/bloco__{val}.png')
+                        except:
+                            square = StaticSquare(x, y, SQUARE_SIZE, './media/blocos/bloco__0.png')
                     elif type == 'fall_block':
-                        square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco_11.png', self.player)
+                        square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
                     elif type == 'coins':
                         square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
                     elif type == 'door':
@@ -107,15 +110,17 @@ class Level:
     
     def _update_world_shift(self):
         player_pos = self.player.rect.left
-        if player_pos < SCREEN_WIDTH/2 - 50 and self.first_x < 0:
+        if player_pos < 100 and self.first_x < 0:
             self.world_shift = 5
-        elif player_pos > SCREEN_WIDTH/2 + 50 and self.last_x > SCREEN_WIDTH:
+        elif player_pos > 400 and self.last_x > SCREEN_WIDTH:
             self.world_shift = -5
         else:
             self.world_shift = 0
         
         self.first_x += self.world_shift
         self.last_x += self.world_shift
+        # print("First", self.first_x)
+        # print("Last", self.last_x)
 
     def update_elements(self):
         if not self.player.alive(): 
@@ -158,14 +163,20 @@ class Level:
                 state = True
 
         return state
+    
+    def _play_winning_song(self):
+        pygame.mixer.init()
+        pygame.mixer.music.load('./media/sounds/level_completed.mp3')
+        pygame.mixer.music.set_volume(0.4)
+        pygame.mixer.music.play()
 
     def _game_finishing(self):
+        self._play_winning_song()
         self.draw_elements()
-        pygame.mixer.Sound('./media/sounds/level_completed.mp3').play()
-        self._fill_screen(0.8)
+        self._fill_screen(0.3)
         self.end_timer += 1
 
-        if self.end_timer >= FPS * 3:
+        if self.end_timer >= FPS * 1.5:
             self.level_completed = True
 
     def _fill_screen(self, timer_factor, reverse=False):
@@ -204,11 +215,12 @@ class BossLevel(Level):
     def init_run(self):
         self.initial_timer += 1
         self.draw_elements()
-        self._start_screen(0.7)
+        self._start_screen(0.3)
 
     def run(self):
-        if self.initial_timer >= FPS * 3:
+        if self.initial_timer >= FPS:
             self.game_run()
         else:
             self.init_run()
+            self.initialized = True
 
