@@ -8,6 +8,7 @@ from menu import Menu
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.display.set_caption('Iure Adventures')
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.player = Player((0,0))
