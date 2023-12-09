@@ -145,10 +145,10 @@ class Level:
     def _game_finishing(self):
         self.draw_elements()
         pygame.mixer.Sound('./media/sounds/level_completed.mp3').play()
-        self._fill_screen(1.2)
+        self._fill_screen(0.8)
         self.end_timer += 1
 
-        if self.end_timer >= FPS * 6:
+        if self.end_timer >= FPS * 3:
             self.level_completed = True
 
     def _fill_screen(self, timer_factor, reverse=False):
