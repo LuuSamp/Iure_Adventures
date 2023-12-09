@@ -12,7 +12,7 @@ class Game:
         self.player = Player((0,0))
         self.input_handler = InputHandler(self.player)
         self.levels = [self.load_level()]
-        self.coins = []
+        self.coins = 0
         self.current_level = 0
     
     def load_level(self):
