@@ -11,7 +11,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.player = Player((0,0))
         self.input_handler = InputHandler(self.player)
-        self.levels = [self.load_level(), BossLevel(self.screen, self.player)]
+        self.levels = [BossLevel(self.screen, self.player)]
         self.coins = 0
         self.current_level = 0
         self.game_state = "playing"
