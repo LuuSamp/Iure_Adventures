@@ -11,10 +11,12 @@ class Button:
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
+        self.mouse_pos = pygame.mouse.get_pos()
 
     def draw_button(self, surface):
         action = False
         mouse_pos = pygame.mouse.get_pos()
+
 
         if self.rect.collidepoint(mouse_pos):
             
@@ -29,7 +31,6 @@ class Button:
             surface.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
-    
 
 class Menu:
     def __init__(self, surface):
@@ -41,13 +42,14 @@ class Menu:
         self.quit_clicked_img = pygame.image.load("media/button_images/quit_clicked.png")
         self.play_button = Button(400, 200, self.play_img, self.play_clicked_img, 0.8)
         self.quit_button = Button(400, 400, self.quit_img, self.quit_clicked_img, 0.8)
+        self.game_state = "menu"
 
     def run(self):
         self.display_surface.fill("black") # cria o background
-        #self.display_surface.blit(self.background, (0, 0))
+        self.game_state = "menu"
 
         if self.play_button.draw_button(self.display_surface):
-            screens.play()
+            self.game_state = "playing"
 
         if self.quit_button.draw_button(self.display_surface):
             pygame.quit()

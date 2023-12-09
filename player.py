@@ -39,6 +39,18 @@ class Player(Entity):
         self.current_frame = 0
         self.animation_delay = 2
         self.animation_counter = 0
+        self._coin_count = 0
+
+    @property
+    def coin_count(self) -> int:
+        return self._coin_count
+    
+    @coin_count.setter
+    def coin_count(self, new_coin_count) -> None:
+        self._coin_count = new_coin_count
+    
+    def add_coin(self) -> None:
+        self.coin_count += 1
 
     def animation(self):
         """

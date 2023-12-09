@@ -2,7 +2,7 @@ import pygame as pg
 from player import Player
 from const import *
 from entity import Entity
-import time
+from os import path
 
 class Rect(pg.sprite.Sprite):
     """
@@ -102,12 +102,12 @@ class ColisionSquare(StaticSquare):
             jogador com que as colisões ocorrerão
         """
         super().__init__(x, y, size, image_path)
-        self.player = player
+        self._player = player
         self.speed_y = 0
         self.gravity = GRAVITY
         self.collision = True
         self.init_y = y
-        self.cooldown = 0
+        self.__cooldown = 0
 
     def _player_collision(self) -> bool:
         """ Verifica se houve colisão entre o jogador e o objeto
@@ -119,12 +119,12 @@ class ColisionSquare(StaticSquare):
         """
         if self.collision == False:
             return False
-        elif self.player.rect.right >= self.rect.left and self.player.rect.left <= self.rect.right and self.player.rect.bottom == self.rect.top:
+        elif self._player.rect.right >= self.rect.left and self._player.rect.left <= self.rect.right and self._player.rect.bottom == self.rect.top:
             return True
         else:
             return False
 
-    def fall(self) -> None:
+    def __fall(self) -> None:
         """Faz com que o objeto caia quando desejado.
         """
         self.speed_y = 4
@@ -147,14 +147,111 @@ class ColisionSquare(StaticSquare):
         self.rect.x += shift
 
         if self._player_collision() == True:
-            self.cooldown += 1
-        elif self.cooldown > 0:
-            self.cooldown += 1
+            self.__cooldown += 1
+        elif self.__cooldown > 0:
+            self.__cooldown += 1
 
-        if self.cooldown >= FPS * 5:
-            self.cooldown = 0
+        if self.__cooldown >= FPS * 5:
+            self.__cooldown = 0
             self._reset_block()
             self.collision = True
-        elif self.cooldown >= FPS * 2:
-            self.fall()
+        elif self.__cooldown >= FPS * 2:
+            self.__fall()
+
+
+class CoinSquare(StaticSquare):
+    """
+    Objeto de cenário que, ao entrar em contato com o jogador, irá desaparecer e aumentará a
+    contagem de moedas coletadas do jogador.
+
+    """
+    def __init__(self, x: int, y: int, size: int, image_path: str, player: Player) -> None:
+        """Inicializa a moeda do jogo
+
+        Parameters
+        ----------
+        x : int
+            posição em relação ao eixo x
+        y : int
+            posição em relação ao eixo y
+        size : int
+            lado do retângulo
+        image_path : str
+            caminho onde a imagem do objeto se localiza
+        player : Player
+            jogador com que as colisões ocorrerão
+        """
+        super().__init__(x, y, size, image_path)
+        self._player = player
+        self.__coin_sound = pg.mixer.Sound(path.join(self._player.sound_dir, "coin_sound.mp3"))
+
+    def _player_collision(self) -> bool:
+        """Verifica se houve colisão entre o objeto e o player
+
+        Returns
+        -------
+        bool
+            True caso sim e False caso não
+        """
+        return pg.sprite.collide_rect(self, self._player)
+    
+    def __coin_catch(self) -> None:
+        """O Player aumenta em um sua contagem de moedas, o objeto é excluído e há som sonoro confirmando o evento
+        """
+        self._player.add_coin()
+        self.kill()
+        self.__coin_sound.play()
+
+    def update(self, shift: int) -> None:
+        """Verifica se houve colisão e inicia o coin_catch caso sim
+
+        Parameters
+        ----------
+        shift : int
+            o deslocamento horizontal do player
+        """
+        self.rect.x += shift
+
+        if self._player_collision():
+            self.__coin_catch()
+
+
+class LevelDoor(CoinSquare):
+    """
+    Objeto de cenário que, ao entrar em contato com o jogador, irá passar para uma nova fase
+    do jogo.
+
+    """
+    def __init__(self, x: int, y: int, size: int, image_path: str, player: Player) -> None:
+        """Inicializa a porta de mudança de nível
+
+        Parameters
+        ----------
+        x : int
+            posição em relação ao eixo x
+        y : int
+            posição em relação ao eixo y
+        size : int
+            lado do retângulo
+        image_path : str
+            caminho onde a imagem do objeto se localiza
+        player : Player
+            jogador com que as colisões ocorrerão
+        """
+        super().__init__(x, y, size, image_path, player)
+        self.level_completed = False
+
+    def update(self, shift: int) -> None:
+        """Verifica se o player entrou em contato com a porta, caso sim,
+        o atributo level_completed será True.
+
+        Parameters
+        ----------
+        shift : int
+            o deslocamento horizontal do player
+        """
+        self.rect.x += shift
+
+        if self._player_collision():
+            self.level_completed = True
 
