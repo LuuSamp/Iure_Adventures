@@ -94,10 +94,26 @@ class Shot(pg.sprite.Sprite):
 
 class BossShot(pg.sprite.Sprite):
     """
+    classe criada para modelar o comportamento do projétil do boss final
     """
 
-    def __init__(self, position:tuple, player:Player, vector_player:pg.math.Vector2, explosion:pg.sprite.Group) -> None:
+    def __init__(self, position:tuple, vector_player:pg.math.Vector2, explosion:pg.sprite.Group) -> None:
         """
+        método de inicialização
+
+        Parâmetros:
+            position
+                type: tuple
+                description: posição onde o projétil é inicialmente criado 
+
+            vector_player
+                type: pg.math.Vector2
+                description: vetor com a direção do player
+                                
+            explosion
+                type: pg.sprite.Group
+                description: grupo de explosões que vão ser geradas quando houver colisão entre o player e o projétil 
+                
         """
 
         super().__init__()
@@ -113,33 +129,36 @@ class BossShot(pg.sprite.Sprite):
         self.image = pg.transform.scale(pg.image.load("media/fireball0.png"), (30, 30))
         self.rect = self.image.get_rect(topleft=position)
         self.explosion = explosion
+
+        #criação do atributo de som 
         self.sound = pg.mixer.Sound("media\sounds\shooting-sound-fx-159024.mp3")
         self.sound.play()
 
-    def animation(self) -> None:
-        """
-        """
-
     def move(self) -> None:
         """
+        método que modela o movimento do projétil com base do vetor com a direção do player
         """
         self.rect.x -= (self.vector_player.x) * (self.shot_vel)
         self.rect.y -= (self.vector_player.y) * (self.shot_vel)
 
     def collide_with_player(self, player:Player) -> None:
         """
+        método que verifica a colisão entre o player e o projétil
         """
         #verifica se houve colisão e mata o player
         if pg.sprite.collide_rect(self, player):
+            #caso tenha acertado o player, cria um explosão
             self.explosion.add(Explosion((self.rect.center[0], self.rect.center[1])))
             player.die()
             self.kill()
 
     def update(self, player:Player, offset:int) -> None:
         """
+        método de atualização
         """
         self.rect.x += offset
 
+        #caso o projétil saia da tela ele é removido do grupo dele
         if self.rect.x < 0 or self.rect.x > SCREEN_WIDTH or self.rect.y < 0 or self.rect.y > SCREEN_HEIGHT:
             self.kill()
 
