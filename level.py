@@ -115,11 +115,18 @@ class Level:
         # print("First", self.first_x)
         # print("Last", self.last_x)
 
+    def _play_background_music(self):
+        pygame.mixer.init()
+        pygame.mixer.music.load('./media/sounds/background_music.mp3')
+        pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.play(-1)
+
     def update_elements(self):
         if not self.player.alive(): 
             self.player.reset()
             self.reset()
-            
+
+        self._play_background_music()
         self.terrain_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
@@ -181,6 +188,8 @@ class Level:
 
         fade_image.set_alpha(fade_alpha)
         self.display_surface.blit(fade_image, fade)
+
+
 
     def run(self):
         if not self._check_game_completed():

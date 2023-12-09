@@ -184,6 +184,7 @@ class CoinSquare(StaticSquare):
         super().__init__(x, y, size, image_path)
         self._player = player
         self.__coin_sound = pg.mixer.Sound(path.join(self._player.sound_dir, "coin_sound.mp3"))
+        self.__coin_sound.set_volume(0.2)
 
     def _player_collision(self) -> bool:
         """Verifica se houve colisão entre o objeto e o player
