@@ -28,9 +28,6 @@ class Enemy(Entity):
         self.initial_pos = self.rect.left
         self.x_vel = VEL_ENEMY_DEFAULT
 
-        #som padrão
-        self.sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/monster-death-grunt-131480.mp3"))
-
         #atributos de animação
         self.walk_frames = [
             pg.image.load(path.join(self.media_dir, "enemy_images/enemy0.png")),
@@ -74,14 +71,6 @@ class Enemy(Entity):
         self.direction.x = self.x_vel*self.facing
         self.rect.x += self.direction.x
 
-    def natural_sound(self) -> None:
-        """
-        modelagem do som padrão dos inimigos simples
-        """
-
-        #configuração e ativação do som
-        self.sound.set_volume(0.1)
-        self.sound.play()
 
     def die(self) -> None:
         """
@@ -109,10 +98,8 @@ class Enemy(Entity):
         #movimento contínuo do inimigo delimitado por uma range
         if self.rect.right > self.initial_pos + RANGE_ENEMY_DEFAULT:
             self.facing = -1
-            self.natural_sound()
         elif self.rect.left < self.initial_pos - RANGE_ENEMY_DEFAULT:
             self.facing = 1
-            self.natural_sound()
 
         #moviemnto e animação
         self.move()
