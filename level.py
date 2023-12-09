@@ -1,6 +1,6 @@
 import pygame
 from layout import import_csv_layout
-from quadrado import StaticSquare, ColisionSquare, CoinSquare
+from quadrado import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
 from player import Player
 from enemy import Enemy, EnemyShooter
 from const import *
@@ -36,8 +36,11 @@ class Level:
         self.first_x = 0
         self.last_x = SQUARE_SIZE * len(terrain_layout[0])
 
+        self.level_completed = False
+
     def create_terrain(self, layout, type):
         squares = pygame.sprite.Group()
+        self.doors = list()
 
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
@@ -51,6 +54,9 @@ class Level:
                         square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
                     elif type == 'coins':
                         square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
+                    elif type == 'door':
+                        square = LevelDoor(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
+                        self.doors.append(square)
 
                     squares.add(square)
 
@@ -82,8 +88,8 @@ class Level:
         
         self.first_x += self.world_shift
         self.last_x += self.world_shift
-        print("First", self.first_x)
-        print("Last", self.last_x)
+        # print("First", self.first_x)
+        # print("Last", self.last_x)
 
     def update_elements(self):
         self.terrain_position.update(self.world_shift)
@@ -110,6 +116,10 @@ class Level:
         self.draw_elements()
         self._update_world_shift()
         self.update_elements()
+
+        for level_door in self.doors:
+            if level_door.level_completed:
+                self.level_completed = True
 
 
 class BossLevel(Level):

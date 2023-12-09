@@ -183,7 +183,7 @@ class CoinSquare(StaticSquare):
         """
         super().__init__(x, y, size, image_path)
         self._player = player
-        self._coin_sound = pg.mixer.Sound(path.join(self._player.sound_dir, "coin_sound.mp3"))
+        self.__coin_sound = pg.mixer.Sound(path.join(self._player.sound_dir, "coin_sound.mp3"))
 
     def _player_collision(self) -> bool:
         """Verifica se houve colisão entre o objeto e o player
@@ -200,7 +200,7 @@ class CoinSquare(StaticSquare):
         """
         self._player.add_coin()
         self.kill()
-        self._coin_sound.play()
+        self.__coin_sound.play()
 
     def update(self, shift: int) -> None:
         """Verifica se houve colisão e inicia o coin_catch caso sim
@@ -214,4 +214,16 @@ class CoinSquare(StaticSquare):
 
         if self._player_collision():
             self.__coin_catch()
+
+
+class LevelDoor(CoinSquare):
+    def __init__(self, x: int, y: int, size: int, image_path: str, player: Player) -> None:
+        super().__init__(x, y, size, image_path, player)
+        self.level_completed = False
+
+    def update(self, shift: int) -> None:
+        self.rect.x += shift
+
+        if self._player_collision():
+            self.level_completed = True
 
