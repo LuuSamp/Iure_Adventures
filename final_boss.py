@@ -125,6 +125,7 @@ class FinalBoss(Enemy):
         if self.move_counter == 0: return
 
         self.health -= 1
+        self.shot_cooldown -= 0.5*FPS
         self.move_counter = 0
         self.x_vel *= 2
         self.rest_time = 0
