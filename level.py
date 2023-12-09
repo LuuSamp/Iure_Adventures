@@ -59,7 +59,7 @@ class Level:
                     if type == 'terrain':
                         square = StaticSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg')
                     elif type == 'fall_block':
-                        square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
+                        square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco_11.png', self.player)
                     elif type == 'coins':
                         square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
                     elif type == 'door':
