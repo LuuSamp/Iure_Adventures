@@ -148,12 +148,12 @@ class EnemyShooter(Enemy):
         self.shot_delay = 40
 
         self.walk_frames = [
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter0.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter1.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter2.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter3.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter4.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter5.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter0.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter1.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter2.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter3.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter4.png")),
+            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter5.png")),
         ]
 
     def move(self) -> None:
@@ -202,7 +202,7 @@ class EnemyShooter(Enemy):
 
         #modelagem das animações (caso esteja morto)
         else:
-            death_image = pg.image.load(path.join(self.media_dir, "enemy_shoter_images/enemy_shooter6.png"))
+            death_image = pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter6.png"))
             frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
 
         self.image = frame
