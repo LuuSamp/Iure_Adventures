@@ -26,7 +26,7 @@ class Game:
         pass
     
     def change_level(self):
-        if self.levels[self.current_level].level_completed:
+        if self.levels[self.current_level].level_completed and self.current_level < len(self.levels) - 1:
             self.current_level += 1
 
     def game_loop(self):
