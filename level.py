@@ -37,6 +37,8 @@ class Level:
         door_layout = import_csv_layout(f'{level_path}/door.csv')
         self.door_position = self.create_terrain(door_layout, 'door')
 
+        player_position = import_csv_layout(f'{level_path}/player.csv')
+        self.set_player_position(player_position)
 
         self.world_shift = 0
         self.first_x = 0
@@ -67,6 +69,15 @@ class Level:
                     squares.add(square)
 
         return squares
+
+    def set_player_position(self, layout):
+
+        for row_index, row in enumerate(layout):
+            for col_index, val in enumerate(row):
+                if val == "0":
+                    x = col_index * SQUARE_SIZE
+                    y = row_index * SQUARE_SIZE
+                    self.player.rect.center = (x, y)
 
     def create_enemies(self, layout):
         enemies = pygame.sprite.Group()
