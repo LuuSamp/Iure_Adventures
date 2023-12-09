@@ -16,6 +16,7 @@ class Level:
         self.display_surface = surface
         self.player = player
         self.player_group = pygame.sprite.Group(self.player)
+        self.level_path = level_path
 
         self.fonte = pygame.font.Font(None, 36)
 
@@ -45,6 +46,9 @@ class Level:
 
         self.level_completed = False
         self.end_timer = 0
+
+    def reset(self):
+        self.__init__(self.display_surface, self.player, self.level_path)
 
     def create_terrain(self, layout, type):
         squares = pygame.sprite.Group()
@@ -109,6 +113,10 @@ class Level:
         # print("Last", self.last_x)
 
     def update_elements(self):
+        if not self.player.alive(): 
+            self.player.reset()
+            self.reset()
+            
         self.terrain_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)

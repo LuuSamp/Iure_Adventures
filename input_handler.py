@@ -16,7 +16,14 @@ class InputHandler:
         """
         Atualiza o InputHandler
         """
+        self.handle_move_keys()
         self.check_event()
+
+    def handle_move_keys(self):
+        keys = pg.key.get_pressed()
+        
+        if keys[K_RIGHT]: self._player.move(1)
+        if keys[K_LEFT]: self._player.move(-1)
 
     def handle_event(self, event: pg.event.Event):
         """
@@ -27,12 +34,6 @@ class InputHandler:
         """
         if event.type == KEYDOWN:
             if event.key == K_UP: self._player.jump()
-            if event.key == K_LEFT: self._player.move(-1)
-            if event.key == K_RIGHT: self._player.move(1)
-        
-        if event.type == KEYUP:
-            if event.key == K_LEFT: self._player.move(1)
-            if event.key == K_RIGHT: self._player.move(-1)
 
         if event.type == QUIT: 
             pg.quit()
