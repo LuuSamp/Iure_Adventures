@@ -166,7 +166,7 @@ class CoinSquare(StaticSquare):
 
     """
     def __init__(self, x: int, y: int, size: int, image_path: str, player: Player) -> None:
-        """_summary_
+        """Inicializa a moeda do jogo
 
         Parameters
         ----------
@@ -217,11 +217,39 @@ class CoinSquare(StaticSquare):
 
 
 class LevelDoor(CoinSquare):
+    """
+    Objeto de cenário que, ao entrar em contato com o jogador, irá passar para uma nova fase
+    do jogo.
+
+    """
     def __init__(self, x: int, y: int, size: int, image_path: str, player: Player) -> None:
+        """Inicializa a porta de mudança de nível
+
+        Parameters
+        ----------
+        x : int
+            posição em relação ao eixo x
+        y : int
+            posição em relação ao eixo y
+        size : int
+            lado do retângulo
+        image_path : str
+            caminho onde a imagem do objeto se localiza
+        player : Player
+            jogador com que as colisões ocorrerão
+        """
         super().__init__(x, y, size, image_path, player)
         self.level_completed = False
 
     def update(self, shift: int) -> None:
+        """Verifica se o player entrou em contato com a porta, caso sim,
+        o atributo level_completed será True.
+
+        Parameters
+        ----------
+        shift : int
+            o deslocamento horizontal do player
+        """
         self.rect.x += shift
 
         if self._player_collision():
