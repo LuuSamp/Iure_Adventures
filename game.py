@@ -27,7 +27,9 @@ class Game:
     
     def change_level(self):
         if self.levels[self.current_level].level_completed and self.current_level < len(self.levels) - 1:
+            self.coins = self.levels[self.current_level].player.coin_count
             self.current_level += 1
+            self.levels[self.current_level].player.coin_count = self.coins
 
     def game_loop(self):
         while True:
