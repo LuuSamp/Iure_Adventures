@@ -192,18 +192,18 @@ class Level:
 class BossLevel(Level):
     def __init__(self, surface, player: Player, level_path='boss_level'):
         super().__init__(surface, player, level_path)
-        self.initial_timer = 0
-        self.boss = FinalBoss((1200,0), self.player, self.bullet_group, self.explosion_group)
+
+        self.boss = FinalBoss((1250,0), self.player, self.bullet_group, self.explosion_group)
         self.enemy_position.add(self.boss)
         self.enemy_position.add(self.boss.gun)
         self.boss.initial_pos = SCREEN_WIDTH/2
         self.boss.x_vel *= 3
         self.boss.move_range = 1200
         self.started = False
+        self.player.x_vel = 0
 
     def init_run(self):
         self.boss.facing = -1
-        self.player.update(self.terrain_position, 0)
 
         self.update_elements()
         self.boss.move_counter = 0
@@ -213,6 +213,7 @@ class BossLevel(Level):
         if self.boss.rect.x <= SCREEN_WIDTH/2: 
             self.boss.move_range = 200
             self.boss.x_vel /= 3
+            self.player.x_vel = PLAYER_X_VEL
             self.started = True
 
     def run(self):
