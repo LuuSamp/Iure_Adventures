@@ -167,9 +167,18 @@ class BossShot(pg.sprite.Sprite):
 
 class Explosion(pg.sprite.Sprite):
     """
+    classe criada para modelar o comportamento das explosões geradas a partir da colisão entre o player e o projétil
     """
 
     def __init__(self, position:tuple) -> None:
+        """
+        método de inicialização
+
+        Parâmetros:
+            position
+                type: tuple
+                description: a posição de onde ocorreu a colisão e onde a explosão deve ser gerada
+        """
         super().__init__()
 
         current_dir = path.dirname(path.abspath(__file__))
@@ -179,6 +188,7 @@ class Explosion(pg.sprite.Sprite):
         self.image.fill("blue")
         self.rect = self.image.get_rect(center=position)
 
+        #frames que compõem a explosão
         self.frames = [pg.image.load(path.join(media_dir, "explosion_images/S_1.png")),
                        pg.image.load(path.join(media_dir, "explosion_images/S_2.png")),
                        pg.image.load(path.join(media_dir, "explosion_images/S_3.png")),
@@ -188,6 +198,7 @@ class Explosion(pg.sprite.Sprite):
 
     def animation(self):
         """
+        modela a animação da explosão (vai durar cerca de meio segundo)
         """
         if self.explosion_counter < 8:
             frame = 0
@@ -206,4 +217,7 @@ class Explosion(pg.sprite.Sprite):
             return
         
     def update(self):
+        """
+        método de atualização 
+        """
         self.animation()
