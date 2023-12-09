@@ -41,7 +41,7 @@ class Game:
                 self.load_menu()
             if self.game_state =="playing":
                 self.change_level()
-                self.screen.fill('black')
+                self.screen.blit(pygame.transform.scale(pygame.image.load("media/background/background_frame.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0,0))
                 self.levels[self.current_level].run()
 
             pygame.display.update()
