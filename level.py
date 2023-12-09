@@ -13,7 +13,7 @@ from os import path
 os.chdir(os.getcwd())
 
 class Level:
-    def __init__(self, surface, player: Player, level_path='level'):
+    def __init__(self, surface, player: Player, level_path='level/level_1'):
         #setup geral
         self.display_surface = surface
         self.player = player
