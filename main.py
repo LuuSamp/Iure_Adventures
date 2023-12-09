@@ -19,7 +19,7 @@ input_handler = InputHandler(player)
 while True:
     input_handler.update()
     
-    screen.fill('black')
+    screen.blit(pygame.transform.scale(pygame.image.load("media/background/background_frame.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0,0))
     level.run()
 
     pygame.display.update()
