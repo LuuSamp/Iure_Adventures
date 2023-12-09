@@ -45,21 +45,21 @@ class PrincessPinho(pg.sprite.Sprite):
 
         self.image = pg.Surface((100, 100))
         self.rect = self.image.get_rect(center=position)
-        self.on_animation = True
+        self.animated = True
 
     def change_list(self) -> None:
         """
         método para mudar a lista de animações
         """
         self.animation_list = 2
-        self.on_animation = False
+        self.animated = False
         self.animation_counter = 0
         
     def animation(self) -> None:
         """
         método que controla as animações levando em consideração um delay
         """
-        if self.on_animation:
+        if self.animated:
             if self.animation_counter >= self.animation_delay:
                 self.animation_counter = 0
 
@@ -68,24 +68,26 @@ class PrincessPinho(pg.sprite.Sprite):
 
             self.animation_counter += 1
 
-    def animation_jail(self):
+    def animation_jail(self) -> None:
         """
         método para modelar a animação da cela caindo
         """
-        if not self.on_animation:
-            frame = self.frames[self.animation_list][self.animation_counter // 20]
-            self.image = pg.transform.scale(frame, (100, 100))
-
-            self.animation_counter += 1
-
-        if self.animation_counter >= 60:
-            self.on_animation = True
-            self.on_animation = 0
+        if not self.animated and self.animation_counter > 60:
+            self.animated = True
             self.animation_counter = 0
             self.animation_list = 1
+
+        if not self.animated:
+            try:
+                frame = self.frames[self.animation_list][self.animation_counter // 20]
+                self.image = pg.transform.scale(frame, (100, 100))
+            except:
+                pass
+
+            self.animation_counter += 1
         
 
-    def update(self) -> None:
+    def update(self, nada) -> None:
         """
         método de atualizações
         """
@@ -111,7 +113,7 @@ class Smoke(pg.sprite.Sprite):
         self.current_dir = path.dirname(path.abspath(__file__))
         self.princess_dir = path.join(self.current_dir, "media", "princess")
 
-        self.image = pg.Surface((120, 120))
+        self.image = pg.Surface((150, 150))
         self.image.fill("blue")
         self.rect = self.image.get_rect(center=position)
 
@@ -138,7 +140,7 @@ class Smoke(pg.sprite.Sprite):
         else:
             self.kill()
         try:
-            self.image = pg.transform.scale(self.frames[frame], (120, 120))
+            self.image = pg.transform.scale(self.frames[frame], (150, 150))
             self.smoke_counter += 1
         except:
             return
