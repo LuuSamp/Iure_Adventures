@@ -13,7 +13,7 @@ class Game:
         self.player = Player((0,0))
         self.main_menu = Menu(self.screen)
         self.input_handler = InputHandler(self.player)
-        self.levels = [BossLevel(self.screen, self.player)]
+        self.levels = [Level(self.screen, self.player), BossLevel(self.screen, self.player)]
         self.coins = 0
         self.current_level = 0
         self.game_state = "menu"
