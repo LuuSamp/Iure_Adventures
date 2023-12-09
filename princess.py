@@ -1,9 +1,11 @@
 import pygame as pg
+from pygame.sprite import _Group
 from final_boss import FinalBoss
 from os import path
 
 class PrincessPinho(pg.sprite.Sprite):
     """
+    classe para modelar o comportamento da princesa
     """
     def __init__(self, position:tuple) -> None:
         """
@@ -37,7 +39,7 @@ class PrincessPinho(pg.sprite.Sprite):
         self.animation_delay = 120
         self.animation_list = 0
 
-        self.image = pg.Surface((64, 64))
+        self.image = pg.Surface((100, 100))
         self.rect = self.image.get_rect(center=position)
 
     def change_list(self) -> None:
@@ -53,8 +55,8 @@ class PrincessPinho(pg.sprite.Sprite):
         if self.animation_counter >= self.animation_delay:
             self.animation_counter = 0
 
-        frame = self.frames[self.animation_list[self.animation_counter // 20]]
-        self.image = pg.transform.scale(frame, (64, 64))
+        frame = self.frames[self.animation_list][self.animation_counter // 20]
+        self.image = pg.transform.scale(frame, (100, 100))
 
         self.animation_counter += 1
 
@@ -62,4 +64,50 @@ class PrincessPinho(pg.sprite.Sprite):
         """
         método de atualizações
         """
+        self.animation()
+
+class Smoke(pg.sprite.Sprite):
+    """
+    """
+    def __init__(self, position:tuple) -> None:
+        """
+        """
+
+        super().__init__()
+        
+        self.current_dir = path.dirname(path.abspath(__file__))
+        self.princess_dir = path.join(self.current_dir, "media", "princess")
+
+        self.image = pg.Surface((120, 120))
+        self.image.fill("blue")
+        self.rect = self.image.get_rect(center=position)
+
+        self.frames = [pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png")),
+                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png")),
+                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png")),
+                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png"))]
+        
+        self.smoke_counter = 40
+
+    def animation(self):
+        """
+        """
+
+        if self.smoke_counter < 8:
+            frame = 0
+        elif self.smoke_counter < 16:
+            frame = 1
+        elif self.smoke_counter < 24:
+            frame = 2
+        elif self.smoke_counter < 32:
+            frame = 3
+        else:
+            self.kill()
+        try:
+            self.image = pg.transform.scale(self.frames[frame], (120, 120))
+            self.smoke_counter += 1
+        except:
+            return
+        
+    def update(self):
         self.animation()
