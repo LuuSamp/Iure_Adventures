@@ -1,6 +1,6 @@
 import pygame
 import sys
-from level import Level
+from level import Level, BossLevel
 from player import Player
 from input_handler import InputHandler
 from const import *
@@ -12,7 +12,7 @@ screen_height = SCREEN_HEIGHT
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
-player = Player((200, 0))
+player = Player((0, 0))
 level = Level(screen, player)
 input_handler = InputHandler(player)
 while True:
