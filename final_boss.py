@@ -238,7 +238,7 @@ class BossGun(pg.sprite.Sprite):
         """
         #caso o inimigo ainda esteja vivo, ele irá atirar na direção do player
         if self.player.alive():
-            self.shots.add(BossShot((self.rect.center[0], self.rect.center[1]), self.player, self.aim_vector, self.explosion))
+            self.shots.add(BossShot((self.rect.center[0], self.rect.center[1]), self.aim_vector, self.explosion, self.holder.health))
 
     def update_image(self) -> None:
         """
@@ -251,7 +251,7 @@ class BossGun(pg.sprite.Sprite):
 
 
 
-    def update(self) -> None:
+    def update(self, *args) -> None:
         """
         método de atualização
         """

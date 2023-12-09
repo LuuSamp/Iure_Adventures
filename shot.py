@@ -97,7 +97,7 @@ class BossShot(pg.sprite.Sprite):
     classe criada para modelar o comportamento do projétil do boss final
     """
 
-    def __init__(self, position:tuple, vector_player:pg.math.Vector2, explosion:pg.sprite.Group) -> None:
+    def __init__(self, position:tuple, vector_player:pg.math.Vector2, explosion:pg.sprite.Group, final_boss_health:int) -> None:
         """
         método de inicialização
 
@@ -113,6 +113,10 @@ class BossShot(pg.sprite.Sprite):
             explosion
                 type: pg.sprite.Group
                 description: grupo de explosões que vão ser geradas quando houver colisão entre o player e o projétil 
+
+            final_boss_health
+                type: int
+                description: vida do vião final
                 
         """
 
@@ -120,13 +124,18 @@ class BossShot(pg.sprite.Sprite):
 
         #configurando os paths
         current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "media")
+        shots_dir = path.join(current_dir, "media", "final_boss", "shots")
 
         #atributos gerais
+        self.final_boss_health = final_boss_health
         self.vector_player = vector_player
         self.shot_vel = 10
         self.image = pg.Surface((30, 30))
-        self.image = pg.transform.scale(pg.image.load("media/fireball0.png"), (30, 30))
+        self.frames = [pg.image.load(path.join(shots_dir, "shot_2.png")),
+                       pg.image.load(path.join(shots_dir, "shot_1.png")),
+                       pg.image.load(path.join(shots_dir, "shot_0.png")),]
+
+        self.image = pg.transform.scale(self.frames[self.final_boss_health - 1], (30, 30))
         self.rect = self.image.get_rect(topleft=position)
         self.explosion = explosion
 
