@@ -151,15 +151,20 @@ class Level:
                 state = True
 
         return state
+    
+    def _play_winning_song(self):
+        pygame.mixer.init()
+        pygame.mixer.music.load('./media/sounds/level_completed.mp3')
+        pygame.mixer.music.set_volume(0.4)
+        pygame.mixer.music.play()
 
     def _game_finishing(self):
+        self._play_winning_song()
         self.draw_elements()
-        if self.end_timer >= FPS:
-            pygame.mixer.Sound('./media/sounds/level_completed.mp3').play()
-        self._fill_screen(0.8)
+        self._fill_screen(0.3)
         self.end_timer += 1
 
-        if self.end_timer >= FPS * 3:
+        if self.end_timer >= FPS * 1.5:
             self.level_completed = True
 
     def _fill_screen(self, timer_factor, reverse=False):
@@ -198,11 +203,12 @@ class BossLevel(Level):
     def init_run(self):
         self.initial_timer += 1
         self.draw_elements()
-        self._start_screen(0.7)
+        self._start_screen(0.3)
 
     def run(self):
-        if self.initial_timer >= FPS * 3:
+        if self.initial_timer >= FPS:
             self.game_run()
         else:
             self.init_run()
+            self.initialized = True
 
