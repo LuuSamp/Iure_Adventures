@@ -5,6 +5,8 @@ from player import Player
 from enemy import Enemy, EnemyShooter
 from const import *
 import os
+import sys
+from final_boss import FinalBoss
 from os import path
 
 
@@ -16,6 +18,7 @@ class Level:
         self.display_surface = surface
         self.player = player
         self.player_group = pygame.sprite.Group(self.player)
+        self.level_path = level_path
 
         self.fonte = pygame.font.Font(None, 36)
 
@@ -30,8 +33,8 @@ class Level:
         # enemy 
         enemy_layout = import_csv_layout(f'{level_path}/enemies.csv')
         self.bullet_group = pygame.sprite.Group()
+        self.explosion_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
-
 
         # door
         door_layout = import_csv_layout(f'{level_path}/door.csv')
@@ -46,6 +49,9 @@ class Level:
 
         self.level_completed = False
         self.end_timer = 0
+
+    def reset(self):
+        self.__init__(self.display_surface, self.player, self.level_path)
 
     def create_terrain(self, layout, type):
         squares = pygame.sprite.Group()
@@ -92,6 +98,10 @@ class Level:
 
                 elif val == '1':
                     enemies.add(EnemyShooter((x, y), self.bullet_group))
+                
+                elif val == '2':
+                    enemies.add(FinalBoss((x, y), self.player, self.bullet_group, self.explosion_group))
+                    enemies.add(enemies.sprites()[-1].gun)
         
         return enemies
     
@@ -110,6 +120,10 @@ class Level:
         # print("Last", self.last_x)
 
     def update_elements(self):
+        if not self.player.alive(): 
+            self.player.reset()
+            self.reset()
+            
         self.terrain_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
@@ -117,6 +131,7 @@ class Level:
         self.player.collide_with_enemy(self.enemy_position)
         self.player.update(self.terrain_position, self.world_shift)
         self.bullet_group.update(self.player, self.world_shift)
+        self.explosion_group.update()
 
     def _draw_coin_text(self):
         texto = self.fonte.render(f"Coins: {self.player.coin_count}", True, "#f0f8ff")
@@ -130,6 +145,7 @@ class Level:
         self.enemy_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
         self.bullet_group.draw(self.display_surface)
+        self.explosion_group.draw(self.display_surface)
         self._draw_coin_text()
 
     def game_run(self):
@@ -148,14 +164,23 @@ class Level:
     def _game_finishing(self):
         self.draw_elements()
         pygame.mixer.Sound('./media/sounds/level_completed.mp3').play()
-        self._fill_screen()
+        self._fill_screen(0.8)
         self.end_timer += 1
-        if self.end_timer >= FPS * 9:
-            pygame.quit()
-            exit()
 
-    def _fill_screen(self, reverse=False):
-        pass
+        if self.end_timer >= FPS * 3:
+            self.level_completed = True
+
+    def _fill_screen(self, timer_factor, reverse=False):
+        fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
+        fade_image.fill("black")
+        fade = fade_image.get_rect()
+        if reverse:
+            fade_alpha = 255 - int(self.end_timer/timer_factor)
+        else:
+            fade_alpha = int(self.end_timer/timer_factor)
+
+        fade_image.set_alpha(fade_alpha)
+        self.display_surface.blit(fade_image, fade)
 
     def run(self):
         if not self._check_game_completed():
@@ -167,3 +192,25 @@ class Level:
 class BossLevel(Level):
     def __init__(self, surface, player: Player, level_path='boss_level'):
         super().__init__(surface, player, level_path)
+        self.initial_timer = 0
+
+    def _start_screen(self, timer_factor):
+        fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
+        fade_image.fill("black")
+        fade = fade_image.get_rect()
+        fade_alpha = 255 - int(self.initial_timer / timer_factor)
+
+        fade_image.set_alpha(fade_alpha)
+        self.display_surface.blit(fade_image, fade)
+
+    def init_run(self):
+        self.initial_timer += 1
+        self.draw_elements()
+        self._start_screen(0.7)
+
+    def run(self):
+        if self.initial_timer >= FPS * 3:
+            self.game_run()
+        else:
+            self.init_run()
+

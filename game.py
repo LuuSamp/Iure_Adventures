@@ -13,7 +13,7 @@ class Game:
         self.player = Player((0,0))
         self.main_menu = Menu(self.screen)
         self.input_handler = InputHandler(self.player)
-        self.levels = [self.load_level(), BossLevel(self.screen, self.player)]
+        self.levels = [BossLevel(self.screen, self.player)]
         self.coins = 0
         self.current_level = 0
         self.game_state = "menu"
@@ -30,7 +30,9 @@ class Game:
     
     def change_level(self):
         if self.levels[self.current_level].level_completed and self.current_level < len(self.levels) - 1:
+            self.coins = self.levels[self.current_level].player.coin_count
             self.current_level += 1
+            self.levels[self.current_level].player.coin_count = self.coins
 
     def game_loop(self):
         while True:

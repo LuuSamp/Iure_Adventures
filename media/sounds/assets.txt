@@ -1,0 +1,8 @@
+
+ - blaster-multiple-14893 (mp3cut.net).mp3 -> https://pixabay.com/sound-effects/blaster-multiple-14893/
+ - jump_sound.mp3 -> https://orangefreesounds.com/mario-jump-sound/
+ - mixkit-arcade-game-explosion-2759.mp3 -> https://mixkit.co/free-sound-effects/explosion/
+ - pixel-death-66829.mp3 -> https://pixabay.com/sound-effects/pixel-death-66829/
+ - shooting-sound-fx-159024.mp3 -> https://pixabay.com/sound-effects/laser-gun-81720/
+ - coin_sound.mp3 -> https://pixabay.com/sound-effects/search/coin/
+ - level_completed.mp3 -> https://www.youtube.com/watch?v=3BsBXp6VkvU
