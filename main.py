@@ -11,7 +11,7 @@ screen_height = SCREEN_HEIGHT
 # Pygame setup
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
-print(type(screen))
+pygame.display.set_caption('Iure Adventures')
 clock = pygame.time.Clock()
 player = Player((200, 0))
 level = Level(screen, player)
