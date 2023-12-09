@@ -1,6 +1,5 @@
 import pygame
 import sys
-import screens
 
 class Button:
     def __init__(self, x, y, image, image_clicked, scale = 1):
