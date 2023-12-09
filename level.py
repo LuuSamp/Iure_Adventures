@@ -1,6 +1,6 @@
 import pygame
 from layout import import_csv_layout
-from quadrado import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
+from square import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
 from player import Player
 from enemy import Enemy, EnemyShooter
 from const import *
