@@ -25,15 +25,17 @@ class FinalBoss(Enemy):
         self.initial_pos = self.rect.left
 
         self.health = 3
-        self.gun = BossGun(self, player, shots, explosion)
 
         self.move_range = INITIAL_RANGE
         self.move_counter = 0
         self.on_move = True
         self.rest_time = 0
 
+        self.gun = BossGun(self, player, shots, explosion)
         self.shooting = True
-
+        self.shot_cooldown = 2*FPS
+        self.shot_time = 0
+        
         self.sel_frame = 0
         self.frames = [[pg.image.load(path.join(self.image_dir, "final_boss_2.png")), pg.image.load(path.join(self.image_dir, "final_boss_5.png"))],
                        [pg.image.load(path.join(self.image_dir, "final_boss_1.png")), pg.image.load(path.join(self.image_dir, "final_boss_4.png"))],
@@ -69,7 +71,7 @@ class FinalBoss(Enemy):
             self.rect.x += self.direction.x
 
     def delay(self):
-
+        
         self.rest_time += 1
         if self.rest_time == FPS * 5:
             self.rest_time = 0
@@ -77,9 +79,14 @@ class FinalBoss(Enemy):
             self.move_counter = 0
             self.on_move = True
 
+    def shoot(self):
+        self.shot_time += 1
+        if self.shot_time == self.shot_cooldown:
+            self.gun.shot()
+            self.shot_time = 0
+
     def update(self, square_group: pg.sprite.Group, offset) -> None:
         self.initial_pos += offset
-
         self.rect.x += offset
         self.apply_gravity()
         self.collide_with_square(square_group)
@@ -94,14 +101,12 @@ class FinalBoss(Enemy):
             self.move_counter += 1
             self.image = pg.transform.flip(self.image, True, False)
             self.x_vel = ENTITY_X_VEL
-            self.gun.shot()
 
         elif self.rect.left < self.initial_pos - self.move_range and self.on_move and self.shooting:
             self.facing = 1
             self.move_counter += 1
             self.image = pg.transform.flip(self.image, True, False)
             self.x_vel = ENTITY_X_VEL
-            self.gun.shot()
 
         elif self.move_counter == 4:
             self.move_range = FINAL_RANGE
@@ -113,6 +118,8 @@ class FinalBoss(Enemy):
 
         self.move()
         self.animation()
+        if self.shooting:
+            self.shoot()
 
     def die(self):
         if self.move_counter == 0: return
