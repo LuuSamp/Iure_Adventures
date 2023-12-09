@@ -32,7 +32,6 @@ class Level:
         self.bullet_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
 
-
         # door
         door_layout = import_csv_layout(f'{level_path}/door.csv')
         self.door_position = self.create_terrain(door_layout, 'door')
@@ -150,12 +149,22 @@ class Level:
         pygame.mixer.Sound('./media/sounds/level_completed.mp3').play()
         self._fill_screen()
         self.end_timer += 1
-        if self.end_timer >= FPS * 9:
-            pygame.quit()
-            exit()
+
+        # if self.end_timer >= FPS * 6:
+        #     pygame.quit()
+        #     exit()
 
     def _fill_screen(self, reverse=False):
-        pass
+        fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
+        fade_image.fill("black")
+        fade = fade_image.get_rect()
+        if reverse:
+            fade_alpha = 255 - int(self.end_timer/1.2)
+        else:
+            fade_alpha = int(self.end_timer/1.2)
+
+        fade_image.set_alpha(fade_alpha)
+        self.display_surface.blit(fade_image, fade)
 
     def run(self):
         if not self._check_game_completed():
