@@ -5,7 +5,7 @@ from player import Player
 from enemy import Enemy, EnemyShooter
 from const import *
 import os
-import sys
+from os import path
 
 
 os.chdir(os.getcwd())
@@ -45,6 +45,7 @@ class Level:
         self.last_x = SQUARE_SIZE * len(terrain_layout[0])
 
         self.level_completed = False
+        self.end_timer = 0
 
     def create_terrain(self, layout, type):
         squares = pygame.sprite.Group()
@@ -131,14 +132,36 @@ class Level:
         self.bullet_group.draw(self.display_surface)
         self._draw_coin_text()
 
-    def run(self):
+    def game_run(self):
         self.draw_elements()
         self._update_world_shift()
         self.update_elements()
 
+    def _check_game_completed(self):
+        state = False
         for level_door in self.doors:
             if level_door.level_completed:
-                self.level_completed = True
+                state = True
+
+        return state
+
+    def _game_finishing(self):
+        self.draw_elements()
+        pygame.mixer.Sound('./media/sounds/level_completed.mp3').play()
+        self._fill_screen()
+        self.end_timer += 1
+        if self.end_timer >= FPS * 9:
+            pygame.quit()
+            exit()
+
+    def _fill_screen(self, reverse=False):
+        pass
+
+    def run(self):
+        if not self._check_game_completed():
+            self.game_run()
+        else:
+            self._game_finishing()
 
 
 class BossLevel(Level):
