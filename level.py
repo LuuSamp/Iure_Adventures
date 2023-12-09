@@ -32,6 +32,12 @@ class Level:
         self.bullet_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
 
+
+        # door
+        door_layout = import_csv_layout(f'{level_path}/door.csv')
+        self.door_position = self.create_terrain(door_layout, 'door')
+
+
         self.world_shift = 0
         self.first_x = 0
         self.last_x = SQUARE_SIZE * len(terrain_layout[0])
@@ -95,6 +101,7 @@ class Level:
         self.terrain_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
+        self.door_position.update(self.world_shift)
         self.player.collide_with_enemy(self.enemy_position)
         self.player.update(self.terrain_position, self.world_shift)
         self.bullet_group.update(self.player, self.world_shift)
@@ -107,6 +114,7 @@ class Level:
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
+        self.door_position.draw(self.display_surface)
         self.enemy_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
         self.bullet_group.draw(self.display_surface)
