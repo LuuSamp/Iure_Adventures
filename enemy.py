@@ -29,7 +29,6 @@ class Enemy(Entity):
         self.x_vel = VEL_ENEMY_DEFAULT
 
         #som padrão
-        self.sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/monster-death-grunt-131480.mp3"))
         self.death_sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/pixel-death-66829.mp3"))
         self.death_sound.set_volume(0.5)
 
