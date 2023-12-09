@@ -147,21 +147,20 @@ class Level:
     def _game_finishing(self):
         self.draw_elements()
         pygame.mixer.Sound('./media/sounds/level_completed.mp3').play()
-        self._fill_screen()
+        self._fill_screen(1.2)
         self.end_timer += 1
 
-        # if self.end_timer >= FPS * 6:
-        #     pygame.quit()
-        #     exit()
+        if self.end_timer >= FPS * 6:
+            self.level_completed = True
 
-    def _fill_screen(self, reverse=False):
+    def _fill_screen(self, timer_factor, reverse=False):
         fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
         fade_image.fill("black")
         fade = fade_image.get_rect()
         if reverse:
-            fade_alpha = 255 - int(self.end_timer/1.2)
+            fade_alpha = 255 - int(self.end_timer/timer_factor)
         else:
-            fade_alpha = int(self.end_timer/1.2)
+            fade_alpha = int(self.end_timer/timer_factor)
 
         fade_image.set_alpha(fade_alpha)
         self.display_surface.blit(fade_image, fade)
@@ -176,3 +175,25 @@ class Level:
 class BossLevel(Level):
     def __init__(self, surface, player: Player, level_path='boss_level'):
         super().__init__(surface, player, level_path)
+        self.initial_timer = 0
+
+    def _start_screen(self, timer_factor):
+        fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
+        fade_image.fill("black")
+        fade = fade_image.get_rect()
+        fade_alpha = 255 - int(self.initial_timer / timer_factor)
+
+        fade_image.set_alpha(fade_alpha)
+        self.display_surface.blit(fade_image, fade)
+
+    def init_run(self):
+        self.initial_timer += 1
+        self.draw_elements()
+        self._start_screen(0.7)
+
+    def run(self):
+        if self.initial_timer >= FPS * 3:
+            self.game_run()
+        else:
+            self.init_run()
+
