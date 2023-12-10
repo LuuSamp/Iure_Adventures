@@ -200,7 +200,7 @@ class Level:
 
 
 class BossLevel(Level):
-    def __init__(self, surface, player: Player, level_path='boss_level'):
+    def __init__(self, surface, player: Player, level_path='level/level_boss'):
         super().__init__(surface, player, level_path)
         self.initial_timer = 0
 
