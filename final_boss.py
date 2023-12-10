@@ -171,6 +171,7 @@ class FinalBoss(Enemy):
         self.rest_time = 0
         self.on_move = True
         self.move_range = INITIAL_RANGE
+        self.shooting = True
         
         #caso o número de vidas dele acabe, ele será removido do grupo
         if self.health == 0:
