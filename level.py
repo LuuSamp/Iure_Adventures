@@ -10,9 +10,6 @@ from entities.final_boss import FinalBoss
 from os import path
 from entities.princess import PrincessPinho, Smoke
 
-
-os.chdir(os.getcwd())
-
 class Level:
     """Principal fase do jogo a ser carregada.
     """

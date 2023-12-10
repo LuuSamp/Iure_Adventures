@@ -126,7 +126,7 @@ class BossShot(pg.sprite.Sprite):
 
         #configurando os paths
         current_dir = path.dirname(path.abspath(__file__))
-        shots_dir = path.join(current_dir, "media", "final_boss", "shots")
+        shots_dir = path.join(current_dir, "..", "media", "final_boss", "shots")
 
         #atributos gerais
         self.final_boss_health = final_boss_health
@@ -142,7 +142,7 @@ class BossShot(pg.sprite.Sprite):
         self.explosion = explosion
 
         #criação do atributo de som 
-        self.sound = pg.mixer.Sound(path.join(current_dir, "media/sounds/blaster-multiple-14893 (mp3cut.net).mp3"))
+        self.sound = pg.mixer.Sound(path.join(current_dir, "../media/sounds/blaster-multiple-14893 (mp3cut.net).mp3"))
         self.sound.play()
 
     def move(self) -> None:
@@ -193,7 +193,7 @@ class Explosion(pg.sprite.Sprite):
         super().__init__()
 
         current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "media")
+        media_dir = path.join(current_dir, "..", "media")
 
         self.image = pg.Surface((120, 120))
         self.image.fill("blue")
@@ -207,7 +207,7 @@ class Explosion(pg.sprite.Sprite):
         
         self.explosion_counter = 0
 
-        self.sound = pg.mixer.Sound(path.join(current_dir, "media\sounds\mixkit-arcade-game-explosion-2759.mp3"))
+        self.sound = pg.mixer.Sound(path.join(current_dir, "..\media\sounds\mixkit-arcade-game-explosion-2759.mp3"))
         self.sound.set_volume(2)
         self.sound.play()
 
