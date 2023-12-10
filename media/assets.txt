@@ -1,1 +1,3 @@
 Imagem da Porta: feita pelo grupo.
+
+Imagem do Coin: https://github.com/clear-code-projects/2D-Mario-style-platformer/tree/main
