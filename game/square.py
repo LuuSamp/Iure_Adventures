@@ -1,6 +1,6 @@
 import pygame as pg
 from entities.player import Player
-from const import *
+from game.const import *
 from entities.entity import Entity
 from os import path
 

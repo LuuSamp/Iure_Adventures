@@ -2,7 +2,7 @@ import pygame as pg
 from entities.entity import Entity
 from os import path
 from typing import Tuple
-from const import *
+from game.const import *
 
 class Player(Entity):
     """

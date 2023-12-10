@@ -1,7 +1,7 @@
 import pygame as pg
 from entities.final_boss import FinalBoss
 from os import path
-from const import *
+from game.const import *
 
 class PrincessPinho(pg.sprite.Sprite):
     """
@@ -111,7 +111,7 @@ class Smoke(pg.sprite.Sprite):
         super().__init__()
         
         self.current_dir = path.dirname(path.abspath(__file__))
-        self.princess_dir = path.join(self.current_dir, "media", "princess")
+        self.princess_dir = path.join(self.current_dir, "..", "media", "princess")
 
         self.image = pg.Surface((150, 150))
         self.image.fill("blue")

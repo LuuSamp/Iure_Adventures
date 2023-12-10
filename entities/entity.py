@@ -1,7 +1,7 @@
 import pygame as pg  
-from const import *
+from game.const import *
 from abc import ABC, abstractmethod
-from const import *
+from game.const import *
 
 class Entity(ABC, pg.sprite.Sprite):
     """

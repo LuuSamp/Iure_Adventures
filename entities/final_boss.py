@@ -1,7 +1,7 @@
 import pygame as pg
 from entities.enemy import Enemy
 from entities.player import Player
-from const import *
+from game.const import *
 from entities.shot import BossShot
 from os import path
 

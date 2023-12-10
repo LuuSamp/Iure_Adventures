@@ -1,6 +1,6 @@
 import pygame
 import sys
-from const import *
+from game.const import *
 
 class Button:
     """

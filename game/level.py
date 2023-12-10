@@ -1,11 +1,9 @@
 import pygame
-from layout import import_csv_layout
-from square import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
+from game.layout import import_csv_layout
+from game.square import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
 from entities.player import Player
 from entities.enemy import Enemy, EnemyShooter
-from const import *
-import os
-import sys
+from game.const import *
 from entities.final_boss import FinalBoss
 from os import path
 from entities.princess import PrincessPinho, Smoke

@@ -1,7 +1,7 @@
 import pygame as pg  
 from entities.entity import Entity
 from entities.shot import Shot
-from const import * 
+from game.const import * 
 from os import path
 
 class Enemy(Entity):

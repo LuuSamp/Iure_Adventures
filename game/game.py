@@ -1,9 +1,9 @@
 import pygame
-from level import Level, BossLevel
+from game.level import Level, BossLevel
 from entities.player import Player
-from input_handler import InputHandler
-from const import *
-from menu import Menu
+from game.input_handler import InputHandler
+from game.const import *
+from game.menu import Menu
 
 class Game:
     def __init__(self):

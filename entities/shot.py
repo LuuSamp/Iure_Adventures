@@ -1,6 +1,6 @@
 from entities.player import Player
 import pygame as pg
-from const import *
+from game.const import *
 from os import path
 
 class Shot(pg.sprite.Sprite):
