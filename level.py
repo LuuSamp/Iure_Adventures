@@ -8,6 +8,7 @@ import os
 import sys
 from final_boss import FinalBoss
 from os import path
+from princess import PrincessPinho
 
 
 os.chdir(os.getcwd())
@@ -56,6 +57,10 @@ class Level:
         # decor_door
         decor_door_layout = import_csv_layout(f'{level_path}/decor_door.csv')
         self.decor_door_position = self.create_terrain(decor_door_layout, 'decor_door')
+
+        # princess
+        princess_layout = import_csv_layout(f'{level_path}/pinho.csv')
+        self.princess_position = self.create_terrain(princess_layout, 'pinho')
         
         # door
         door_layout = import_csv_layout(f'{level_path}/door.csv')
@@ -119,6 +124,8 @@ class Level:
                         self.doors.append(square)
                     elif type == 'decor_door':
                         square = ColisionSquare(x, y, SQUARE_SIZE * 2, './media/porta.png', self.player)
+                    elif type == "pinho":
+                        square = PrincessPinho((x, y))
 
                     squares.add(square)
 
@@ -200,6 +207,7 @@ class Level:
         self.player.update(self.terrain_position, self.world_shift)
         self.bullet_group.update(self.player, self.world_shift)
         self.explosion_group.update()
+        self.princess_position.update()
 
     def _draw_coin_text(self):
         """Gera o contador de moedas na tela
@@ -211,6 +219,7 @@ class Level:
     def draw_elements(self):
         """Adiciona os elementos a tela
         """
+        self.princess_position.draw(self.display_surface)
         self.terrain_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
         self.door_position.draw(self.display_surface)
