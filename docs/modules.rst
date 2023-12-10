@@ -4,15 +4,5 @@ Iure_Adventures
 .. toctree::
    :maxdepth: 4
 
-   enemy
-   entity
-   final_boss
+   entities
    game
-   input_handler
-   layout
-   level
-   menu
-   player
-   princess
-   shot
-   square
