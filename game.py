@@ -11,8 +11,8 @@ class Game:
         pygame.display.set_caption('Iure Adventures')
         pygame.mixer.init()
         pygame.mixer.music.load("./media/sounds/background_music.mp3")
-        pygame.mixer.music.play()
-        pygame.mixer.music.set_volume(0.5)  
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.04)  
         
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
