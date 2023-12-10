@@ -297,11 +297,10 @@ class BossLevel(Level):
         self.boss = FinalBoss((1250,0), self.player, self.bullet_group, self.explosion_group)
         self.enemy_position.add(self.boss)
         self.enemy_position.add(self.boss.gun)
-        self.boss.initial_pos = SCREEN_WIDTH/2
+        self.boss.initial_pos = SQUARE_SIZE * 10
         self.boss.x_vel *= 3
         self.boss.move_range = 1200
         self.started = False
-        self.player.x_vel = 0
 
     def init_run(self):
         self.boss.facing = -1
@@ -311,8 +310,8 @@ class BossLevel(Level):
         self.boss.shot_time = 0
         self.draw_elements()
 
-        if self.boss.rect.x <= SCREEN_WIDTH/2: 
-            self.boss.move_range = 200
+        if self.boss.rect.x <= self.boss.initial_pos: 
+            self.boss.move_range = INITIAL_RANGE
             self.boss.x_vel /= 3
             self.player.x_vel = PLAYER_X_VEL
             self.started = True
@@ -321,6 +320,7 @@ class BossLevel(Level):
         if self.started:
             self.game_run()
         else:
+            self.player.x_vel = 0
             self.init_run()
             self.initialized = True
 

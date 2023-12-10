@@ -160,7 +160,7 @@ class BossShot(pg.sprite.Sprite):
         if pg.sprite.collide_rect(self, player):
             #caso tenha acertado o player, cria um explosão
             self.explosion.add(Explosion((self.rect.center[0], self.rect.center[1])))
-            player.die()
+            #player.die()
             self.kill()
 
     def update(self, player:Player, offset:int) -> None:
