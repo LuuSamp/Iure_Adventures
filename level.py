@@ -293,36 +293,32 @@ class BossLevel(Level):
             o caminho para o arquivo, by default 'boss_level'
         """
         super().__init__(surface, player, level_path)
-        self.initial_timer = 0
 
-    def _start_screen(self, timer_factor) -> None:
-        """Cena de início da fase do boss
-
-        Parameters
-        ----------
-        timer_factor : float
-            o fator de velocidade, quanto maior mais lento
-        """
-
-        fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
-        fade_image.fill("black")
-        fade = fade_image.get_rect()
-        fade_alpha = 255 - int(self.initial_timer / timer_factor)
-
-        fade_image.set_alpha(fade_alpha)
-        self.display_surface.blit(fade_image, fade)
+        self.boss = FinalBoss((1250,0), self.player, self.bullet_group, self.explosion_group)
+        self.enemy_position.add(self.boss)
+        self.enemy_position.add(self.boss.gun)
+        self.boss.initial_pos = SCREEN_WIDTH/2
+        self.boss.x_vel *= 3
+        self.boss.move_range = 1200
+        self.started = False
+        self.player.x_vel = 0
 
     def init_run(self):
-        """Roda a inicialização da tela
-        """
-        self.initial_timer += 1
+        self.boss.facing = -1
+
+        self.update_elements()
+        self.boss.move_counter = 0
+        self.boss.shot_time = 0
         self.draw_elements()
-        self._start_screen(0.3)
+
+        if self.boss.rect.x <= SCREEN_WIDTH/2: 
+            self.boss.move_range = 200
+            self.boss.x_vel /= 3
+            self.player.x_vel = PLAYER_X_VEL
+            self.started = True
 
     def run(self):
-        """Roda a fase
-        """
-        if self.initial_timer >= FPS:
+        if self.started:
             self.game_run()
         else:
             self.init_run()
