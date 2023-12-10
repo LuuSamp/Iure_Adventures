@@ -13,7 +13,20 @@ from os import path
 os.chdir(os.getcwd())
 
 class Level:
-    def __init__(self, surface, player: Player, level_path='level_1'):
+    """Principal fase do jogo a ser carregada.
+    """
+    def __init__(self, surface:pygame.display, player: Player, level_path='level_1'):
+        """Inicializa a fase
+
+        Parameters
+        ----------
+        surface : pygame.display
+            a tela do jogo
+        player : Player
+            o personagem do jogo
+        level_path : str, optional
+            o caminho para o arquivo, by default 'level'
+        """
         #setup geral
         self.display_surface = surface
         self.player = player
@@ -62,10 +75,27 @@ class Level:
         self.winning_song.set_volume(0.3)
 
 
-    def reset(self):
+    def reset(self) -> None:
+        """Reseta o nível do início
+        """
+
         self.__init__(self.display_surface, self.player, self.level_path)
 
-    def create_terrain(self, layout, type):
+    def create_terrain(self, layout, type:str) -> pygame.sprite.Group:
+        """Adiciona os elementos ao mapa
+
+        Parameters
+        ----------
+        layout : _type_
+            o layout desejado
+        type : str
+            tipo dos elementos gerados
+
+        Returns
+        -------
+        pygame.sprite.Group
+            o grupo do terreno gerado
+        """
         squares = pygame.sprite.Group()
         self.doors = list()
 
@@ -94,8 +124,14 @@ class Level:
 
         return squares
 
-    def set_player_position(self, layout):
+    def set_player_position(self, layout) -> None:
+        """Define a posição inicial do player
 
+        Parameters
+        ----------
+        layout : _type_
+            o layout desejado
+        """
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
                 if val == "0":
@@ -103,7 +139,19 @@ class Level:
                     y = row_index * SQUARE_SIZE
                     self.player.rect.center = (x, y)
 
-    def create_enemies(self, layout):
+    def create_enemies(self, layout) -> pygame.sprite.Group:
+        """Gera o grupo dos inimigos
+
+        Parameters
+        ----------
+        layout : _type_
+            o layout desejado
+
+        Returns
+        -------
+        pygame.sprite.Group
+            o grupo dos inimigos
+        """
         enemies = pygame.sprite.Group()
 
         for row_index, row in enumerate(layout):
@@ -122,7 +170,9 @@ class Level:
         
         return enemies
     
-    def _update_world_shift(self):
+    def _update_world_shift(self) -> None:
+        """Atualiza o deslocamento horizontal dos elementos
+        """
         player_pos = self.player.rect.left
         if player_pos < SCREEN_WIDTH/2 - 50 and self.first_x < 0:
             self.world_shift = 5
@@ -135,6 +185,8 @@ class Level:
         self.last_x += self.world_shift
 
     def update_elements(self):
+        """Atualiza todos os elementos
+        """
         if not self.player.alive(): 
             self.player.reset()
             self.reset()
@@ -151,11 +203,15 @@ class Level:
         self.explosion_group.update()
 
     def _draw_coin_text(self):
+        """Gera o contador de moedas na tela
+        """
         texto = self.fonte.render(f"Coins: {self.player.coin_count}", True, "#f0f8ff")
         text_rect = texto.get_rect(topleft=(10, 10))
         self.display_surface.blit(texto, text_rect)
 
     def draw_elements(self):
+        """Adiciona os elementos a tela
+        """
         self.terrain_position.draw(self.display_surface)
         self.fall_blocks_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
@@ -168,11 +224,20 @@ class Level:
         self._draw_coin_text()
 
     def game_run(self):
+        """Faz o jogo rodar
+        """
         self.draw_elements()
         self._update_world_shift()
         self.update_elements()
 
-    def _check_game_completed(self):
+    def _check_game_completed(self) -> bool:
+        """Checa se o jogo foi completado
+
+        Returns
+        -------
+        bool
+            True caso sim e False caso não
+        """
         state = False
         for level_door in self.doors:
             if level_door.level_completed:
@@ -181,9 +246,13 @@ class Level:
         return state
     
     def _play_winning_song(self):
+        """Toca a música de vitória
+        """
         self.winning_song.play()
 
     def _game_finishing(self):
+        """Realiza a cena de finalização do jogo
+        """
         self._play_winning_song()
         self.draw_elements()
         self._fill_screen(0.3)
@@ -192,7 +261,16 @@ class Level:
         if self.end_timer >= FPS * 1.5:
             self.level_completed = True
 
-    def _fill_screen(self, timer_factor, reverse=False):
+    def _fill_screen(self, timer_factor:float, reverse=False):
+        """Preenche a tela de preto aos poucos
+
+        Parameters
+        ----------
+        timer_factor : float
+            o fator de velocidade, quanto maior mais lento
+        reverse : bool, optional
+            Se ele deve escurecer ou clarear, by default False
+        """
         fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
         fade_image.fill("black")
         fade = fade_image.get_rect()
@@ -204,9 +282,9 @@ class Level:
         fade_image.set_alpha(fade_alpha)
         self.display_surface.blit(fade_image, fade)
 
-
-
     def run(self):
+        """Faz o jogo rodar
+        """
         if not self._check_game_completed():
             self.game_run()
         else:
@@ -214,11 +292,32 @@ class Level:
 
 
 class BossLevel(Level):
-    def __init__(self, surface, player: Player, level_path='boss_level'):
+    """A fase do boss a ser derrotado
+    """
+    def __init__(self, surface:pygame.display, player: Player, level_path='boss_level'):
+        """Inicializa a fase
+
+        Parameters
+        ----------
+        surface : pygame.display
+            a tela do jogo
+        player : Player
+            o personagem do jogo
+        level_path : str, optional
+            o caminho para o arquivo, by default 'boss_level'
+        """
         super().__init__(surface, player, level_path)
         self.initial_timer = 0
 
-    def _start_screen(self, timer_factor):
+    def _start_screen(self, timer_factor) -> None:
+        """Cena de início da fase do boss
+
+        Parameters
+        ----------
+        timer_factor : float
+            o fator de velocidade, quanto maior mais lento
+        """
+
         fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
         fade_image.fill("black")
         fade = fade_image.get_rect()
@@ -228,11 +327,15 @@ class BossLevel(Level):
         self.display_surface.blit(fade_image, fade)
 
     def init_run(self):
+        """Roda a inicialização da tela
+        """
         self.initial_timer += 1
         self.draw_elements()
         self._start_screen(0.3)
 
     def run(self):
+        """Roda a fase
+        """
         if self.initial_timer >= FPS:
             self.game_run()
         else:
