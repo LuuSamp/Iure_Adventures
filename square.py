@@ -160,7 +160,7 @@ class ColisionSquare(StaticSquare):
         """Retorna o objeto a sua posição de altura inicial.
         """
         self.rect.y = self.init_y
-        image = pg.image.load(f'{path}/bloco_11.png')
+        image = pg.image.load('media/blocos/bloco_11.png')
         frame = pg.transform.scale(image, (self.size, self.size))
         self.image = frame
 
