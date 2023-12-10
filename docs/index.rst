@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Bem vindo à documentação de Iure Adventures!
-===========================================
+==================================================
 
 Essa é a documentação dos módulos que criamos para criar o jogo Iure Adventure.
 
@@ -31,7 +31,7 @@ https://github.com/LuuSamp/Iure_Adventures
    modules
 
 Índices and tabelas
-==================
+=======================
 
 * :ref:`genindex`
 * :ref:`modindex`
