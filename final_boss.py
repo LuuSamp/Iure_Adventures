@@ -175,6 +175,7 @@ class FinalBoss(Enemy):
         
         #caso o número de vidas dele acabe, ele será removido do grupo
         if self.health == 0:
+            self.player.won = True
             super().die()
 
 class BossGun(pg.sprite.Sprite):

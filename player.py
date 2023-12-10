@@ -43,6 +43,8 @@ class Player(Entity):
         self.jump_sound = pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3"))
         self.jump_sound.set_volume(0.2)
 
+        self.won = False
+
     def reset(self):
         self.__init__()
 

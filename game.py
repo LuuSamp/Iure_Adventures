@@ -23,6 +23,8 @@ class Game:
         self.coins = 0
         self.current_level = 0
         self.game_state = "menu"
+
+        self.win_counter = 0
     
     def load_level(self):
         return Level(self.screen, self.player)
@@ -45,10 +47,17 @@ class Game:
             self.input_handler.update()
             if self.game_state == "menu":
                 self.load_menu()
+
             if self.game_state =="playing":
                 self.change_level()
                 self.screen.blit(pygame.transform.scale(pygame.image.load("media/background/background_frame.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0,0))
                 self.levels[self.current_level].run()
+
+            if self.player.won == True:
+                self.win_counter += 1
+                if self.win_counter >= FPS*5:
+                    self.game_state = "menu"
+                    self.player.won = False
 
             pygame.display.update()
             self.clock.tick(FPS)
