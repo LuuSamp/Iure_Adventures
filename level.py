@@ -37,11 +37,11 @@ class Level:
 
         # terrain setup
         terrain_layout = import_csv_layout(f'{level_path}/terrain.csv')
-        self.terrain_position = self.create_terrain(terrain_layout, 'terrain')
         
         # fall blocks setup
         fall_blocks_layout = import_csv_layout(f'{level_path}/fall_blocks.csv')
-        self.fall_blocks_position = self.create_terrain(fall_blocks_layout, 'fall_blocks')
+
+        self.terrain_position = pygame.sprite.Group(self.create_terrain(terrain_layout, 'terrain'), self.create_terrain(fall_blocks_layout, 'fall_blocks'))
 
         # coins 
         coin_layout = import_csv_layout(f'{level_path}/coins.csv')
@@ -192,7 +192,6 @@ class Level:
             self.reset()
 
         self.terrain_position.update(self.world_shift)
-        self.fall_blocks_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
         self.door_position.update(self.world_shift)
@@ -213,7 +212,6 @@ class Level:
         """Adiciona os elementos a tela
         """
         self.terrain_position.draw(self.display_surface)
-        self.fall_blocks_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
         self.door_position.draw(self.display_surface)
         self.decor_door_position.draw(self.display_surface)
