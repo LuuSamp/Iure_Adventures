@@ -131,11 +131,6 @@ class ColisionSquare(StaticSquare):
         """
         self.speed_y = 4
         self.rect.y += self.speed_y
-
-    def _reset_block(self) -> None:
-        """Retorna o objeto a sua posição de altura inicial.
-        """
-        self.rect.y = self.init_y
     
     def __update_image(self, path):
         if self.__cooldown <= FPS * 0.5:
@@ -150,6 +145,11 @@ class ColisionSquare(StaticSquare):
         frame = pg.transform.scale(image, (self.size, self.size))
         self.image = frame
 
+
+    def _reset_block(self) -> None:
+        """Retorna o objeto a sua posição de altura inicial.
+        """
+        self.rect.y = self.init_y
     
     def update(self, shift:int) -> None:
         """Inicia um timer caso haja uma colisão entre o jogador e a parte superior do bloco,
@@ -168,7 +168,7 @@ class ColisionSquare(StaticSquare):
         elif self.__cooldown > 0:
             self.__cooldown += 1
             self.__update_image('./media/blocos')
-        
+
         if self.__cooldown >= FPS * 5:
             self.__cooldown = 0
             self._reset_block()

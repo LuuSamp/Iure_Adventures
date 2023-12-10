@@ -8,6 +8,12 @@ from menu import Menu
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.display.set_caption('Iure Adventures')
+        pygame.mixer.init()
+        pygame.mixer.music.load("media/sounds/background_music.mp3")
+        pygame.mixer.music.play()
+        pygame.mixer.music.set_volume(0.5)  
+        
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.player = Player((0,0))
@@ -41,7 +47,7 @@ class Game:
                 self.load_menu()
             if self.game_state =="playing":
                 self.change_level()
-                self.screen.fill('black')
+                self.screen.blit(pygame.transform.scale(pygame.image.load("media/background/background_frame.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0,0))
                 self.levels[self.current_level].run()
 
             pygame.display.update()

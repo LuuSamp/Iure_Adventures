@@ -162,6 +162,7 @@ class FinalBoss(Enemy):
         if self.move_counter == 0: 
             return
 
+        self.player.direction.y -= 20
         #comportamentos necessário a cada dano que ele leva do player principal
         self.health -= 1
         self.shot_cooldown -= 0.5*FPS

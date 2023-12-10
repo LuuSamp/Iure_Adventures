@@ -23,7 +23,6 @@ class Shot(pg.sprite.Sprite):
         
         #configurando o som ao atirar o projétil
         self.sound = pg.mixer.Sound(path.join(media_dir, "sounds/shooting-sound-fx-159024.mp3"))
-        self.sound.play()
 
         #atributos gerais
         self.x_vel = VEL_BULLET
@@ -41,6 +40,9 @@ class Shot(pg.sprite.Sprite):
         ]
         self.animation_counter = 0
         self.animation_delay = 15
+
+        if self.rect.left >= 0 and self.rect.left <= SCREEN_WIDTH:
+            self.sound.play()
 
     def animation(self) -> None:
         """
@@ -158,7 +160,7 @@ class BossShot(pg.sprite.Sprite):
         if pg.sprite.collide_rect(self, player):
             #caso tenha acertado o player, cria um explosão
             self.explosion.add(Explosion((self.rect.center[0], self.rect.center[1])))
-            player.die()
+            #player.die()
             self.kill()
 
     def update(self, player:Player, offset:int) -> None:

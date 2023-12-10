@@ -124,8 +124,8 @@ class Player(Entity):
                 if (enemy.rect.collidepoint(self.rect.bottomright) or
                         enemy.rect.collidepoint(self.rect.midbottom) or
                         enemy.rect.collidepoint(self.rect.bottomleft)):
-                    enemy.die()
                     self.direction.y = -5
+                    enemy.die()
                 else:
                     self.die()
 

@@ -1,6 +1,6 @@
 import pygame
 from layout import import_csv_layout
-from quadrado import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
+from square import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
 from player import Player
 from enemy import Enemy, EnemyShooter
 from const import *
@@ -15,7 +15,7 @@ os.chdir(os.getcwd())
 class Level:
     """Principal fase do jogo a ser carregada.
     """
-    def __init__(self, surface:pygame.display, player: Player, level_path='level_1'):
+    def __init__(self, surface:pygame.display, player: Player, level_path='level/level_1'):
         """Inicializa a fase
 
         Parameters
@@ -294,7 +294,7 @@ class Level:
 class BossLevel(Level):
     """A fase do boss a ser derrotado
     """
-    def __init__(self, surface:pygame.display, player: Player, level_path='boss_level'):
+    def __init__(self, surface:pygame.display, player: Player, level_path='level/level_boss'):
         """Inicializa a fase
 
         Parameters
@@ -307,38 +307,34 @@ class BossLevel(Level):
             o caminho para o arquivo, by default 'boss_level'
         """
         super().__init__(surface, player, level_path)
-        self.initial_timer = 0
 
-    def _start_screen(self, timer_factor) -> None:
-        """Cena de início da fase do boss
-
-        Parameters
-        ----------
-        timer_factor : float
-            o fator de velocidade, quanto maior mais lento
-        """
-
-        fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
-        fade_image.fill("black")
-        fade = fade_image.get_rect()
-        fade_alpha = 255 - int(self.initial_timer / timer_factor)
-
-        fade_image.set_alpha(fade_alpha)
-        self.display_surface.blit(fade_image, fade)
+        self.boss = FinalBoss((1250,0), self.player, self.bullet_group, self.explosion_group)
+        self.enemy_position.add(self.boss)
+        self.enemy_position.add(self.boss.gun)
+        self.boss.initial_pos = SQUARE_SIZE * 10
+        self.boss.x_vel *= 3
+        self.boss.move_range = 1200
+        self.started = False
 
     def init_run(self):
-        """Roda a inicialização da tela
-        """
-        self.initial_timer += 1
+        self.boss.facing = -1
+
+        self.update_elements()
+        self.boss.move_counter = 0
+        self.boss.shot_time = 0
         self.draw_elements()
-        self._start_screen(0.3)
+
+        if self.boss.rect.x <= self.boss.initial_pos: 
+            self.boss.move_range = INITIAL_RANGE
+            self.boss.x_vel /= 3
+            self.player.x_vel = PLAYER_X_VEL
+            self.started = True
 
     def run(self):
-        """Roda a fase
-        """
-        if self.initial_timer >= FPS:
+        if self.started:
             self.game_run()
         else:
+            self.player.x_vel = 0
             self.init_run()
             self.initialized = True
 
