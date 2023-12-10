@@ -131,18 +131,13 @@ class Smoke(pg.sprite.Sprite):
 
         if self.smoke_counter < 15:
             frame = 0
-            print("1")
         elif self.smoke_counter < 30:
             frame = 1
-            print("2")
         elif self.smoke_counter < 45:
             frame = 2
-            print("3")
         elif self.smoke_counter < 60:
             frame = 3
-            print("4")
         else:
-            print("5")
             self.kill()
         try:
             self.image = pg.transform.scale(self.frames[frame], (150, 150))
