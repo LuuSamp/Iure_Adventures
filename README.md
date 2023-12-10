@@ -35,7 +35,7 @@ A primeira fase consiste em um jogo clássico de plataformas. Nela, encontram-se
 ![Primeira Fase](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/mapa/media/readme_images/primeira_fase.png)
 ### Luta Final:
 
-A fase final apresenta um inimigo que, conforme esperado, possui três vidas. Para derrotá-lo, será necessário sobreviver aos seus ataques até que ele fique vulnerável. Nesse momento, é possível realizar ataques para reduzir sua barra de vida até alcançar zero, libertando finalmente a princesa Pinha.
+A fase final apresenta um inimigo que, conforme esperado, possui três vidas. Para derrotá-lo, será necessário sobreviver aos seus ataques até que ele fique vulnerável. Nesse momento, é possível realizar ataques para reduzir sua vida até alcançar zero, libertando finalmente a princesa Pinha.
 
 ![Fase Final](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/mapa/media/readme_images/fase_final.png)
 
