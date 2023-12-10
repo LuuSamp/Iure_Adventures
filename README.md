@@ -4,7 +4,7 @@ O jogo foi desenvolvido para a avaliação do segundo período da disciplina de 
 
 A história principal do jogo narra a jornada do professor Iure, um grande entusiasta do ensino e do aprendizado, em sua luta contra a dominação da inteligência artificial no ambiente escolar. Durante sua jornada, ele busca libertar os alunos que foram controlados pelo vilão, derrotar a inteligência artificial representada por um androide, e, acima de tudo, resgatar a princesa Pinha, que foi raptada.
 
-![Personagens](media\readme_images\personagens.png)
+![Personagens](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/mapa/media/readme_images/personagens.png)
 
 ## Integrantes (Todos de CD):
 
@@ -28,17 +28,17 @@ Segue, abaixo, toda a descrição das etapas do jogo. Todas elas foram pensadas 
 ### Menu:
 Ao iniciar o jogo, o usuário será direcionado para o menu principal. Neste menu, terá a opção de iniciar o jogo ou encerrar a execução. No canto direito inferior, estarão listados os nomes de todos os autores envolvidos no projeto, os quais foram previamente mencionados.
 
-![Menu](media\readme_images\menu.png)
+![Menu](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/mapa/media/readme_images/menu.png)
 ### Primeira Fase:
 A primeira fase consiste em um jogo clássico de plataformas. Nela, encontram-se obstáculos diferenciados em um cenário urbano, praticamente todo desenhado pelo grupo, com exceção do plano de fundo. Além disso, há inimigos que tornam a experiência ainda mais desafiadora.
 
-![Primeira Fase](media\readme_images\primeira_fase.png)
+![Primeira Fase](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/mapa/media/readme_images/primeira_fase.png)
 ### Luta Final:
 
 A fase final apresenta um inimigo que, conforme esperado, possui três vidas. Para derrotá-lo, será necessário sobreviver aos seus ataques até que ele fique vulnerável. Nesse momento, é possível realizar ataques para reduzir sua barra de vida até alcançar zero, libertando finalmente a princesa Pinha.
 
-![Fase Final](media\readme_images\fase_final.png)
+![Fase Final](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/mapa/media/readme_images/fase_final.png)
 
 ## Obrigado Por Jogar:
 
-![Fase Final](media\readme_images\obrigado.gif)
+![Fase Final](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/mapa/media/readme_images/obrigado.gif)
