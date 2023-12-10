@@ -23,6 +23,13 @@ A história principal do jogo narra a jornada do professor Iure, um grande entus
 
 ## Descrição do Repositório:
 
+- `docs/` - pasta com arquivos necessários para gerar a documentação;
+- `etities/` - pasta com os arquivos referente às classes que representam entidades dentro do jogo;
+- `game/` - pasta com o restante das classes que compõem o jogo, como as responsáveis pelo layout, por exemplo;
+- `media/` - pasta com todos os assets utilizados durante o projeto, dentre eles estão imagens e sons; 
+- `main.py` - arquivo principal do projeto e que deverá ser executado para rodar o jogo. 
+ - `requirement.txt` - arquivo com as bibliotecas que foram utilizadas no projeto, juntamente com as suas respectivas versões.
+  
 ## Jogo:
 
 Segue, abaixo, toda a descrição das etapas do jogo. Todas elas foram pensadas para oferecer ao usuário uma experiência agradável, desafiadora e divertida para o jogador. 
