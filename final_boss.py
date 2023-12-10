@@ -46,6 +46,7 @@ class FinalBoss(Enemy):
         self.initial_pos = self.rect.left
 
         self.health = 3
+        self.vunerable = False
 
         self.move_range = INITIAL_RANGE
         self.move_counter = 0
@@ -105,6 +106,7 @@ class FinalBoss(Enemy):
             self.move_range = INITIAL_RANGE
             self.move_counter = 0
             self.on_move = True
+            self.vunerable = False
 
     def shoot(self):
         """
@@ -147,8 +149,12 @@ class FinalBoss(Enemy):
 
         elif self.move_counter == 5:
             self.on_move = False
+            self.vunerable = True
             self.shooting = False
             self.delay()
+        
+        if self.move_counter > 5:
+            self.move_counter = 0
 
         self.move()
         self.animation()
@@ -159,7 +165,7 @@ class FinalBoss(Enemy):
         """
         método de gerenciamento da morte do boss final
         """
-        if self.move_counter == 0: 
+        if not self.vunerable: 
             return
 
         self.player.direction.y -= 20
@@ -171,7 +177,7 @@ class FinalBoss(Enemy):
         self.rest_time = 0
         self.on_move = True
         self.move_range = INITIAL_RANGE
-        self.shooting = True
+        self.vunerable = False
         
         #caso o número de vidas dele acabe, ele será removido do grupo
         if self.health == 0:
