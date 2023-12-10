@@ -15,7 +15,7 @@ os.chdir(os.getcwd())
 class Level:
     """Principal fase do jogo a ser carregada.
     """
-    def __init__(self, surface:pygame.display, player: Player, level_path='level/level_1'):
+    def __init__(self, surface:pygame.display, player: Player, level_path='./level/level_1'):
         """Inicializa a fase
 
         Parameters
@@ -36,32 +36,32 @@ class Level:
         self.fonte = pygame.font.Font(None, 36)
 
         # terrain setup
-        terrain_layout = import_csv_layout(f'level/{level_path}/terrain.csv')
+        terrain_layout = import_csv_layout(f'{level_path}/terrain.csv')
         self.terrain_position = self.create_terrain(terrain_layout, 'terrain')
         
         # fall blocks setup
-        fall_blocks_layout = import_csv_layout(f'level/{level_path}/fall_blocks.csv')
+        fall_blocks_layout = import_csv_layout(f'{level_path}/fall_blocks.csv')
         self.fall_blocks_position = self.create_terrain(fall_blocks_layout, 'fall_blocks')
 
         # coins 
-        coin_layout = import_csv_layout(f'level/{level_path}/coin.csv')
+        coin_layout = import_csv_layout(f'{level_path}/coins.csv')
         self.coin_position = self.create_terrain(coin_layout, 'coins')
 
         # enemy 
-        enemy_layout = import_csv_layout(f'level/{level_path}/enemies.csv')
+        enemy_layout = import_csv_layout(f'{level_path}/enemies.csv')
         self.bullet_group = pygame.sprite.Group()
         self.explosion_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
 
         # decor_door
-        decor_door_layout = import_csv_layout(f'level/{level_path}/decor_door.csv')
+        decor_door_layout = import_csv_layout(f'{level_path}/decor_door.csv')
         self.decor_door_position = self.create_terrain(decor_door_layout, 'decor_door')
         
         # door
-        door_layout = import_csv_layout(f'level/{level_path}/door.csv')
+        door_layout = import_csv_layout(f'{level_path}/door.csv')
         self.door_position = self.create_terrain(door_layout, 'door')
 
-        player_position = import_csv_layout(f'level/{level_path}/player.csv')
+        player_position = import_csv_layout(f'{level_path}/player.csv')
         self.set_player_position(player_position)
 
         self.world_shift = 0
@@ -294,7 +294,7 @@ class Level:
 class BossLevel(Level):
     """A fase do boss a ser derrotado
     """
-    def __init__(self, surface:pygame.display, player: Player, level_path='level/level_boss'):
+    def __init__(self, surface:pygame.display, player: Player, level_path='./level/boss_level'):
         """Inicializa a fase
 
         Parameters
