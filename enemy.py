@@ -143,7 +143,7 @@ class EnemyShooter(Enemy):
         self.jump_delay = 50
 
         self.shot_counter = 0
-        self.shot_delay = 40
+        self.shot_delay = 60
 
         self.walk_frames = [
             pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter0.png")),
