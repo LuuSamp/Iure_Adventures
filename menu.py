@@ -81,7 +81,7 @@ class Menu:
         
         # criando os objetos que serão usados
         self.background = pygame.image.load("media/background/background_frame.png")
-        self.scaled_background = pygame.transform.scale(self.background, (int(self.background.get_width() * 1.25), int(self.background.get_height() * 1.25)))
+        self.scaled_background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.play_img = pygame.image.load("media/button_images/play.png")
         self.play_clicked_img = pygame.image.load("media/button_images/play_clicked.png")
         self.quit_img = pygame.image.load("media/button_images/quit.png")
