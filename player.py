@@ -43,6 +43,8 @@ class Player(Entity):
         self.jump_sound = pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3"))
         self.jump_sound.set_volume(0.2)
 
+        self.won = False
+
     def reset(self):
         self.__init__()
 
@@ -124,8 +126,8 @@ class Player(Entity):
                 if (enemy.rect.collidepoint(self.rect.bottomright) or
                         enemy.rect.collidepoint(self.rect.midbottom) or
                         enemy.rect.collidepoint(self.rect.bottomleft)):
-                    enemy.die()
                     self.direction.y = -5
+                    enemy.die()
                 else:
                     self.die()
 

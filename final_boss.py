@@ -162,6 +162,7 @@ class FinalBoss(Enemy):
         if self.move_counter == 0: 
             return
 
+        self.player.direction.y -= 20
         #comportamentos necessário a cada dano que ele leva do player principal
         self.health -= 1
         self.shot_cooldown -= 0.5*FPS
@@ -170,9 +171,11 @@ class FinalBoss(Enemy):
         self.rest_time = 0
         self.on_move = True
         self.move_range = INITIAL_RANGE
+        self.shooting = True
         
         #caso o número de vidas dele acabe, ele será removido do grupo
         if self.health == 0:
+            self.player.won = True
             super().die()
 
 class BossGun(pg.sprite.Sprite):

@@ -23,7 +23,6 @@ class Shot(pg.sprite.Sprite):
         
         #configurando o som ao atirar o projétil
         self.sound = pg.mixer.Sound(path.join(media_dir, "sounds/shooting-sound-fx-159024.mp3"))
-        self.sound.play()
 
         #atributos gerais
         self.x_vel = VEL_BULLET
@@ -41,6 +40,9 @@ class Shot(pg.sprite.Sprite):
         ]
         self.animation_counter = 0
         self.animation_delay = 15
+
+        if self.rect.left >= 0 and self.rect.left <= SCREEN_WIDTH:
+            self.sound.play()
 
     def animation(self) -> None:
         """

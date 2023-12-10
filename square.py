@@ -80,6 +80,16 @@ class StaticSquare(Square):
         frame = pg.transform.scale(image, (size, size))
         self.image = frame
 
+    def _player_collision(self) -> bool:
+        """Verifica se houve colisão entre o objeto e o player
+
+        Returns
+        -------
+        bool
+            True caso sim e False caso não
+        """
+        return pg.sprite.collide_rect(self, self._player)
+
 class ColisionSquare(StaticSquare):
     """
     Objeto de cenário que, ao entrar em contato com o jogador, irá cair e depois reaparecer.
@@ -102,12 +112,14 @@ class ColisionSquare(StaticSquare):
             jogador com que as colisões ocorrerão
         """
         super().__init__(x, y, size, image_path)
+        self.image_path = image_path
         self._player = player
         self.speed_y = 0
         self.gravity = GRAVITY
         self.collision = True
         self.init_y = y
         self.__cooldown = 0
+        self.size = size
 
     def _player_collision(self) -> bool:
         """ Verifica se houve colisão entre o jogador e o objeto
@@ -129,11 +141,29 @@ class ColisionSquare(StaticSquare):
         """
         self.speed_y = 4
         self.rect.y += self.speed_y
+    
+    def __update_image(self, path):
+        if self.__cooldown <= FPS * 0.5:
+            image = pg.image.load(f'{path}/bloco_11.png')
+        elif self.__cooldown <= FPS:
+            image = pg.image.load(f'{path}/bloco_12.png')
+        elif self.__cooldown <= FPS * 1.5:
+            image = pg.image.load(f'{path}/bloco_13.png')
+        else:
+            image = pg.image.load(f'{path}/bloco_14.png')
+        
+        frame = pg.transform.scale(image, (self.size, self.size))
+        self.image = frame
+
 
     def _reset_block(self) -> None:
         """Retorna o objeto a sua posição de altura inicial.
         """
         self.rect.y = self.init_y
+        image = pg.image.load('media/blocos/bloco_11.png')
+        frame = pg.transform.scale(image, (self.size, self.size))
+        self.image = frame
+
     
     def update(self, shift:int) -> None:
         """Inicia um timer caso haja uma colisão entre o jogador e a parte superior do bloco,
@@ -148,8 +178,10 @@ class ColisionSquare(StaticSquare):
 
         if self._player_collision() == True:
             self.__cooldown += 1
+            self.__update_image('./media/blocos')
         elif self.__cooldown > 0:
             self.__cooldown += 1
+            self.__update_image('./media/blocos')
 
         if self.__cooldown >= FPS * 5:
             self.__cooldown = 0
@@ -185,16 +217,6 @@ class CoinSquare(StaticSquare):
         self._player = player
         self.__coin_sound = pg.mixer.Sound(path.join(self._player.sound_dir, "coin_sound.mp3"))
         self.__coin_sound.set_volume(0.2)
-
-    def _player_collision(self) -> bool:
-        """Verifica se houve colisão entre o objeto e o player
-
-        Returns
-        -------
-        bool
-            True caso sim e False caso não
-        """
-        return pg.sprite.collide_rect(self, self._player)
     
     def __coin_catch(self) -> None:
         """O Player aumenta em um sua contagem de moedas, o objeto é excluído e há som sonoro confirmando o evento

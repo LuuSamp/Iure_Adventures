@@ -1,6 +1,6 @@
 import pygame
 from layout import import_csv_layout
-from quadrado import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
+from square import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
 from player import Player
 from enemy import Enemy, EnemyShooter
 from const import *
@@ -8,6 +8,7 @@ import os
 import sys
 from final_boss import FinalBoss
 from os import path
+from princess import PrincessPinho, Smoke
 
 
 os.chdir(os.getcwd())
@@ -15,7 +16,7 @@ os.chdir(os.getcwd())
 class Level:
     """Principal fase do jogo a ser carregada.
     """
-    def __init__(self, surface:pygame.display, player: Player, level_path='level'):
+    def __init__(self, surface:pygame.display, player: Player, level_path='./level/level_1'):
         """Inicializa a fase
 
         Parameters
@@ -37,7 +38,11 @@ class Level:
 
         # terrain setup
         terrain_layout = import_csv_layout(f'{level_path}/terrain.csv')
-        self.terrain_position = self.create_terrain(terrain_layout, 'terrain')
+        
+        # fall blocks setup
+        fall_blocks_layout = import_csv_layout(f'{level_path}/fall_blocks.csv')
+
+        self.terrain_position = pygame.sprite.Group(self.create_terrain(terrain_layout, 'terrain'), self.create_terrain(fall_blocks_layout, 'fall_blocks'))
 
         # coins 
         coin_layout = import_csv_layout(f'{level_path}/coins.csv')
@@ -49,6 +54,14 @@ class Level:
         self.explosion_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
 
+        # decor_door
+        decor_door_layout = import_csv_layout(f'{level_path}/decor_door.csv')
+        self.decor_door_position = self.create_terrain(decor_door_layout, 'decor_door')
+
+        # princess
+        princess_layout = import_csv_layout(f'{level_path}/pinho.csv')
+        self.princess_position = self.create_terrain(princess_layout, 'pinho')
+        
         # door
         door_layout = import_csv_layout(f'{level_path}/door.csv')
         self.door_position = self.create_terrain(door_layout, 'door')
@@ -101,14 +114,18 @@ class Level:
                         try:
                             square = StaticSquare(x, y, SQUARE_SIZE, f'./media/blocos/bloco__{val}.png')
                         except:
-                            square = StaticSquare(x, y, SQUARE_SIZE, './media/blocos/bloco__0.png')
-                    elif type == 'fall_block':
-                        square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
+                            square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco__0.png', self.player)
+                    elif type == 'fall_blocks':
+                        square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco_11.png', self.player)
                     elif type == 'coins':
-                        square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
+                        square = CoinSquare(x, y, SQUARE_SIZE, './media/coin.png', self.player)
                     elif type == 'door':
-                        square = LevelDoor(x, y, SQUARE_SIZE * 2, './imagens/coin.png', self.player)
+                        square = LevelDoor(x, y, SQUARE_SIZE * 2, './media/porta.png', self.player)
                         self.doors.append(square)
+                    elif type == 'decor_door':
+                        square = ColisionSquare(x, y, SQUARE_SIZE * 2, './media/porta.png', self.player)
+                    elif type == "pinho":
+                        square = PrincessPinho((x, y))
 
                     squares.add(square)
 
@@ -151,10 +168,10 @@ class Level:
                 if val == '0':
                     enemies.add(Enemy((x, y)))
 
-                elif val == '1':
+                elif val == '2':
                     enemies.add(EnemyShooter((x, y), self.bullet_group))
                 
-                elif val == '2':
+                elif val == '3':
                     enemies.add(FinalBoss((x, y), self.player, self.bullet_group, self.explosion_group))
                     enemies.add(enemies.sprites()[-1].gun)
         
@@ -185,10 +202,12 @@ class Level:
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
         self.door_position.update(self.world_shift)
+        self.decor_door_position.update(self.world_shift)
         self.player.collide_with_enemy(self.enemy_position)
         self.player.update(self.terrain_position, self.world_shift)
         self.bullet_group.update(self.player, self.world_shift)
         self.explosion_group.update()
+        self.princess_position.update()
 
     def _draw_coin_text(self):
         """Gera o contador de moedas na tela
@@ -200,9 +219,11 @@ class Level:
     def draw_elements(self):
         """Adiciona os elementos a tela
         """
+        self.princess_position.draw(self.display_surface)
         self.terrain_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
         self.door_position.draw(self.display_surface)
+        self.decor_door_position.draw(self.display_surface)
         self.enemy_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
         self.bullet_group.draw(self.display_surface)
@@ -280,7 +301,7 @@ class Level:
 class BossLevel(Level):
     """A fase do boss a ser derrotado
     """
-    def __init__(self, surface:pygame.display, player: Player, level_path='boss_level'):
+    def __init__(self, surface:pygame.display, player: Player, level_path='./level/boss_level'):
         """Inicializa a fase
 
         Parameters
@@ -293,38 +314,47 @@ class BossLevel(Level):
             o caminho para o arquivo, by default 'boss_level'
         """
         super().__init__(surface, player, level_path)
-        self.initial_timer = 0
 
-    def _start_screen(self, timer_factor) -> None:
-        """Cena de início da fase do boss
+        self.boss = FinalBoss((1250,0), self.player, self.bullet_group, self.explosion_group)
 
-        Parameters
-        ----------
-        timer_factor : float
-            o fator de velocidade, quanto maior mais lento
-        """
+        self.enemy_position.add(self.boss)
+        self.enemy_position.add(self.boss.gun)
+        self.boss.initial_pos = SQUARE_SIZE * 10
+        self.boss.x_vel *= 3
+        self.boss.move_range = 1200
+        self.started = False
 
-        fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
-        fade_image.fill("black")
-        fade = fade_image.get_rect()
-        fade_alpha = 255 - int(self.initial_timer / timer_factor)
-
-        fade_image.set_alpha(fade_alpha)
-        self.display_surface.blit(fade_image, fade)
+        self.princess = self.princess_position.sprites()[-1]
 
     def init_run(self):
-        """Roda a inicialização da tela
-        """
-        self.initial_timer += 1
+        self.boss.facing = -1
+
+        self.update_elements()
+        self.boss.move_counter = 0
+        self.boss.shot_time = 0
         self.draw_elements()
-        self._start_screen(0.3)
+
+        if self.boss.rect.x <= self.boss.initial_pos: 
+            self.boss.move_range = INITIAL_RANGE
+            self.boss.x_vel /= 3
+            self.player.x_vel = PLAYER_X_VEL
+            self.started = True
 
     def run(self):
-        """Roda a fase
-        """
-        if self.initial_timer >= FPS:
+        if self.started:
             self.game_run()
         else:
+            self.player.x_vel = 0
             self.init_run()
             self.initialized = True
 
+    def _update_world_shift(self) -> None:
+        """Atualiza o deslocamento horizontal dos elementos
+        """
+        self.world_shift = 0
+    
+    def game_run(self):
+        super().game_run()
+        if self.boss.health <= 0 and self.princess.animation_list == 0:
+            self.princess.change_list()
+            self.princess_position.add(Smoke(self.princess.rect.center))
