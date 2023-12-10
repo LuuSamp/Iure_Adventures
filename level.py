@@ -13,7 +13,7 @@ from os import path
 os.chdir(os.getcwd())
 
 class Level:
-    def __init__(self, surface, player: Player, level_path='level'):
+    def __init__(self, surface, player: Player, level_path='level_1'):
         #setup geral
         self.display_surface = surface
         self.player = player
@@ -23,24 +23,32 @@ class Level:
         self.fonte = pygame.font.Font(None, 36)
 
         # terrain setup
-        terrain_layout = import_csv_layout(f'{level_path}/terrain.csv')
+        terrain_layout = import_csv_layout(f'level/{level_path}/terrain.csv')
         self.terrain_position = self.create_terrain(terrain_layout, 'terrain')
+        
+        # fall blocks setup
+        fall_blocks_layout = import_csv_layout(f'level/{level_path}/fall_blocks.csv')
+        self.fall_blocks_position = self.create_terrain(fall_blocks_layout, 'fall_block')
 
         # coins 
-        coin_layout = import_csv_layout(f'{level_path}/coins.csv')
+        coin_layout = import_csv_layout(f'level/{level_path}/coin.csv')
         self.coin_position = self.create_terrain(coin_layout, 'coins')
 
         # enemy 
-        enemy_layout = import_csv_layout(f'{level_path}/enemies.csv')
+        enemy_layout = import_csv_layout(f'level/{level_path}/enemies.csv')
         self.bullet_group = pygame.sprite.Group()
         self.explosion_group = pygame.sprite.Group()
         self.enemy_position = self.create_enemies(enemy_layout)
 
+        # decor_door
+        decor_door_layout = import_csv_layout(f'level/{level_path}/decor_door.csv')
+        self.decor_door_position = self.create_terrain(decor_door_layout, 'decor_door')
+        
         # door
-        door_layout = import_csv_layout(f'{level_path}/door.csv')
+        door_layout = import_csv_layout(f'level/{level_path}/door.csv')
         self.door_position = self.create_terrain(door_layout, 'door')
 
-        player_position = import_csv_layout(f'{level_path}/player.csv')
+        player_position = import_csv_layout(f'level/{level_path}/player.csv')
         self.set_player_position(player_position)
 
         self.world_shift = 0
@@ -71,14 +79,16 @@ class Level:
                         try:
                             square = StaticSquare(x, y, SQUARE_SIZE, f'./media/blocos/bloco__{val}.png')
                         except:
-                            square = StaticSquare(x, y, SQUARE_SIZE, './media/blocos/bloco__0.png')
+                            square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco__0.png', self.player)
                     elif type == 'fall_block':
                         square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
                     elif type == 'coins':
                         square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
                     elif type == 'door':
-                        square = LevelDoor(x, y, SQUARE_SIZE * 2, './imagens/coin.png', self.player)
+                        square = LevelDoor(x, y, SQUARE_SIZE * 2, './media/porta.png', self.player)
                         self.doors.append(square)
+                    elif type == 'decor_door':
+                        square = ColisionSquare(x, y, SQUARE_SIZE * 2, './media/porta.png', self.player)
 
                     squares.add(square)
 
@@ -103,10 +113,10 @@ class Level:
                 if val == '0':
                     enemies.add(Enemy((x, y)))
 
-                elif val == '1':
+                elif val == '2':
                     enemies.add(EnemyShooter((x, y), self.bullet_group))
                 
-                elif val == '2':
+                elif val == '3':
                     enemies.add(FinalBoss((x, y), self.player, self.bullet_group, self.explosion_group))
                     enemies.add(enemies.sprites()[-1].gun)
         
@@ -130,9 +140,11 @@ class Level:
             self.reset()
 
         self.terrain_position.update(self.world_shift)
+        self.fall_blocks_position.update(self.world_shift)
         self.enemy_position.update(self.terrain_position, self.world_shift)
         self.coin_position.update(self.world_shift)
         self.door_position.update(self.world_shift)
+        self.decor_door_position.update(self.world_shift)
         self.player.collide_with_enemy(self.enemy_position)
         self.player.update(self.terrain_position, self.world_shift)
         self.bullet_group.update(self.player, self.world_shift)
@@ -145,8 +157,10 @@ class Level:
 
     def draw_elements(self):
         self.terrain_position.draw(self.display_surface)
+        self.fall_blocks_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
         self.door_position.draw(self.display_surface)
+        self.decor_door_position.draw(self.display_surface)
         self.enemy_position.draw(self.display_surface)
         self.player_group.draw(self.display_surface)
         self.bullet_group.draw(self.display_surface)
