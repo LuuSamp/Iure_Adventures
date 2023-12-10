@@ -2,6 +2,8 @@
 ## Projeto:
 O jogo foi desenvolvido para a avaliação do segundo período da disciplina de Linguagens de Programação. O principal objetivo do projeto foi aplicar conceitos e fundamentos de programação orientada a objetos em Python, aliados a técnicas de documentação.
 
+Link Para Documentação (Sphinx): [documentação]([https://markdownlivepreview.com/](https://iure-adventures.readthedocs.io/pt-br/latest/modules.html)).
+
 A história principal do jogo narra a jornada do professor Iure, um grande entusiasta do ensino e do aprendizado, em sua luta contra a dominação da inteligência artificial no ambiente escolar. Durante sua jornada, ele busca libertar os alunos que foram controlados pelo vilão, derrotar a inteligência artificial representada por um androide, e, acima de tudo, resgatar a princesa Pinha, que foi raptada.
 
 ![Personagens](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/mapa/media/readme_images/personagens.png)
