@@ -102,8 +102,8 @@ class Level:
                             square = StaticSquare(x, y, SQUARE_SIZE, f'./media/blocos/bloco__{val}.png')
                         except:
                             square = StaticSquare(x, y, SQUARE_SIZE, './media/blocos/bloco__0.png')
-                    elif type == 'fall_block':
-                        square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
+                    elif type == 'fall_blocks':
+                        square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco_11.png', self.player)
                     elif type == 'coins':
                         square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
                     elif type == 'door':
