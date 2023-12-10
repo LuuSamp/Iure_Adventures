@@ -26,8 +26,8 @@ class Game:
 
         self.win_counter = 0
     
-    def load_level(self):
-        return Level(self.screen, self.player)
+    def reset(self):
+        self.__init__()
     
     def run(self):
         self.game_loop()
@@ -56,8 +56,7 @@ class Game:
             if self.player.won == True:
                 self.win_counter += 1
                 if self.win_counter >= FPS*5:
-                    self.game_state = "menu"
-                    self.player.won = False
+                    self.reset()
 
             pygame.display.update()
             self.clock.tick(FPS)
