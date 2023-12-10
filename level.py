@@ -28,7 +28,7 @@ class Level:
         
         # fall blocks setup
         fall_blocks_layout = import_csv_layout(f'level/{level_path}/fall_blocks.csv')
-        self.fall_blocks_position = self.create_terrain(fall_blocks_layout, 'fall_block')
+        self.fall_blocks_position = self.create_terrain(fall_blocks_layout, 'fall_blocks')
 
         # coins 
         coin_layout = import_csv_layout(f'level/{level_path}/coin.csv')
@@ -80,8 +80,8 @@ class Level:
                             square = StaticSquare(x, y, SQUARE_SIZE, f'./media/blocos/bloco__{val}.png')
                         except:
                             square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco__0.png', self.player)
-                    elif type == 'fall_block':
-                        square = ColisionSquare(x, y, SQUARE_SIZE, './imagens/madeira.jpg', self.player)
+                    elif type == 'fall_blocks':
+                        square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco_10.png', self.player)
                     elif type == 'coins':
                         square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
                     elif type == 'door':

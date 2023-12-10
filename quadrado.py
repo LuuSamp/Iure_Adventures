@@ -102,12 +102,14 @@ class ColisionSquare(StaticSquare):
             jogador com que as colisões ocorrerão
         """
         super().__init__(x, y, size, image_path)
+        self.image_path = image_path
         self._player = player
         self.speed_y = 0
         self.gravity = GRAVITY
         self.collision = True
         self.init_y = y
         self.__cooldown = 0
+        self.size = size
 
     def _player_collision(self) -> bool:
         """ Verifica se houve colisão entre o jogador e o objeto
@@ -135,6 +137,20 @@ class ColisionSquare(StaticSquare):
         """
         self.rect.y = self.init_y
     
+    def __update_image(self, path):
+        if self.__cooldown <= FPS * 0.5:
+            image = pg.image.load(f'{path}/bloco_11.png')
+        elif self.__cooldown <= FPS:
+            image = pg.image.load(f'{path}/bloco_12.png')
+        elif self.__cooldown <= FPS * 1.5:
+            image = pg.image.load(f'{path}/bloco_13.png')
+        else:
+            image = pg.image.load(f'{path}/bloco_14.png')
+        
+        frame = pg.transform.scale(image, (self.size, self.size))
+        self.image = frame
+
+    
     def update(self, shift:int) -> None:
         """Inicia um timer caso haja uma colisão entre o jogador e a parte superior do bloco,
         após alguns instantes o bloco cai e logo após volta a aparecer onde estava inciialmente.
@@ -148,9 +164,11 @@ class ColisionSquare(StaticSquare):
 
         if self._player_collision() == True:
             self.__cooldown += 1
+            self.__update_image('./media/blocos')
         elif self.__cooldown > 0:
             self.__cooldown += 1
-
+            self.__update_image('./media/blocos')
+        
         if self.__cooldown >= FPS * 5:
             self.__cooldown = 0
             self._reset_block()
