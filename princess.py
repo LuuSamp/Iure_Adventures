@@ -118,11 +118,11 @@ class Smoke(pg.sprite.Sprite):
         self.rect = self.image.get_rect(center=position)
 
         self.frames = [pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png")),
-                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png")),
-                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png")),
-                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png"))]
+                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_1.png")),
+                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_2.png")),
+                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_3.png"))]
         
-        self.smoke_counter = 60
+        self.smoke_counter = 0
 
     def animation(self) -> None:
         """
@@ -131,18 +131,24 @@ class Smoke(pg.sprite.Sprite):
 
         if self.smoke_counter < 15:
             frame = 0
+            print("1")
         elif self.smoke_counter < 30:
             frame = 1
+            print("2")
         elif self.smoke_counter < 45:
             frame = 2
+            print("3")
         elif self.smoke_counter < 60:
             frame = 3
+            print("4")
         else:
+            print("5")
             self.kill()
         try:
             self.image = pg.transform.scale(self.frames[frame], (150, 150))
             self.smoke_counter += 1
-        except:
+        except Exception as err:
+            print(err)
             return
         
     def update(self) -> None:

@@ -8,7 +8,7 @@ import os
 import sys
 from final_boss import FinalBoss
 from os import path
-from princess import PrincessPinho
+from princess import PrincessPinho, Smoke
 
 
 os.chdir(os.getcwd())
@@ -316,12 +316,15 @@ class BossLevel(Level):
         super().__init__(surface, player, level_path)
 
         self.boss = FinalBoss((1250,0), self.player, self.bullet_group, self.explosion_group)
+
         self.enemy_position.add(self.boss)
         self.enemy_position.add(self.boss.gun)
         self.boss.initial_pos = SQUARE_SIZE * 10
         self.boss.x_vel *= 3
         self.boss.move_range = 1200
         self.started = False
+
+        self.princess = self.princess_position.sprites()[-1]
 
     def init_run(self):
         self.boss.facing = -1
@@ -345,3 +348,13 @@ class BossLevel(Level):
             self.init_run()
             self.initialized = True
 
+    def _update_world_shift(self) -> None:
+        """Atualiza o deslocamento horizontal dos elementos
+        """
+        self.world_shift = 0
+    
+    def game_run(self):
+        super().game_run()
+        if self.boss.health <= 0 and self.princess.animation_list == 0:
+            self.princess.change_list()
+            self.princess_position.add(Smoke(self.princess.rect.center))
