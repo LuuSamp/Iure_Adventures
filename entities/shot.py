@@ -1,4 +1,4 @@
-from player import Player
+from entities.player import Player
 import pygame as pg
 from const import *
 from os import path
@@ -19,7 +19,7 @@ class Shot(pg.sprite.Sprite):
         """
         super().__init__()
         current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "media")
+        media_dir = path.join(current_dir, "..", "media")
         
         #configurando o som ao atirar o projétil
         self.sound = pg.mixer.Sound(path.join(media_dir, "sounds/shooting-sound-fx-159024.mp3"))

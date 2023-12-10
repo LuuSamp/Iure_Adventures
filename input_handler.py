@@ -1,6 +1,6 @@
 from pygame.locals import *
 import pygame as pg
-from player import Player
+from entities.player import Player
 
 class InputHandler:
     """

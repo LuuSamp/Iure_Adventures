@@ -1,5 +1,5 @@
 import pygame as pg
-from entity import Entity
+from entities.entity import Entity
 from os import path
 from typing import Tuple
 from const import *
@@ -21,7 +21,7 @@ class Player(Entity):
         super().__init__(position)
 
         current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "media")
+        media_dir = path.join(current_dir, "..", "media")
         self.image_dir = path.join(media_dir, "player_images")
         self.sound_dir = path.join(media_dir, "sounds")
 

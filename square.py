@@ -1,7 +1,7 @@
 import pygame as pg
-from player import Player
+from entities.player import Player
 from const import *
-from entity import Entity
+from entities.entity import Entity
 from os import path
 
 class Rect(pg.sprite.Sprite):

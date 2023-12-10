@@ -1,8 +1,8 @@
 import pygame as pg
-from enemy import Enemy
-from player import Player
+from entities.enemy import Enemy
+from entities.player import Player
 from const import *
-from shot import BossShot
+from entities.shot import BossShot
 from os import path
 
 class FinalBoss(Enemy):
@@ -34,7 +34,7 @@ class FinalBoss(Enemy):
         super().__init__(position)
 
         current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "media")
+        media_dir = path.join(current_dir, "..", "media")
         self.image_dir = path.join(media_dir, "final_boss", "boss")
         initial_image = path.join(self.image_dir, "final_boss_0.png")
 
@@ -224,7 +224,7 @@ class BossGun(pg.sprite.Sprite):
         self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
 
         current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "media")
+        media_dir = path.join(current_dir, "..", "media")
         self.image_dir = path.join(media_dir, "final_boss", "gun")
         initial_image = path.join(self.image_dir, "boss_gun_0.png")
 

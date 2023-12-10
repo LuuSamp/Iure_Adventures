@@ -1,5 +1,5 @@
 import pygame as pg
-from final_boss import FinalBoss
+from entities.final_boss import FinalBoss
 from os import path
 from const import *
 
@@ -19,7 +19,7 @@ class PrincessPinho(pg.sprite.Sprite):
         super().__init__()
 
         self.current_dir = path.dirname(path.abspath(__file__))
-        self.princess_dir = path.join(self.current_dir, "media", "princess")
+        self.princess_dir = path.join(self.current_dir, "..", "media", "princess")
 
         self.frames = [[pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_1.png")),
                         pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_2.png")),

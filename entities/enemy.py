@@ -1,6 +1,6 @@
 import pygame as pg  
-from entity import Entity
-from shot import Shot
+from entities.entity import Entity
+from entities.shot import Shot
 from const import * 
 from os import path
 
@@ -22,7 +22,7 @@ class Enemy(Entity):
         #atributos padrões de entidades
         super().__init__(position)
         self.current_dir = path.dirname(path.abspath(__file__))
-        self.media_dir = path.join(self.current_dir, "media")
+        self.media_dir = path.join(self.current_dir, "..", "media")
 
         #atributos iniciais
         self.initial_pos = self.rect.left
@@ -134,7 +134,7 @@ class EnemyShooter(Enemy):
 
         super().__init__(position)
         self.current_dir = path.dirname(path.abspath(__file__))
-        self.media_dir = path.join(self.current_dir, "media")
+        self.media_dir = path.join(self.current_dir, "..", "media")
 
         #atributos de animação e de lançamento de projéteis
         self.shots = shots
