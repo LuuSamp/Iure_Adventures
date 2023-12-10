@@ -1,13 +1,12 @@
 # Iure Adventures
-Jogo feito para a disciplina de Linguagens de Programação (A2).
+## Projeto:
+O jogo foi desenvolvido para a avaliação do segundo período da disciplina de Linguagens de Programação. O principal objetivo do projeto foi aplicar conceitos e fundamentos de programação orientada a objetos em Python, aliados a técnicas de documentação.
 
-## Instruções de uso do repositório:
+A história principal do jogo narra a jornada do professor Iure, um grande entusiasta do ensino e do aprendizado, em sua luta contra a dominação da inteligência artificial no ambiente escolar. Durante sua jornada, ele busca libertar os alunos que foram controlados pelo vilão, derrotar a inteligência artificial representada por um androide, e, acima de tudo, resgatar a princesa Pinha, que foi raptada.
 
-1. Rode a linha de comando ```pip install -r requirements.txt``` para baixar as bibliotecas necessárias.
-2. Execute o comando ```python main.py``` ou apenas execute o arquivo *main.py* para gerar as visualizações.
+![Personagens](media\readme_images\personagens.png)
 
-
-## Integrantes (Todos de CD)
+## Integrantes (Todos de CD):
 
 - Matheus Carvalho
 - Luciano Sampaio
@@ -15,7 +14,31 @@ Jogo feito para a disciplina de Linguagens de Programação (A2).
 - Sillas Rocha
 - Gustavo Tironi
 
-## Sobre o jogo:
+## Instruções de uso do repositório:
 
-Acompanhe o personagem principal Iure em sua aventura para recuperar sua princesa do robô maligno, para isto, será necessário saltar de prédio em prédio, desviar de balas e saltar sobre os capangas do robô.
+1. Rode a linha de comando ```pip install -r requirements.txt``` para baixar as bibliotecas necessárias.
+2. Execute o comando ```python main.py``` ou apenas execute o arquivo *main.py* para acessar o jogo. 
 
+## Descrição do Repositório:
+
+## Jogo:
+
+Segue, abaixo, toda a descrição das etapas do jogo. Todas elas foram pensadas para oferecer ao usuário uma experiência agradável, desafiadora e divertida para o jogador. 
+
+### Menu:
+Ao iniciar o jogo, o usuário será direcionado para o menu principal. Neste menu, terá a opção de iniciar o jogo ou encerrar a execução. No canto direito inferior, estarão listados os nomes de todos os autores envolvidos no projeto, os quais foram previamente mencionados.
+
+![Menu](media\readme_images\menu.png)
+### Primeira Fase:
+A primeira fase consiste em um jogo clássico de plataformas. Nela, encontram-se obstáculos diferenciados em um cenário urbano, praticamente todo desenhado pelo grupo, com exceção do plano de fundo. Além disso, há inimigos que tornam a experiência ainda mais desafiadora.
+
+![Primeira Fase](media\readme_images\primeira_fase.png)
+### Luta Final:
+
+A fase final apresenta um inimigo que, conforme esperado, possui três vidas. Para derrotá-lo, será necessário sobreviver aos seus ataques até que ele fique vulnerável. Nesse momento, é possível realizar ataques para reduzir sua barra de vida até alcançar zero, libertando finalmente a princesa Pinha.
+
+![Fase Final](media\readme_images\fase_final.png)
+
+## Obrigado Por Jogar:
+
+![Fase Final](media\readme_images\obrigado.gif)
