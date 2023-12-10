@@ -278,11 +278,32 @@ class Level:
 
 
 class BossLevel(Level):
-    def __init__(self, surface, player: Player, level_path='boss_level'):
+    """A fase do boss a ser derrotado
+    """
+    def __init__(self, surface:pygame.display, player: Player, level_path='boss_level'):
+        """Inicializa a fase
+
+        Parameters
+        ----------
+        surface : pygame.display
+            a tela do jogo
+        player : Player
+            o personagem do jogo
+        level_path : str, optional
+            o caminho para o arquivo, by default 'boss_level'
+        """
         super().__init__(surface, player, level_path)
         self.initial_timer = 0
 
-    def _start_screen(self, timer_factor):
+    def _start_screen(self, timer_factor) -> None:
+        """Cena de início da fase do boss
+
+        Parameters
+        ----------
+        timer_factor : float
+            o fator de velocidade, quanto maior mais lento
+        """
+
         fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
         fade_image.fill("black")
         fade = fade_image.get_rect()
@@ -292,11 +313,15 @@ class BossLevel(Level):
         self.display_surface.blit(fade_image, fade)
 
     def init_run(self):
+        """Roda a inicialização da tela
+        """
         self.initial_timer += 1
         self.draw_elements()
         self._start_screen(0.3)
 
     def run(self):
+        """Roda a fase
+        """
         if self.initial_timer >= FPS:
             self.game_run()
         else:
