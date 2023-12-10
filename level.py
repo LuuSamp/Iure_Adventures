@@ -118,7 +118,7 @@ class Level:
                     elif type == 'fall_blocks':
                         square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco_11.png', self.player)
                     elif type == 'coins':
-                        square = CoinSquare(x, y, SQUARE_SIZE, './imagens/coin.png', self.player)
+                        square = CoinSquare(x, y, SQUARE_SIZE, './media/coin.png', self.player)
                     elif type == 'door':
                         square = LevelDoor(x, y, SQUARE_SIZE * 2, './media/porta.png', self.player)
                         self.doors.append(square)
