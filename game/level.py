@@ -89,6 +89,10 @@ class Level:
         self.fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
         self.fade_image.fill("black")
         self.finishing_song_started = False
+        
+        # Coin count
+        self.last_player_coin_count = self.player.coin_count
+        self.coin_text = self.fonte.render(f"Coins: {self.player.coin_count}", True, "#f0f8ff")
 
 
     def reset(self) -> None:
@@ -223,9 +227,12 @@ class Level:
     def _draw_coin_text(self):
         """Gera o contador de moedas na tela
         """
-        texto = self.fonte.render(f"Coins: {self.player.coin_count}", True, "#f0f8ff")
-        text_rect = texto.get_rect(topleft=(10, 10))
-        self.display_surface.blit(texto, text_rect)
+        if self.player.coin_count != self.last_player_coin_count:
+            self.last_player_coin_count = self.player.coin_count
+            self.coin_text = self.fonte.render(f"Coins: {self.player.coin_count}", True, "#f0f8ff")
+            
+        text_rect = self.coin_text.get_rect(topleft=(10, 10))
+        self.display_surface.blit(self.coin_text, text_rect)
 
     def draw_elements(self):
         """Adiciona os elementos a tela

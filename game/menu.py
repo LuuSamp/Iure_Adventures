@@ -91,34 +91,54 @@ class Menu:
         self.play_button = Button(420, 400, self.play_img, self.play_clicked_img, 0.8)
         self.quit_button = Button(420, 550, self.quit_img, self.quit_clicked_img, 0.8)
         
+        self._init_texts()
+        
+    def _init_texts(self):
+        """
+        Inicialização dos textos.
+        """
+        self.font = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 16)
+        
+        # Nome dos criadores do jogo
+        self.text_lines = ["Made by:", "Gustavo Tironi", "Luciano Sampaio", "Luís Felipe Marciano", "Matheus Carvalho", "Sillas Rocha"]
+        self.line_height = 20
+        self.y = 530
+        self.text_lines_surface = []
+        self.text_lines_rect = []
+        
+        # Renderização dos Nomes dos criadores
+        for line in self.text_lines:
+            self.text_lines_surface.append(self.font.render(line, True, "white"))
+            self.text_lines_rect.append(self.text_lines_surface[-1].get_rect(center=(1000, self.y)))
+            self.y += self.line_height
+        
+        # Título do jogo
+        self.title1 = "Iure"
+        self.title2 = "Adventures"
+        
+        # Renderização dos Titulos
+        self.font_title1 = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 80)
+        self.title1_surface = self.font_title1.render(self.title1, True, "white")
+        self.title1_rect = self.title1_surface.get_rect(center=(SCREEN_WIDTH/2, 170))
+        
+        self.font_title2 = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 60)
+        self.title2_surface = self.font_title2.render(self.title2, True, "red")
+        self.title2_rect = self.title2_surface.get_rect(center=(SCREEN_WIDTH/2, 250))
+        
     def draw_texts(self):
         """
         Médodo para botar todos os textos na tela.
         """
         # botando nome dos criadores do jogo
-        font = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 16)
-        text_lines = ["Made by:", "Gustavo Tironi", "Luciano Sampaio", "Luís Felipe Marciano", "Matheus Carvalho", "Sillas Rocha"]
-        line_height = 20
-        y = 530
-        for line in text_lines:
-            text_surface = font.render(line, True, "white")
-            text_rect = text_surface.get_rect(center=(1000, y))
-            self.display_surface.blit(text_surface, text_rect)
-            y += line_height
+    
+        for i, line in enumerate(self.text_lines):
+            self.display_surface.blit(self.text_lines_surface[i], self.text_lines_rect[i])
 
         # botando primeira parte do título do jogo
-        font_title1 = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 80)
-        title1 = "Iure"
-        title1_surface = font_title1.render(title1, True, "white")
-        title1_rect = title1_surface.get_rect(center=(SCREEN_WIDTH/2, 170))
-        self.display_surface.blit(title1_surface, title1_rect)
+        self.display_surface.blit(self.title1_surface, self.title1_rect)
        
         # botando segunda parte do título do jogo
-        font_title2 = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 60)
-        title2 = "Adventures"
-        title2_surface = font_title2.render(title2, True, "red")
-        title2_rect = title2_surface.get_rect(center=(SCREEN_WIDTH/2, 250))
-        self.display_surface.blit(title2_surface, title2_rect)
+        self.display_surface.blit(self.title2_surface, self.title2_rect)
 
     def run(self):
         """
