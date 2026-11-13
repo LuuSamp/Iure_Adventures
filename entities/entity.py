@@ -55,7 +55,9 @@ class Entity(ABC, pg.sprite.Sprite):
 
         if not self.collision: return 
         
-        for square in pg.sprite.spritecollide(self, square_group, False):
+        hits = pg.sprite.spritecollide(self, square_group, False)
+        
+        for square in hits:
             if (self.direction.y + 3 > 0 and self.rect.bottom - self.direction.y - 1 < square.rect.top
                 and (self.rect.right != square.rect.left + 5 and self.rect.left != square.rect.right - 5)): 
                 self.rect.bottom = square.rect.top
@@ -67,7 +69,10 @@ class Entity(ABC, pg.sprite.Sprite):
                 self.rect.top = square.rect.bottom
                 self.direction.y = 0
 
-        for square in pg.sprite.spritecollide(self, square_group, False):
+        for square in hits:
+            if not self.rect.colliderect(square.rect):
+                continue
+            
             if self.direction.x > 0 and self.rect.right - self.direction.x <= square.rect.left: 
                 self.rect.right = square.rect.left
 
