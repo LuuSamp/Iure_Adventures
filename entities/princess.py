@@ -2,6 +2,7 @@ import pygame as pg
 from entities.final_boss import FinalBoss
 from os import path
 from game.const import *
+from game.helpers import load_image
 
 class PrincessPinho(pg.sprite.Sprite):
     """
@@ -21,30 +22,31 @@ class PrincessPinho(pg.sprite.Sprite):
         self.current_dir = path.dirname(path.abspath(__file__))
         self.princess_dir = path.join(self.current_dir, "..", "media", "princess")
 
-        self.frames = [[pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_1.png")),
-                        pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_2.png")),
-                        pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_3.png")),
-                        pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_4.png")),
-                        pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_5.png")),
-                        pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_6.png"))],
+        frame_size = (2 * SQUARE_SIZE, 2 * SQUARE_SIZE)
+        self.frames = [[load_image(path.join(self.princess_dir, "preso/pinho_preso_1.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "preso/pinho_preso_2.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "preso/pinho_preso_3.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "preso/pinho_preso_4.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "preso/pinho_preso_5.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "preso/pinho_preso_6.png"), frame_size, alpha=True)],
 
-                       [pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz0.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz1.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz0.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz1.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz0.png")),
-                        pg.image.load(path.join(self.princess_dir, "livre/pinho_feliz1.png"))],
+                       [load_image(path.join(self.princess_dir, "livre/pinho_feliz0.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "livre/pinho_feliz1.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "livre/pinho_feliz0.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "livre/pinho_feliz1.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "livre/pinho_feliz0.png"), frame_size, alpha=True),
+                        load_image(path.join(self.princess_dir, "livre/pinho_feliz1.png"), frame_size, alpha=True)],
                         
-                        [pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_7.png")),
-                         pg.image.load(path.join(self.princess_dir, "preso/pinho_preso_8.png")),
-                         pg.image.load(path.join(self.princess_dir, "livre/pinho_solto0.png"))]
+                        [load_image(path.join(self.princess_dir, "preso/pinho_preso_7.png"), frame_size, alpha=True),
+                         load_image(path.join(self.princess_dir, "preso/pinho_preso_8.png"), frame_size, alpha=True),
+                         load_image(path.join(self.princess_dir, "livre/pinho_solto0.png"), frame_size, alpha=True)]
                         ]
         
         self.animation_counter = 0
         self.animation_delay = 120
         self.animation_list = 0
 
-        self.image = pg.Surface((2*SQUARE_SIZE, 2*SQUARE_SIZE))
+        self.image = pg.Surface(frame_size)
         self.rect = self.image.get_rect(topleft=position)
         self.animated = True
 
@@ -64,8 +66,7 @@ class PrincessPinho(pg.sprite.Sprite):
             if self.animation_counter >= self.animation_delay:
                 self.animation_counter = 0
 
-            frame = self.frames[self.animation_list][self.animation_counter // 20]
-            self.image = pg.transform.scale(frame, (2*SQUARE_SIZE, 2*SQUARE_SIZE))
+            self.image = self.frames[self.animation_list][self.animation_counter // 20]
 
             self.animation_counter += 1
 
@@ -80,8 +81,7 @@ class PrincessPinho(pg.sprite.Sprite):
 
         if not self.animated:
             try:
-                frame = self.frames[self.animation_list][self.animation_counter // 20]
-                self.image = pg.transform.scale(frame, (2*SQUARE_SIZE, 2*SQUARE_SIZE))
+                self.image = self.frames[self.animation_list][self.animation_counter // 20]
             except:
                 pass
 
@@ -117,10 +117,11 @@ class Smoke(pg.sprite.Sprite):
         self.image.fill("blue")
         self.rect = self.image.get_rect(center=position)
 
-        self.frames = [pg.image.load(path.join(self.princess_dir, "smoke/smoke_0.png")),
-                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_1.png")),
-                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_2.png")),
-                       pg.image.load(path.join(self.princess_dir, "smoke/smoke_3.png"))]
+        smoke_size = (150, 150)
+        self.frames = [load_image(path.join(self.princess_dir, "smoke/smoke_0.png"), smoke_size, alpha=True),
+                       load_image(path.join(self.princess_dir, "smoke/smoke_1.png"), smoke_size, alpha=True),
+                       load_image(path.join(self.princess_dir, "smoke/smoke_2.png"), smoke_size, alpha=True),
+                       load_image(path.join(self.princess_dir, "smoke/smoke_3.png"), smoke_size, alpha=True)]
         
         self.smoke_counter = 0
 
@@ -139,8 +140,9 @@ class Smoke(pg.sprite.Sprite):
             frame = 3
         else:
             self.kill()
+            return
         try:
-            self.image = pg.transform.scale(self.frames[frame], (150, 150))
+            self.image = self.frames[frame]
             self.smoke_counter += 1
         except Exception as err:
             print(err)

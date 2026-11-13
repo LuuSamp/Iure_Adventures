@@ -3,6 +3,7 @@ from entities.entity import Entity
 from os import path
 from typing import Tuple
 from game.const import *
+from game.helpers import load_image
 
 class Player(Entity):
     """
@@ -25,14 +26,19 @@ class Player(Entity):
         self.image_dir = path.join(media_dir, "player_images")
         self.sound_dir = path.join(media_dir, "sounds")
 
+        frame_size = (self.rect.width, self.rect.height)
         self.walk_frames = [
-            pg.image.load(path.join(self.image_dir, "walk", "player_walking_1.png")),
-            pg.image.load(path.join(self.image_dir, "walk", "player_walking_2.png")),
-            pg.image.load(path.join(self.image_dir, "walk", "player_walking_3.png")),
-            pg.image.load(path.join(self.image_dir, "walk", "player_walking_4.png"))
+            load_image(path.join(self.image_dir, "walk", "player_walking_1.png"), frame_size, alpha=True),
+            load_image(path.join(self.image_dir, "walk", "player_walking_2.png"), frame_size, alpha=True),
+            load_image(path.join(self.image_dir, "walk", "player_walking_3.png"), frame_size, alpha=True),
+            load_image(path.join(self.image_dir, "walk", "player_walking_4.png"), frame_size, alpha=True),
         ]
-        self.standing_frame = pg.image.load(path.join(self.image_dir, "stand", "player_standing.png"))
-        self.jump_frame = pg.image.load(path.join(self.image_dir, "jump", "player_jumping.png"))
+        self.standing_frame = load_image(
+            path.join(self.image_dir, "stand", "player_standing.png"), frame_size, alpha=True
+        )
+        self.jump_frame = load_image(
+            path.join(self.image_dir, "jump", "player_jumping.png"), frame_size, alpha=True
+        )
 
         self.x_vel = PLAYER_X_VEL
         self.jump_height = PLAYER_Y_VEL
@@ -65,18 +71,18 @@ class Player(Entity):
         """
         if not self.on_ground:
             self.animation_counter = 1
-            frame = pg.transform.scale(self.jump_frame, (self.rect.width, self.rect.height))
+            frame = self.jump_frame
 
         elif self.direction.x == 0:
             self.animation_counter = 1
-            frame = pg.transform.scale(self.standing_frame, (self.rect.width, self.rect.height))
+            frame = self.standing_frame
 
         else:
             self.animation_counter -= 1
 
         if self.animation_counter == 0:
             self.current_frame = (self.current_frame + 1) % len(self.walk_frames)
-            frame = pg.transform.scale(self.walk_frames[self.current_frame], (self.rect.width, self.rect.height))
+            frame = self.walk_frames[self.current_frame]
             self.animation_counter = self.animation_delay
 
         try:

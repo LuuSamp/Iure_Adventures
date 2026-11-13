@@ -1,6 +1,7 @@
 import pygame as pg
 from entities.player import Player
 from game.const import *
+from game.helpers import load_image
 from entities.entity import Entity
 from os import path
 
@@ -76,9 +77,7 @@ class StaticSquare(Square):
             caminho onde a imagem do objeto se localiza
         """
         super().__init__(x, y, size)
-        image = pg.image.load(image_path)
-        frame = pg.transform.scale(image, (size, size))
-        self.image = frame
+        self.image = load_image(image_path, (size, size), alpha=True)
 
     def _player_collision(self) -> bool:
         """Verifica se houve colisão entre o objeto e o player
@@ -122,10 +121,10 @@ class ColisionSquare(StaticSquare):
         self.size = size
         self.image_path = './media/blocos'
         self.images = [
-            pg.image.load(f'{self.image_path}/bloco_11.png'),
-            pg.image.load(f'{self.image_path}/bloco_12.png'),
-            pg.image.load(f'{self.image_path}/bloco_13.png'),
-            pg.image.load(f'{self.image_path}/bloco_14.png'),
+            load_image(f'{self.image_path}/bloco_11.png', (size, size), alpha=True),
+            load_image(f'{self.image_path}/bloco_12.png', (size, size), alpha=True),
+            load_image(f'{self.image_path}/bloco_13.png', (size, size), alpha=True),
+            load_image(f'{self.image_path}/bloco_14.png', (size, size), alpha=True),
         ]
 
     def _player_collision(self) -> bool:
@@ -151,25 +150,20 @@ class ColisionSquare(StaticSquare):
     
     def __update_image(self):
         if self.__cooldown <= FPS * 0.5:
-            image = self.images[0]
+            self.image = self.images[0]
         elif self.__cooldown <= FPS:
-            image = self.images[1]
+            self.image = self.images[1]
         elif self.__cooldown <= FPS * 1.5:
-            image = self.images[2]
+            self.image = self.images[2]
         else:
-            image = self.images[3]
-        
-        frame = pg.transform.scale(image, (self.size, self.size))
-        self.image = frame
+            self.image = self.images[3]
 
 
     def _reset_block(self) -> None:
         """Retorna o objeto a sua posição de altura inicial.
         """
         self.rect.y = self.init_y
-        image = self.images[0]
-        frame = pg.transform.scale(image, (self.size, self.size))
-        self.image = frame
+        self.image = self.images[0]
 
     
     def update(self, shift:int) -> None:

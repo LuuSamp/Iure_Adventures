@@ -2,6 +2,7 @@ import pygame as pg
 from entities.enemy import Enemy
 from entities.player import Player
 from game.const import *
+from game.helpers import load_image
 from entities.shot import BossShot
 from os import path
 
@@ -38,7 +39,7 @@ class FinalBoss(Enemy):
         self.image_dir = path.join(media_dir, "final_boss", "boss")
         initial_image = path.join(self.image_dir, "final_boss_0.png")
 
-        self.image = pg.transform.scale(pg.image.load(initial_image), (64, 128))
+        self.image = load_image(initial_image, (64, 128), alpha=True)
         self.rect = self.image.get_rect(topleft = position)
         
         self.player = player
@@ -59,9 +60,13 @@ class FinalBoss(Enemy):
         self.shot_time = 0
         
         self.sel_frame = 0
-        self.frames = [[pg.image.load(path.join(self.image_dir, "final_boss_2.png")), pg.image.load(path.join(self.image_dir, "final_boss_5.png"))],
-                       [pg.image.load(path.join(self.image_dir, "final_boss_1.png")), pg.image.load(path.join(self.image_dir, "final_boss_4.png"))],
-                       [pg.image.load(path.join(self.image_dir, "final_boss_0.png")), pg.image.load(path.join(self.image_dir, "final_boss_3.png"))]
+        boss_size = (64, 128)
+        self.frames = [[load_image(path.join(self.image_dir, "final_boss_2.png"), boss_size, alpha=True),
+                        load_image(path.join(self.image_dir, "final_boss_5.png"), boss_size, alpha=True)],
+                       [load_image(path.join(self.image_dir, "final_boss_1.png"), boss_size, alpha=True),
+                        load_image(path.join(self.image_dir, "final_boss_4.png"), boss_size, alpha=True)],
+                       [load_image(path.join(self.image_dir, "final_boss_0.png"), boss_size, alpha=True),
+                        load_image(path.join(self.image_dir, "final_boss_3.png"), boss_size, alpha=True)]
         ]
 
         self.animation_counter = 0
@@ -74,11 +79,11 @@ class FinalBoss(Enemy):
         if self.animation_counter >= self.animation_delay/(self.x_vel + 1) and self.is_alive == True and self.on_move == True:
 
             if self.sel_frame == 0:
-                self.image = pg.transform.scale(self.frames[self.health - 1][self.sel_frame], (64, 128))
+                self.image = self.frames[self.health - 1][self.sel_frame]
                 self.sel_frame = 1
 
             elif self.sel_frame == 1:
-                self.image = pg.transform.scale(self.frames[self.health - 1][self.sel_frame], (64, 128))
+                self.image = self.frames[self.health - 1][self.sel_frame]
                 self.sel_frame = 0
 
             if self.facing == -1:
@@ -228,13 +233,14 @@ class BossGun(pg.sprite.Sprite):
         self.image_dir = path.join(media_dir, "final_boss", "gun")
         initial_image = path.join(self.image_dir, "boss_gun_0.png")
 
+        gun_size = (32, 120)
         self.frames = [
-            pg.image.load(path.join(self.image_dir, "boss_gun_2.png")),
-            pg.image.load(path.join(self.image_dir, "boss_gun_1.png")),
-            pg.image.load(path.join(self.image_dir, "boss_gun_0.png"))
+            load_image(path.join(self.image_dir, "boss_gun_2.png"), gun_size, alpha=True),
+            load_image(path.join(self.image_dir, "boss_gun_1.png"), gun_size, alpha=True),
+            load_image(path.join(self.image_dir, "boss_gun_0.png"), gun_size, alpha=True),
         ]
 
-        self.initial_image = pg.transform.scale(pg.image.load(initial_image), (32, 120))
+        self.initial_image = load_image(initial_image, gun_size, alpha=True)
         self.position_on_holder = (self.holder.rect.left + 4 * 4, self.holder.rect.top + 15 * 4)
 
         self.image = pg.transform.rotate(self.initial_image, -self.angle_to_player)
@@ -245,7 +251,6 @@ class BossGun(pg.sprite.Sprite):
         """
         método que cria cada um dos projéteis
         """
-        print("Shooting boss gun")
         #caso o inimigo ainda esteja vivo, ele irá atirar na direção do player
         if self.player.alive():
             self.shots.add(BossShot((self.rect.center[0], self.rect.center[1]), self.aim_vector, self.explosion, self.holder.health))
@@ -254,10 +259,10 @@ class BossGun(pg.sprite.Sprite):
         """
         método que atualiza a imagem da arma com base no nível de vida do boss
         """
-        if self.holder.health == 0:
-            self.initial_image = pg.transform.scale(self.frames[self.holder.health], (32, 120))
+        if self.holder.health <= 0:
+            self.initial_image = self.frames[self.holder.health]
         else:
-            self.initial_image = pg.transform.scale(self.frames[self.holder.health - 1], (32, 120))
+            self.initial_image = self.frames[self.holder.health - 1]
 
 
 

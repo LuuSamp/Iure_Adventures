@@ -1,6 +1,7 @@
 import pygame
 import sys
 from game.const import *
+from game.helpers import load_image
 
 class Button:
     """
@@ -80,12 +81,13 @@ class Menu:
         self.game_state = "menu"
         
         # criando os objetos que serão usados
-        self.background = pygame.image.load("media/background/background_frame.png")
-        self.scaled_background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.play_img = pygame.image.load("media/button_images/play.png")
-        self.play_clicked_img = pygame.image.load("media/button_images/play_clicked.png")
-        self.quit_img = pygame.image.load("media/button_images/quit.png")
-        self.quit_clicked_img = pygame.image.load("media/button_images/quit_clicked.png")
+        self.scaled_background = load_image(
+            "media/background/background_frame.png", (SCREEN_WIDTH, SCREEN_HEIGHT)
+        )
+        self.play_img = load_image("media/button_images/play.png", None, alpha=True)
+        self.play_clicked_img = load_image("media/button_images/play_clicked.png", None, alpha=True)
+        self.quit_img = load_image("media/button_images/quit.png", None, alpha=True)
+        self.quit_clicked_img = load_image("media/button_images/quit_clicked.png", None, alpha=True)
         self.play_button = Button(420, 400, self.play_img, self.play_clicked_img, 0.8)
         self.quit_button = Button(420, 550, self.quit_img, self.quit_clicked_img, 0.8)
         

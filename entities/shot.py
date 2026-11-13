@@ -1,6 +1,7 @@
 from entities.player import Player
 import pygame as pg
 from game.const import *
+from game.helpers import load_image
 from os import path
 
 class Shot(pg.sprite.Sprite):
@@ -26,17 +27,17 @@ class Shot(pg.sprite.Sprite):
 
         #atributos gerais
         self.x_vel = VEL_BULLET
-        self.image = pg.image.load(path.join(media_dir, "bullet_images/B1.png"))
-        self.image = pg.transform.scale(self.image, DIM_BULLET)
+        self.image = load_image(path.join(media_dir, "bullet_images/B1.png"), DIM_BULLET, alpha=True)
         self.rect = self.image.get_rect(topleft = position)
         self.initial_pos = self.rect.left
 
         #atributos que configuram  o movimento e a animação da bala
         self.direction = -1
         self.current_frame = 0
+        bullet_size = (self.rect.width, self.rect.height)
         self.animation_frames = [
-            pg.image.load(path.join(media_dir, "bullet_images/B1.png")),
-            pg.image.load(path.join(media_dir, "bullet_images/B2.png"))                                                 
+            load_image(path.join(media_dir, "bullet_images/B1.png"), bullet_size, alpha=True),
+            load_image(path.join(media_dir, "bullet_images/B2.png"), bullet_size, alpha=True),
         ]
         self.animation_counter = 0
         self.animation_delay = 15
@@ -52,7 +53,7 @@ class Shot(pg.sprite.Sprite):
         #atualiza as imagens do projétil levando em consideração um delay arbritário
         if self.animation_counter >= self.animation_delay:
             self.current_frame = (self.current_frame + 1) % len(self.animation_frames)
-            frame = pg.transform.scale(self.animation_frames[self.current_frame], (self.rect.width, self.rect.height))
+            frame = self.animation_frames[self.current_frame]
             self.image = frame
             self.animation_counter = 0
 
@@ -132,12 +133,14 @@ class BossShot(pg.sprite.Sprite):
         self.final_boss_health = final_boss_health
         self.vector_player = vector_player
         self.shot_vel = 10
-        self.image = pg.Surface((30, 30))
-        self.frames = [pg.image.load(path.join(shots_dir, "shot_2.png")),
-                       pg.image.load(path.join(shots_dir, "shot_1.png")),
-                       pg.image.load(path.join(shots_dir, "shot_0.png")),]
+        shot_size = (30, 30)
+        self.frames = [
+            load_image(path.join(shots_dir, "shot_2.png"), shot_size, alpha=True),
+            load_image(path.join(shots_dir, "shot_1.png"), shot_size, alpha=True),
+            load_image(path.join(shots_dir, "shot_0.png"), shot_size, alpha=True),
+        ]
 
-        self.image = pg.transform.scale(self.frames[self.final_boss_health - 1], (30, 30))
+        self.image = self.frames[self.final_boss_health - 1]
         self.rect = self.image.get_rect(topleft=position)
         self.explosion = explosion
 
@@ -200,10 +203,13 @@ class Explosion(pg.sprite.Sprite):
         self.rect = self.image.get_rect(center=position)
 
         #frames que compõem a explosão
-        self.frames = [pg.image.load(path.join(media_dir, "explosion_images/S_1.png")),
-                       pg.image.load(path.join(media_dir, "explosion_images/S_2.png")),
-                       pg.image.load(path.join(media_dir, "explosion_images/S_3.png")),
-                       pg.image.load(path.join(media_dir, "explosion_images/S_4.png"))]
+        explosion_size = (120, 120)
+        self.frames = [
+            load_image(path.join(media_dir, "explosion_images/S_1.png"), explosion_size, alpha=True),
+            load_image(path.join(media_dir, "explosion_images/S_2.png"), explosion_size, alpha=True),
+            load_image(path.join(media_dir, "explosion_images/S_3.png"), explosion_size, alpha=True),
+            load_image(path.join(media_dir, "explosion_images/S_4.png"), explosion_size, alpha=True),
+            ]
         
         self.explosion_counter = 0
 
@@ -226,7 +232,7 @@ class Explosion(pg.sprite.Sprite):
         else:
             self.kill()
         try:
-            self.image = pg.transform.scale(self.frames[frame], (120, 120))
+            self.image = self.frames[frame]
             self.explosion_counter += 1
         except:
             return

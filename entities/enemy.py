@@ -1,7 +1,9 @@
 import pygame as pg  
 from entities.entity import Entity
 from entities.shot import Shot
-from game.const import * 
+from game.const import *
+from game.helpers import load_image
+
 from os import path
 
 class Enemy(Entity):
@@ -30,7 +32,10 @@ class Enemy(Entity):
         self.x_vel = VEL_ENEMY_DEFAULT
 
         # morte
-        self.death_image = pg.image.load(path.join(self.media_dir, "enemy_images/enemy3.png"))
+        frame_size = (self.rect.width, self.rect.height)
+        self.death_image = load_image(
+            path.join(self.media_dir, "enemy_images/enemy3.png"), frame_size, alpha=True
+        )
         
         #som padrão
         self.death_sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/pixel-death-66829.mp3"))
@@ -38,9 +43,9 @@ class Enemy(Entity):
 
         #atributos de animação
         self.walk_frames = [
-            pg.image.load(path.join(self.media_dir, "enemy_images/enemy0.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_images/enemy1.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_images/enemy2.png"))
+            load_image(path.join(self.media_dir, "enemy_images/enemy0.png"), frame_size, alpha=True),
+            load_image(path.join(self.media_dir, "enemy_images/enemy1.png"), frame_size, alpha=True),
+            load_image(path.join(self.media_dir, "enemy_images/enemy2.png"), frame_size, alpha=True),
         ]
         self.current_frame = 0 
         self.animation_delay = 7
@@ -56,7 +61,7 @@ class Enemy(Entity):
         #atualiza a imagem com base na direção, mas levando em conta um delay arbritário
         if self.animation_counter >= self.animation_delay and self.x_vel != 0 and self.is_alive:
             self.current_frame = (self.current_frame + 1) % len(self.walk_frames)
-            frame = pg.transform.scale(self.walk_frames[self.current_frame], (self.rect.width, self.rect.height))
+            frame = self.walk_frames[self.current_frame]
             #inverte a imagem se o movimento for para a esquerda
             if self.facing == -1:
                 frame = pg.transform.flip(frame, True, False)
@@ -65,9 +70,15 @@ class Enemy(Entity):
 
         #caso o inimigo morra, a imagem dele muda
         if not self.is_alive:
-            frame = pg.transform.scale(self.death_image, (self.rect.width, self.rect.height))
-            frame = pg.transform.flip(frame, True, False)
-            self.image = frame
+            self._death_animation()
+            
+    def _death_animation(self) -> None:
+        """
+        animação de morte do inimigo simples
+        """
+        frame = self.death_image
+        frame = pg.transform.flip(frame, True, False)
+        self.image = frame
 
     def move(self) -> None:
         """
@@ -148,14 +159,21 @@ class EnemyShooter(Enemy):
         self.shot_counter = 0
         self.shot_delay = 60
 
+        frame_size = (self.rect.width, self.rect.height)
         self.walk_frames = [
-            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter0.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter1.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter2.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter3.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter4.png")),
-            pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter5.png")),
+            load_image(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter0.png"), frame_size, alpha=True),
+            load_image(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter1.png"), frame_size, alpha=True),
+            load_image(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter2.png"), frame_size, alpha=True),
+            load_image(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter3.png"), frame_size, alpha=True),
+            load_image(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter4.png"), frame_size, alpha=True),
+            load_image(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter5.png"), frame_size, alpha=True),
         ]
+
+        self.death_image = load_image(
+            path.join(self.media_dir, "enemy_shooter_images/enemy_shooter6.png"),
+            frame_size,
+            alpha=True,
+        )
 
     def move(self) -> None:
         """
@@ -199,11 +217,10 @@ class EnemyShooter(Enemy):
             elif self.on_ground == False and self.shot_counter > 3 and self.shot_counter >= self.animation_delay:
                 self.current_frame = 4
 
-            frame = pg.transform.scale(self.walk_frames[self.current_frame], (self.rect.width, self.rect.height))
+            frame = self.walk_frames[self.current_frame]
+            
+            self.image = frame
 
         #modelagem das animações (caso esteja morto)
         else:
-            death_image = pg.image.load(path.join(self.media_dir, "enemy_shooter_images/enemy_shooter6.png"))
-            frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
-
-        self.image = frame
+            self._death_animation()

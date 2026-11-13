@@ -4,6 +4,7 @@ from game.square import StaticSquare, ColisionSquare, CoinSquare, LevelDoor
 from entities.player import Player
 from entities.enemy import Enemy, EnemyShooter
 from game.const import *
+from game.helpers import load_image
 from entities.final_boss import FinalBoss
 from os import path
 from entities.princess import PrincessPinho, Smoke
@@ -39,11 +40,13 @@ class Level:
         
         # background setup
         try:
-            self.background = pygame.image.load(f"{level_path}/background_frame.png")
+            self.scaled_background = load_image(
+                f"{level_path}/background_frame.png", (SCREEN_WIDTH, SCREEN_HEIGHT)
+            )
         except:
-            self.background = pygame.image.load("media/background/background_frame.png")
-            
-        self.scaled_background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.scaled_background = load_image(
+                "media/background/background_frame.png", (SCREEN_WIDTH, SCREEN_HEIGHT)
+            )
 
         self.terrain_position = pygame.sprite.Group(self.create_terrain(terrain_layout, 'terrain'), self.create_terrain(fall_blocks_layout, 'fall_blocks'))
 
