@@ -29,6 +29,15 @@ class Entity(ABC, pg.sprite.Sprite):
         self.is_alive = True
         self.collision = True
 
+    def reset(self) -> None:
+        """Reseta a entidade
+        """
+        self.facing = 1
+        self.direction = pg.math.Vector2(0, 0)
+        self.on_ground = True
+        self.is_alive = True
+        self.collision = True
+    
     def apply_gravity(self) -> None:
         """
         método que modela a gravidade das entidades

@@ -27,16 +27,28 @@ class Level:
         #setup geral
         self.display_surface = surface
         self.player = player
-        self.player_group = pygame.sprite.Group(self.player)
         self.level_path = level_path
 
         self.fonte = pygame.font.Font(None, 36)
-
-        # terrain setup
-        terrain_layout = import_csv_layout(f'{level_path}/terrain.csv')
+        self.winning_song = pygame.mixer.Sound('./media/sounds/level_completed.mp3')
+        self.winning_song.set_volume(0.3)
         
-        # fall blocks setup
-        fall_blocks_layout = import_csv_layout(f'{level_path}/fall_blocks.csv')
+        self.fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
+        self.fade_image.fill("black")
+        
+        # Layouts
+        self.terrain_layout = import_csv_layout(f'{level_path}/terrain.csv')
+        self.fall_blocks_layout = import_csv_layout(f'{level_path}/fall_blocks.csv')
+        self.coin_layout = import_csv_layout(f'{level_path}/coins.csv')
+        self.enemy_layout = import_csv_layout(f'{level_path}/enemies.csv')
+        self.decor_door_layout = import_csv_layout(f'{level_path}/decor_door.csv')
+        self.princess_layout = import_csv_layout(f'{level_path}/pinho.csv')
+        self.door_layout = import_csv_layout(f'{level_path}/door.csv')
+        self.player_position = import_csv_layout(f'{level_path}/player.csv')
+        
+        self.bullet_group = pygame.sprite.Group()
+        self.explosion_group = pygame.sprite.Group()
+        self.player_group = pygame.sprite.Group()
         
         # background setup
         try:
@@ -48,58 +60,51 @@ class Level:
                 "media/background/background_frame.png", (SCREEN_WIDTH, SCREEN_HEIGHT)
             )
 
-        self.terrain_position = pygame.sprite.Group(self.create_terrain(terrain_layout, 'terrain'), self.create_terrain(fall_blocks_layout, 'fall_blocks'))
-
-        # coins 
-        coin_layout = import_csv_layout(f'{level_path}/coins.csv')
-        self.coin_position = self.create_terrain(coin_layout, 'coins')
-
-        # enemy 
-        enemy_layout = import_csv_layout(f'{level_path}/enemies.csv')
-        self.bullet_group = pygame.sprite.Group()
-        self.explosion_group = pygame.sprite.Group()
-        self.enemy_position = self.create_enemies(enemy_layout)
-
-        # decor_door
-        decor_door_layout = import_csv_layout(f'{level_path}/decor_door.csv')
-        self.decor_door_position = self.create_terrain(decor_door_layout, 'decor_door')
-
-        # princess
-        princess_layout = import_csv_layout(f'{level_path}/pinho.csv')
-        self.princess_position = self.create_terrain(princess_layout, 'pinho')
+        self._start_level()
         
-        # door
-        door_layout = import_csv_layout(f'{level_path}/door.csv')
-        self.door_position = self.create_terrain(door_layout, 'door')
-
-        player_position = import_csv_layout(f'{level_path}/player.csv')
-        self.set_player_position(player_position)
-
+    def _start_level(self):
+        """Declara as variáveis iniciais do nível
+        """
+        
+        self.player_group.add(self.player)
+        
+        self.terrain_position = pygame.sprite.Group(self.create_terrain(self.terrain_layout, 'terrain'), self.create_terrain(self.fall_blocks_layout, 'fall_blocks'))
+        self.coin_position = self.create_terrain(self.coin_layout, 'coins')
+        self.enemy_position = self.create_enemies(self.enemy_layout)
+        self.decor_door_position = self.create_terrain(self.decor_door_layout, 'decor_door')
+        self.princess_position = self.create_terrain(self.princess_layout, 'pinho')
+        self.door_position = self.create_terrain(self.door_layout, 'door')
+        
         self.world_shift = 0
         self.first_x = 0
-        self.last_x = SQUARE_SIZE * len(terrain_layout[0])
-
+        self.last_x = SQUARE_SIZE * len(self.terrain_layout[0])
         self.level_completed = False
         self.end_timer = 0
-
-        self.winning_song = pygame.mixer.Sound('./media/sounds/level_completed.mp3')
-        self.winning_song.set_volume(0.3)
-        
-        # Fade image
-        self.fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
-        self.fade_image.fill("black")
         self.finishing_song_started = False
-        
-        # Coin count
         self.last_player_coin_count = self.player.coin_count
         self.coin_text = self.fonte.render(f"Coins: {self.player.coin_count}", True, "#f0f8ff")
+        
+        self.set_player_position(self.player_position)
 
 
     def reset(self) -> None:
         """Reseta o nível do início
         """
-
-        self.__init__(self.display_surface, self.player, self.level_path)
+        self._empty_groups()
+        self._start_level()
+        
+    def _empty_groups(self) -> None:
+        """Esvazia os grupos
+        """
+        self.player_group.empty()
+        self.bullet_group.empty()
+        self.explosion_group.empty()
+        self.terrain_position.empty()
+        self.coin_position.empty()
+        self.enemy_position.empty()
+        self.decor_door_position.empty()
+        self.princess_position.empty()
+        self.door_position.empty()
 
     def create_terrain(self, layout, type:str) -> pygame.sprite.Group:
         """Adiciona os elementos ao mapa
@@ -345,6 +350,9 @@ class BossLevel(Level):
         self.started = False
 
         self.princess = self.princess_position.sprites()[-1]
+        
+    def reset(self):
+        self.__init__(self.display_surface, self.player, self.level_path)
 
     def init_run(self):
         self.boss.facing = -1

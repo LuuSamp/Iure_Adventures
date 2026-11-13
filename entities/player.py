@@ -52,7 +52,16 @@ class Player(Entity):
         self.won = False
 
     def reset(self):
-        self.__init__()
+        """Reseta o Player
+        """
+        super().reset()
+        self.x_vel = PLAYER_X_VEL
+        self.jump_height = PLAYER_Y_VEL
+        self.current_frame = 0
+        self.animation_delay = 2
+        self.animation_counter = 0
+        self._coin_count = 0
+        self.won = False
 
     @property
     def coin_count(self) -> int:
