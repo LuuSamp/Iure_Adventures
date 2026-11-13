@@ -120,6 +120,13 @@ class ColisionSquare(StaticSquare):
         self.init_y = y
         self.__cooldown = 0
         self.size = size
+        self.image_path = './media/blocos'
+        self.images = [
+            pg.image.load(f'{self.image_path}/bloco_11.png'),
+            pg.image.load(f'{self.image_path}/bloco_12.png'),
+            pg.image.load(f'{self.image_path}/bloco_13.png'),
+            pg.image.load(f'{self.image_path}/bloco_14.png'),
+        ]
 
     def _player_collision(self) -> bool:
         """ Verifica se houve colisão entre o jogador e o objeto
@@ -142,15 +149,15 @@ class ColisionSquare(StaticSquare):
         self.speed_y = 4
         self.rect.y += self.speed_y
     
-    def __update_image(self, path):
+    def __update_image(self):
         if self.__cooldown <= FPS * 0.5:
-            image = pg.image.load(f'{path}/bloco_11.png')
+            image = self.images[0]
         elif self.__cooldown <= FPS:
-            image = pg.image.load(f'{path}/bloco_12.png')
+            image = self.images[1]
         elif self.__cooldown <= FPS * 1.5:
-            image = pg.image.load(f'{path}/bloco_13.png')
+            image = self.images[2]
         else:
-            image = pg.image.load(f'{path}/bloco_14.png')
+            image = self.images[3]
         
         frame = pg.transform.scale(image, (self.size, self.size))
         self.image = frame
@@ -160,7 +167,7 @@ class ColisionSquare(StaticSquare):
         """Retorna o objeto a sua posição de altura inicial.
         """
         self.rect.y = self.init_y
-        image = pg.image.load('media/blocos/bloco_11.png')
+        image = self.images[0]
         frame = pg.transform.scale(image, (self.size, self.size))
         self.image = frame
 
@@ -178,10 +185,10 @@ class ColisionSquare(StaticSquare):
 
         if self._player_collision() == True:
             self.__cooldown += 1
-            self.__update_image('./media/blocos')
+            self.__update_image()
         elif self.__cooldown > 0:
             self.__cooldown += 1
-            self.__update_image('./media/blocos')
+            self.__update_image()
 
         if self.__cooldown >= FPS * 5:
             self.__cooldown = 0

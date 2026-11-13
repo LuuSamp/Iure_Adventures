@@ -245,6 +245,7 @@ class BossGun(pg.sprite.Sprite):
         """
         método que cria cada um dos projéteis
         """
+        print("Shooting boss gun")
         #caso o inimigo ainda esteja vivo, ele irá atirar na direção do player
         if self.player.alive():
             self.shots.add(BossShot((self.rect.center[0], self.rect.center[1]), self.aim_vector, self.explosion, self.holder.health))

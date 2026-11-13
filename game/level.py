@@ -36,6 +36,14 @@ class Level:
         
         # fall blocks setup
         fall_blocks_layout = import_csv_layout(f'{level_path}/fall_blocks.csv')
+        
+        # background setup
+        try:
+            self.background = pygame.image.load(f"{level_path}/background_frame.png")
+        except:
+            self.background = pygame.image.load("media/background/background_frame.png")
+            
+        self.scaled_background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
         self.terrain_position = pygame.sprite.Group(self.create_terrain(terrain_layout, 'terrain'), self.create_terrain(fall_blocks_layout, 'fall_blocks'))
 
@@ -73,6 +81,11 @@ class Level:
 
         self.winning_song = pygame.mixer.Sound('./media/sounds/level_completed.mp3')
         self.winning_song.set_volume(0.3)
+        
+        # Fade image
+        self.fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
+        self.fade_image.fill("black")
+        self.finishing_song_started = False
 
 
     def reset(self) -> None:
@@ -214,6 +227,7 @@ class Level:
     def draw_elements(self):
         """Adiciona os elementos a tela
         """
+        self.display_surface.blit(self.scaled_background, (0, 0))
         self.princess_position.draw(self.display_surface)
         self.terrain_position.draw(self.display_surface)
         self.coin_position.draw(self.display_surface)
@@ -255,7 +269,9 @@ class Level:
     def _game_finishing(self):
         """Realiza a cena de finalização do jogo
         """
-        self._play_winning_song()
+        if not self.finishing_song_started:
+            self._play_winning_song()
+            self.finishing_song_started = True
         self.draw_elements()
         self._fill_screen(0.3)
         self.end_timer += 1
@@ -273,16 +289,15 @@ class Level:
         reverse : bool, optional
             Se ele deve escurecer ou clarear, by default False
         """
-        fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
-        fade_image.fill("black")
-        fade = fade_image.get_rect()
+        # self.fade_image.fill("black")
+        fade = self.fade_image.get_rect()
         if reverse:
             fade_alpha = 255 - int(self.end_timer/timer_factor)
         else:
             fade_alpha = int(self.end_timer/timer_factor)
 
-        fade_image.set_alpha(fade_alpha)
-        self.display_surface.blit(fade_image, fade)
+        self.fade_image.set_alpha(fade_alpha)
+        self.display_surface.blit(self.fade_image, fade)
 
     def run(self):
         """Faz o jogo rodar

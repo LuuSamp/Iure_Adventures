@@ -23,11 +23,15 @@ class Enemy(Entity):
         super().__init__(position)
         self.current_dir = path.dirname(path.abspath(__file__))
         self.media_dir = path.join(self.current_dir, "..", "media")
+        
 
         #atributos iniciais
         self.initial_pos = self.rect.left
         self.x_vel = VEL_ENEMY_DEFAULT
 
+        # morte
+        self.death_image = pg.image.load(path.join(self.media_dir, "enemy_images/enemy3.png"))
+        
         #som padrão
         self.death_sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/pixel-death-66829.mp3"))
         self.death_sound.set_volume(0.5)
@@ -61,8 +65,7 @@ class Enemy(Entity):
 
         #caso o inimigo morra, a imagem dele muda
         if not self.is_alive:
-            death_image = pg.image.load(path.join(self.media_dir, "enemy_images/enemy3.png"))
-            frame = pg.transform.scale(death_image, (self.rect.width, self.rect.height))
+            frame = pg.transform.scale(self.death_image, (self.rect.width, self.rect.height))
             frame = pg.transform.flip(frame, True, False)
             self.image = frame
 
