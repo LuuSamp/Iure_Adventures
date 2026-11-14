@@ -3,6 +3,7 @@ from entities.entity import Entity
 from entities.shot import Shot
 from game.const import *
 from game.helpers import load_image
+from game.resource import resource_path
 
 from os import path
 
@@ -23,8 +24,7 @@ class Enemy(Entity):
 
         #atributos padrões de entidades
         super().__init__(position)
-        self.current_dir = path.dirname(path.abspath(__file__))
-        self.media_dir = path.join(self.current_dir, "..", "media")
+        self.media_dir = resource_path("media")
         
 
         #atributos iniciais
@@ -147,8 +147,7 @@ class EnemyShooter(Enemy):
         """
 
         super().__init__(position)
-        self.current_dir = path.dirname(path.abspath(__file__))
-        self.media_dir = path.join(self.current_dir, "..", "media")
+        self.media_dir = resource_path("media")
 
         #atributos de animação e de lançamento de projéteis
         self.shots = shots

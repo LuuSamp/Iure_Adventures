@@ -1,5 +1,6 @@
 from pygame.locals import *
 import pygame as pg
+import sys
 from entities.player import Player
 
 class InputHandler:
@@ -37,7 +38,7 @@ class InputHandler:
 
         if event.type == QUIT: 
             pg.quit()
-            exit()
+            sys.exit()
 
     def check_event(self):
         """

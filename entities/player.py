@@ -4,6 +4,7 @@ from os import path
 from typing import Tuple
 from game.const import *
 from game.helpers import load_image
+from game.resource import resource_path
 
 class Player(Entity):
     """
@@ -21,10 +22,8 @@ class Player(Entity):
         """
         super().__init__(position)
 
-        current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "..", "media")
-        self.image_dir = path.join(media_dir, "player_images")
-        self.sound_dir = path.join(media_dir, "sounds")
+        self.image_dir = resource_path("media", "player_images")
+        self.sound_dir = resource_path("media", "sounds")
 
         frame_size = (self.rect.width, self.rect.height)
         self.walk_frames = [

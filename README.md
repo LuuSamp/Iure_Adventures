@@ -1,5 +1,7 @@
 # Iure Adventures
+
 ## Projeto:
+
 O jogo foi desenvolvido para a avaliação do segundo período da disciplina de Linguagens de Programação. O principal objetivo do projeto foi aplicar conceitos e fundamentos de programação orientada a objetos em Python, aliados a técnicas de documentação.
 
 Link Para Documentação (Sphinx): [documentação](https://iure-adventures.readthedocs.io/pt-br/latest/modules.html).
@@ -18,8 +20,19 @@ A história principal do jogo narra a jornada do professor Iure, um grande entus
 
 ## Instruções de uso do repositório:
 
-1. Rode a linha de comando ```pip install -r requirements.txt``` para baixar as bibliotecas necessárias.
-2. Execute o comando ```python main.py``` ou apenas execute o arquivo *main.py* para acessar o jogo. 
+1. Rode a linha de comando `pip install -r requirements.txt` para baixar as bibliotecas necessárias.
+2. Execute o comando `python main.py` ou apenas execute o arquivo *main.py* para acessar o jogo.
+
+## Build (PyInstaller):
+
+Para gerar um executável Windows (pasta onedir, sem console):
+
+```text
+pip install -r requirements.txt
+pyinstaller Iure_Adventures.spec
+```
+
+A saída fica em `dist/Iure_Adventures/`. Para jogar, execute `Iure_Adventures.exe`.
 
 ## Descrição do Repositório:
 
@@ -28,20 +41,24 @@ A história principal do jogo narra a jornada do professor Iure, um grande entus
 - `game/` - pasta com o restante das classes que compõem o jogo, como as responsáveis pelo layout, por exemplo;
 - `media/` - pasta com todos os assets utilizados durante o projeto, dentre eles estão imagens e sons; 
 - `main.py` - arquivo principal do projeto e que deverá ser executado para rodar o jogo. 
- - `requirement.txt` - arquivo com as bibliotecas que foram utilizadas no projeto, juntamente com as suas respectivas versões.
-  
+- `requirements.txt` - arquivo com as bibliotecas que foram utilizadas no projeto, juntamente com as suas respectivas versões.
+
 ## Jogo:
 
 Segue, abaixo, toda a descrição das etapas do jogo. Todas elas foram pensadas para oferecer ao usuário uma experiência agradável, desafiadora e divertida para o jogador. 
 
 ### Menu:
+
 Ao iniciar o jogo, o usuário será direcionado para o menu principal. Neste menu, terá a opção de iniciar o jogo ou encerrar a execução. No canto direito inferior, estarão listados os nomes de todos os autores envolvidos no projeto, os quais foram previamente mencionados.
 
 ![Menu](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/main/media/readme_images/menu.png)
+
 ### Primeira Fase:
+
 A primeira fase consiste em um jogo clássico de plataformas. Nela, encontram-se obstáculos diferenciados em um cenário urbano, praticamente todo desenhado pelo grupo, com exceção do plano de fundo. Além disso, há inimigos que tornam a experiência ainda mais desafiadora.
 
 ![Primeira Fase](https://raw.githubusercontent.com/LuuSamp/Iure_Adventures/main/media/readme_images/primeira_fase.png)
+
 ### Luta Final:
 
 A fase final apresenta um inimigo que, conforme esperado, possui três vidas. Para derrotá-lo, será necessário sobreviver aos seus ataques até que ele fique vulnerável. Nesse momento, é possível realizar ataques para reduzir sua vida até alcançar zero, libertando finalmente a princesa Pinha.

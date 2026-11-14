@@ -3,6 +3,7 @@ from entities.enemy import Enemy
 from entities.player import Player
 from game.const import *
 from game.helpers import load_image
+from game.resource import resource_path
 from entities.shot import BossShot
 from os import path
 
@@ -34,9 +35,7 @@ class FinalBoss(Enemy):
         """
         super().__init__(position)
 
-        current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "..", "media")
-        self.image_dir = path.join(media_dir, "final_boss", "boss")
+        self.image_dir = resource_path("media", "final_boss", "boss")
         initial_image = path.join(self.image_dir, "final_boss_0.png")
 
         self.image = load_image(initial_image, (64, 128), alpha=True)
@@ -229,9 +228,7 @@ class BossGun(pg.sprite.Sprite):
         self.still_vector = pg.math.Vector2(0, -1)
         self.angle_to_player = self.still_vector.angle_to(self.aim_vector)
 
-        current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "..", "media")
-        self.image_dir = path.join(media_dir, "final_boss", "gun")
+        self.image_dir = resource_path("media", "final_boss", "gun")
         initial_image = path.join(self.image_dir, "boss_gun_0.png")
 
         gun_size = (32, 120)

@@ -2,6 +2,7 @@ import pygame as pg
 from entities.player import Player
 from game.const import *
 from game.helpers import load_image
+from game.resource import resource_path
 from entities.entity import Entity
 from os import path
 
@@ -119,7 +120,7 @@ class ColisionSquare(StaticSquare):
         self.init_y = y
         self.__cooldown = 0
         self.size = size
-        self.image_path = './media/blocos'
+        self.image_path = resource_path("media", "blocos")
         self.images = [
             load_image(f'{self.image_path}/bloco_11.png', (size, size), alpha=True),
             load_image(f'{self.image_path}/bloco_12.png', (size, size), alpha=True),

@@ -1,7 +1,11 @@
 import os
-os.chdir(os.getcwd())
+
+from game.resource import base_path
+
+os.chdir(base_path())
 
 from game.game import Game
 
-game = Game()
-game.run()
+if __name__ == "__main__":
+    game = Game()
+    game.run()

@@ -4,6 +4,7 @@ from entities.player import Player
 from game.input_handler import InputHandler
 from game.const import *
 from game.menu import Menu
+from game.resource import resource_path
 
 class Game:
     """
@@ -17,7 +18,7 @@ class Game:
         pygame.init()
         pygame.display.set_caption('Iure Adventures')
         pygame.mixer.init()
-        pygame.mixer.music.load("./media/sounds/background_music.mp3")
+        pygame.mixer.music.load(resource_path("media", "sounds", "background_music.mp3"))
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(0.04)  
         
@@ -27,8 +28,8 @@ class Game:
         self.main_menu = Menu(self.screen)
         self.input_handler = InputHandler(self.player)
         self.levels = [
-            (Level, './level/level_1'),
-            (BossLevel, './level/boss_level')
+            (Level, resource_path("level", "level_1")),
+            (BossLevel, resource_path("level", "boss_level"))
         ]
         self.coins = 0
         self.current_level = 0

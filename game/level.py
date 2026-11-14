@@ -5,6 +5,7 @@ from entities.player import Player
 from entities.enemy import Enemy, EnemyShooter
 from game.const import *
 from game.helpers import load_image
+from game.resource import resource_path
 from entities.final_boss import FinalBoss
 from os import path
 from entities.princess import PrincessPinho, Smoke
@@ -12,7 +13,7 @@ from entities.princess import PrincessPinho, Smoke
 class Level:
     """Principal fase do jogo a ser carregada.
     """
-    def __init__(self, surface:pygame.display, player: Player, level_path='./level/level_1'):
+    def __init__(self, surface:pygame.display, player: Player, level_path=None):
         """Inicializa a fase
 
         Parameters
@@ -27,10 +28,12 @@ class Level:
         #setup geral
         self.display_surface = surface
         self.player = player
+        if level_path is None:
+            level_path = resource_path("level", "level_1")
         self.level_path = level_path
 
         self.fonte = pygame.font.Font(None, 36)
-        self.winning_song = pygame.mixer.Sound('./media/sounds/level_completed.mp3')
+        self.winning_song = pygame.mixer.Sound(resource_path("media", "sounds", "level_completed.mp3"))
         self.winning_song.set_volume(0.3)
         
         self.fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
@@ -57,7 +60,7 @@ class Level:
             )
         except:
             self.scaled_background = load_image(
-                "media/background/background_frame.png", (SCREEN_WIDTH, SCREEN_HEIGHT)
+                resource_path("media", "background", "background_frame.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)
             )
 
         self._start_level()
@@ -132,18 +135,18 @@ class Level:
 
                     if type == 'terrain':
                         try:
-                            square = StaticSquare(x, y, SQUARE_SIZE, f'./media/blocos/bloco__{val}.png')
+                            square = StaticSquare(x, y, SQUARE_SIZE, resource_path("media", "blocos", f"bloco__{val}.png"))
                         except:
-                            square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco__0.png', self.player)
+                            square = ColisionSquare(x, y, SQUARE_SIZE, resource_path("media", "blocos", "bloco__0.png"), self.player)
                     elif type == 'fall_blocks':
-                        square = ColisionSquare(x, y, SQUARE_SIZE, './media/blocos/bloco_11.png', self.player)
+                        square = ColisionSquare(x, y, SQUARE_SIZE, resource_path("media", "blocos", "bloco_11.png"), self.player)
                     elif type == 'coins':
-                        square = CoinSquare(x, y, SQUARE_SIZE, './media/coin.png', self.player)
+                        square = CoinSquare(x, y, SQUARE_SIZE, resource_path("media", "coin.png"), self.player)
                     elif type == 'door':
-                        square = LevelDoor(x, y, SQUARE_SIZE * 2, './media/porta.png', self.player)
+                        square = LevelDoor(x, y, SQUARE_SIZE * 2, resource_path("media", "porta.png"), self.player)
                         self.doors.append(square)
                     elif type == 'decor_door':
-                        square = ColisionSquare(x, y, SQUARE_SIZE * 2, './media/porta.png', self.player)
+                        square = ColisionSquare(x, y, SQUARE_SIZE * 2, resource_path("media", "porta.png"), self.player)
                     elif type == "pinho":
                         square = PrincessPinho((x, y))
 
@@ -326,7 +329,7 @@ class Level:
 class BossLevel(Level):
     """A fase do boss a ser derrotado
     """
-    def __init__(self, surface:pygame.display, player: Player, level_path='./level/boss_level'):
+    def __init__(self, surface:pygame.display, player: Player, level_path=None):
         """Inicializa a fase
 
         Parameters
@@ -338,6 +341,8 @@ class BossLevel(Level):
         level_path : str, optional
             o caminho para o arquivo, by default 'boss_level'
         """
+        if level_path is None:
+            level_path = resource_path("level", "boss_level")
         super().__init__(surface, player, level_path)
 
         self.boss = FinalBoss((1250,0), self.player, self.bullet_group, self.explosion_group)

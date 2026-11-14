@@ -2,6 +2,7 @@ from entities.player import Player
 import pygame as pg
 from game.const import *
 from game.helpers import load_image
+from game.resource import resource_path
 from os import path
 
 class Shot(pg.sprite.Sprite):
@@ -19,8 +20,7 @@ class Shot(pg.sprite.Sprite):
                 position: coordenadas de spawn do projétil
         """
         super().__init__()
-        current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "..", "media")
+        media_dir = resource_path("media")
         
         #configurando o som ao atirar o projétil
         self.sound = pg.mixer.Sound(path.join(media_dir, "sounds/shooting-sound-fx-159024.mp3"))
@@ -126,8 +126,7 @@ class BossShot(pg.sprite.Sprite):
         super().__init__()
 
         #configurando os paths
-        current_dir = path.dirname(path.abspath(__file__))
-        shots_dir = path.join(current_dir, "..", "media", "final_boss", "shots")
+        shots_dir = resource_path("media", "final_boss", "shots")
 
         #atributos gerais
         self.final_boss_health = final_boss_health
@@ -145,7 +144,7 @@ class BossShot(pg.sprite.Sprite):
         self.explosion = explosion
 
         #criação do atributo de som 
-        self.sound = pg.mixer.Sound(path.join(current_dir, "../media/sounds/blaster-multiple-14893 (mp3cut.net).mp3"))
+        self.sound = pg.mixer.Sound(resource_path("media", "sounds", "blaster-multiple-14893 (mp3cut.net).mp3"))
         self.sound.play()
 
     def move(self) -> None:
@@ -195,8 +194,7 @@ class Explosion(pg.sprite.Sprite):
         """
         super().__init__()
 
-        current_dir = path.dirname(path.abspath(__file__))
-        media_dir = path.join(current_dir, "..", "media")
+        media_dir = resource_path("media")
 
         self.image = pg.Surface((120, 120))
         self.image.fill("blue")
@@ -213,7 +211,7 @@ class Explosion(pg.sprite.Sprite):
         
         self.explosion_counter = 0
 
-        self.sound = pg.mixer.Sound(path.join(current_dir, "..\media\sounds\mixkit-arcade-game-explosion-2759.mp3"))
+        self.sound = pg.mixer.Sound(resource_path("media", "sounds", "mixkit-arcade-game-explosion-2759.mp3"))
         self.sound.set_volume(2)
         self.sound.play()
 

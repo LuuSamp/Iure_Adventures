@@ -3,6 +3,7 @@ from entities.final_boss import FinalBoss
 from os import path
 from game.const import *
 from game.helpers import load_image
+from game.resource import resource_path
 
 class PrincessPinho(pg.sprite.Sprite):
     """
@@ -19,8 +20,7 @@ class PrincessPinho(pg.sprite.Sprite):
         """
         super().__init__()
 
-        self.current_dir = path.dirname(path.abspath(__file__))
-        self.princess_dir = path.join(self.current_dir, "..", "media", "princess")
+        self.princess_dir = resource_path("media", "princess")
 
         frame_size = (2 * SQUARE_SIZE, 2 * SQUARE_SIZE)
         self.frames = [[load_image(path.join(self.princess_dir, "preso/pinho_preso_1.png"), frame_size, alpha=True),
@@ -110,8 +110,7 @@ class Smoke(pg.sprite.Sprite):
 
         super().__init__()
         
-        self.current_dir = path.dirname(path.abspath(__file__))
-        self.princess_dir = path.join(self.current_dir, "..", "media", "princess")
+        self.princess_dir = resource_path("media", "princess")
 
         self.image = pg.Surface((150, 150))
         self.image.fill("blue")

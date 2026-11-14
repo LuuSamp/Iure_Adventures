@@ -2,6 +2,7 @@ import pygame
 import sys
 from game.const import *
 from game.helpers import load_image
+from game.resource import resource_path
 
 class Button:
     """
@@ -82,12 +83,12 @@ class Menu:
         
         # criando os objetos que serão usados
         self.scaled_background = load_image(
-            "media/background/background_frame.png", (SCREEN_WIDTH, SCREEN_HEIGHT)
+            resource_path("media", "background", "background_frame.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)
         )
-        self.play_img = load_image("media/button_images/play.png", None, alpha=True)
-        self.play_clicked_img = load_image("media/button_images/play_clicked.png", None, alpha=True)
-        self.quit_img = load_image("media/button_images/quit.png", None, alpha=True)
-        self.quit_clicked_img = load_image("media/button_images/quit_clicked.png", None, alpha=True)
+        self.play_img = load_image(resource_path("media", "button_images", "play.png"), None, alpha=True)
+        self.play_clicked_img = load_image(resource_path("media", "button_images", "play_clicked.png"), None, alpha=True)
+        self.quit_img = load_image(resource_path("media", "button_images", "quit.png"), None, alpha=True)
+        self.quit_clicked_img = load_image(resource_path("media", "button_images", "quit_clicked.png"), None, alpha=True)
         self.play_button = Button(420, 400, self.play_img, self.play_clicked_img, 0.8)
         self.quit_button = Button(420, 550, self.quit_img, self.quit_clicked_img, 0.8)
         
@@ -97,7 +98,7 @@ class Menu:
         """
         Inicialização dos textos.
         """
-        self.font = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 16)
+        self.font = pygame.font.Font(resource_path("media", "button_images", "PressStart2P-Regular.ttf"), 16)
         
         # Nome dos criadores do jogo
         self.text_lines = ["Made by:", "Gustavo Tironi", "Luciano Sampaio", "Luís Felipe Marciano", "Matheus Carvalho", "Sillas Rocha"]
@@ -117,11 +118,11 @@ class Menu:
         self.title2 = "Adventures"
         
         # Renderização dos Titulos
-        self.font_title1 = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 80)
+        self.font_title1 = pygame.font.Font(resource_path("media", "button_images", "PressStart2P-Regular.ttf"), 80)
         self.title1_surface = self.font_title1.render(self.title1, True, "white")
         self.title1_rect = self.title1_surface.get_rect(center=(SCREEN_WIDTH/2, 170))
         
-        self.font_title2 = pygame.font.Font("media/button_images/PressStart2P-Regular.ttf", 60)
+        self.font_title2 = pygame.font.Font(resource_path("media", "button_images", "PressStart2P-Regular.ttf"), 60)
         self.title2_surface = self.font_title2.render(self.title2, True, "red")
         self.title2_rect = self.title2_surface.get_rect(center=(SCREEN_WIDTH/2, 250))
         
