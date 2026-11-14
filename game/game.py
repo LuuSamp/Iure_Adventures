@@ -27,13 +27,13 @@ class Game:
         self.main_menu = Menu(self.screen)
         self.input_handler = InputHandler(self.player)
         self.levels = [
-            Level(self.screen, self.player), 
-            BossLevel(self.screen, self.player)
-            ]
+            (Level, './level/level_1'),
+            (BossLevel, './level/boss_level')
+        ]
         self.coins = 0
         self.current_level = 0
+        self.current_level_obj = None
         self.game_state = "menu"
-
         self.win_counter = 0
     
     def reset(self):
@@ -59,10 +59,22 @@ class Game:
         """
         Muda o nível se o nível atual for completado.
         """
-        if self.levels[self.current_level].level_completed and self.current_level < len(self.levels) - 1:
-            self.coins = self.levels[self.current_level].player.coin_count
+        if self.current_level_obj is None:
+            self.current_level_obj = self.levels[self.current_level][0](
+                self.screen, self.player, self.levels[self.current_level][1]
+                )
+            
+        if self.current_level_obj.level_completed and self.current_level < len(self.levels) - 1:
+            self.coins = self.current_level_obj.player.coin_count
             self.current_level += 1
-            self.levels[self.current_level].player.coin_count = self.coins
+            self.current_level_obj = self.build_level(self.current_level)
+            self.current_level_obj.player.coin_count = self.coins
+            
+    def build_level(self, idx):
+        """
+        Constrói o nível atual.
+        """
+        return self.levels[idx][0](self.screen, self.player, self.levels[idx][1])
 
     def game_loop(self):
         """
@@ -75,7 +87,7 @@ class Game:
 
             if self.game_state =="playing":
                 self.change_level()
-                self.levels[self.current_level].run()
+                self.current_level_obj.run()
 
             if self.player.won == True:
                 self.win_counter += 1
