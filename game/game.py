@@ -4,6 +4,7 @@ from entities.player import Player
 from game.input_handler import InputHandler
 from game.const import *
 from game.menu import Menu
+from game.options_menu import OptionsMenu
 from game.audio import SFXAudio, MusicAudio
 
 class Game:
@@ -33,6 +34,8 @@ class Game:
         self.coins = 0
         self.current_level = 0
         self.current_level_obj = None
+        self.options_menu = OptionsMenu(self.screen)
+        
         self.game_state = "menu"
         self.win_counter = 0
     
@@ -81,6 +84,7 @@ class Game:
         O loop em que o jogo ocorre.
         """
         while True:
+            self.music.update()
             self.input_handler.update()
             if self.game_state == "menu":
                 self.load_menu()
@@ -93,6 +97,10 @@ class Game:
                 self.win_counter += 1
                 if self.win_counter >= FPS*5:
                     self.reset()
+
+            if self.game_state == "options":
+                if not self.options_menu.run():
+                    self.game_state = "menu"
 
             pygame.display.update()
             self.clock.tick(FPS)

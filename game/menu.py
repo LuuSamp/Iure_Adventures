@@ -2,67 +2,7 @@ import pygame
 import sys
 from game.const import *
 from game.helpers import load_image
-
-class Button:
-    """
-    Classe que representa um botão.
-    """
-    def __init__(self, x, y, image, image_clicked, scale = 1):
-        """
-        Inicialização do botão.
-
-        Parâmetros
-            x
-                type: int
-                description: posição x do centro do botão
-
-            y
-                type: int
-                description: posição y do centro do botão
-
-            image
-                type: str
-                description: path da imagem do botão sem o mouse em cima
-
-            image_clicked
-                type: str
-                description: path da imagem do botão com o mouse em cima
-
-            scale
-                type: float
-                description: escala para redimensionar a imagem
-        """
-        width = image.get_width()
-        height = image.get_height()
-        self.image = pygame.transform.scale(image, (int(width*scale), int(height*scale)))
-        self.image_clicked = pygame.transform.scale(image_clicked, (int(width*scale), int(height*scale)))
-        self.rect = self.image.get_rect()
-        self.rect.center = (SCREEN_WIDTH/2, y)
-        self.clicked = False
-        self.mouse_pos = pygame.mouse.get_pos()
-
-    def draw_button(self, surface):
-        """
-        Método que desenha o botão já funcionando na tela.
-        """
-    
-        action = False
-        mouse_pos = pygame.mouse.get_pos()
-
-
-        if self.rect.collidepoint(mouse_pos):
-            
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-               self.clicked = True
-               action = True
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.clicked = False
-
-            surface.blit(self.image_clicked, (self.rect.x, self.rect.y))
-        else:
-            surface.blit(self.image, (self.rect.x, self.rect.y))
-
-        return action
+from components.button import Button
 
 class Menu:
     """
@@ -78,6 +18,8 @@ class Menu:
                 description: superfície que será desenhado o menu
         """
         self.display_surface = surface
+        
+        # Estado do jogo [menu, options, playing]
         self.game_state = "menu"
         
         # criando os objetos que serão usados
@@ -88,9 +30,12 @@ class Menu:
         self.play_clicked_img = load_image("media/button_images/play_clicked.png", None, alpha=True)
         self.quit_img = load_image("media/button_images/quit.png", None, alpha=True)
         self.quit_clicked_img = load_image("media/button_images/quit_clicked.png", None, alpha=True)
-        self.play_button = Button(420, 400, self.play_img, self.play_clicked_img, 0.8)
-        self.quit_button = Button(420, 550, self.quit_img, self.quit_clicked_img, 0.8)
+        self.options_img = load_image("media/button_images/cog.png", None, alpha=True)
+        self.options_clicked_img = load_image("media/button_images/cog.png", None, alpha=True)
         
+        self.play_button = Button(SCREEN_WIDTH/2, 400, self.play_img, self.play_clicked_img, 0.8)
+        self.quit_button = Button(SCREEN_WIDTH/2, 550, self.quit_img, self.quit_clicked_img, 0.8)
+        self.options_button = Button(SCREEN_WIDTH - 100, 100, self.options_img, self.options_clicked_img, 0.8)
         self._init_texts()
         
     def _init_texts(self):
@@ -151,6 +96,9 @@ class Menu:
         # se botão play for clicado
         if self.play_button.draw_button(self.display_surface):
             self.game_state = "playing"
+        
+        elif self.options_button.draw_button(self.display_surface):
+            self.game_state = "options"
 
         # se botão quit for clicado
         if self.quit_button.draw_button(self.display_surface):

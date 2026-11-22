@@ -3,3 +3,5 @@ Imagem da Porta: feita pelo grupo.
 Imagem do Coin: https://github.com/clear-code-projects/2D-Mario-style-platformer/tree/main
 
 Imagem dos botões do menu: https://stock.adobe.com/br/images/cartoon-color-pixel-game-ui-button-icon-set-flat-design-style-concept-vector-illustration-of-menu-start-play-buttons/491289126
+
+Imagem dos botões de opções e voltar: https://game-icons.net/

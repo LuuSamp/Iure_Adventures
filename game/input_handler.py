@@ -1,6 +1,7 @@
 from pygame.locals import *
 import pygame as pg
 from entities.player import Player
+from game.settings import Settings
 
 class InputHandler:
     """
@@ -36,6 +37,7 @@ class InputHandler:
             if event.key == K_UP: self._player.jump()
 
         if event.type == QUIT: 
+            Settings.save_settings()
             pg.quit()
             exit()
 

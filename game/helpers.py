@@ -16,3 +16,4 @@ def load_image(path: str, size: tuple = None, *, alpha=False):
         image = image.convert()
     _image_cache[key] = image
     return image
+

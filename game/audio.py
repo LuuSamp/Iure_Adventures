@@ -3,27 +3,20 @@ import json
 from os import path
 import random
 import numpy as np
-
-# Check if the settings.json file exists
-if not path.exists("settings.json"):
-    with open("settings.json", "w") as f:
-        json.dump({"sounds": {"music_volume": 0.5, "sfx_volume": 0.5}}, f)
-
-# Load the settings.json file
-with open("settings.json", "r") as f:
-    settings = json.load(f)
-
+from game.settings import Settings
+from abc import abstractmethod, ABC
+    
 class SFXAudio:
     def __init__(self, sound_path: str, volume: float = 1, pitch_shift_sigma: float = 1, pitch_shift_cap: float = 1.5):
         self.pitch_shift_sigma = pitch_shift_sigma
         self.pitch_shift_cap = pitch_shift_cap
         self.sound = pg.mixer.Sound(sound_path)
-        self.sound.set_volume(settings["sounds"]["sfx_volume"]*volume)
-        self.volume = settings["sounds"]["sfx_volume"]*volume
+        self.volume = volume
         
     def play(self):
         
         if self.pitch_shift_sigma == 0: 
+            self.sound.set_volume(self._true_volume())
             self.sound.play()
             return
         
@@ -32,9 +25,11 @@ class SFXAudio:
             shift = self.pitch_shift_cap * np.sign(shift)
         
         new_sound = self._apply_pitch_shift(shift)
-        new_sound.set_volume(self.volume)
+        new_sound.set_volume(self._true_volume())
         new_sound.play()
         
+    def _true_volume(self):
+        return Settings.get_sfx_volume()*self.volume
         
     def _apply_pitch_shift(self, pitch_shift: float):
         arr = pg.sndarray.array(self.sound).copy()
@@ -52,11 +47,18 @@ class SFXAudio:
         
 class MusicAudio:
     def __init__(self, sound_path: str, volume: float = 1):
+        self.volume = volume
         pg.mixer.music.load(sound_path)
-        pg.mixer.music.set_volume(settings["sounds"]["music_volume"]*volume)
+        pg.mixer.music.set_volume(self._true_volume())
         
     def play(self):
         pg.mixer.music.play(-1)
+        
+    def update(self):
+        pg.mixer.music.set_volume(self._true_volume())
+    
+    def _true_volume(self):
+        return Settings.get_music_volume()*self.volume
         
     def stop(self):
         pg.mixer.music.stop()
