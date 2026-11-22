@@ -50,6 +50,10 @@ class Player(Entity):
         self.jump_sound.set_volume(0.2)
 
         self.won = False
+        
+        
+        self.jump_buffer_time = 5
+        self.jump_buffer = 0
 
     def reset(self):
         """Reseta o Player
@@ -120,9 +124,17 @@ class Player(Entity):
         """
         Faz o Player pular se estiver no chão.
         """
+        if self.jump_buffer == 0:
+            self.jump_buffer = self.jump_buffer_time
+        
         if self.on_ground:
+            self.jump_buffer = 0
             self.direction.y = self.jump_height
             self.jump_sound.play()
+            
+        elif self.jump_buffer > 0:
+            self.jump_buffer -= 1
+        
 
 
     def collide_with_enemy(self, enemy_group: pg.sprite.Group):
@@ -157,6 +169,8 @@ class Player(Entity):
         self.rect.x += self.direction.x
         self.animation()
         self.move()
+        if self.jump_buffer > 0:
+            self.jump()
 
     def die(self):
         """
