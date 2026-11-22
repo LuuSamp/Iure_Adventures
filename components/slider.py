@@ -9,11 +9,14 @@ class Slider:
         self.value = value
         self.dragging = False
         
-        self.rect = pg.Rect(self.x-self.width/2, self.y+self.height/2, self.width, self.height)
+        self.center_x = self.x-self.width/2
+        self.center_y = self.y+self.height/2
+        
+        self.rect = pg.Rect(self.center_x, self.center_y, self.width, self.height)
         
     def draw(self, surface: pg.Surface):
         pg.draw.rect(surface, (255, 255, 255), self.rect)
-        pg.draw.rect(surface, (0, 0, 0), (self.x-self.width/2, self.y+self.height/2, self.width * self.value, self.height))
+        pg.draw.rect(surface, (0, 0, 0), (self.center_x, self.center_y, self.width * self.value, self.height))
         
     def update(self):
         self.handle_events()
@@ -31,7 +34,7 @@ class Slider:
                 
     def handle_mouse_motion(self, pos: tuple[int, int]):
         if self.dragging:
-            self.value = (pos[0] - self.x) / self.width
+            self.value = (pos[0] - self.center_x) / self.width
             self.value = max(0, min(self.value, 1))
             
         return self.value
