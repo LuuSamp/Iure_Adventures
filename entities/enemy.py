@@ -3,6 +3,7 @@ from entities.entity import Entity
 from entities.shot import Shot
 from game.const import *
 from game.helpers import load_image
+from game.audio import SFXAudio
 
 from os import path
 
@@ -38,8 +39,7 @@ class Enemy(Entity):
         )
         
         #som padrão
-        self.death_sound = pg.mixer.Sound(path.join(self.media_dir, "sounds/pixel-death-66829.mp3"))
-        self.death_sound.set_volume(0.5)
+        self.death_sound = SFXAudio(path.join(self.media_dir, "sounds/pixel-death-66829.mp3"), volume=0.5)
 
         #atributos de animação
         self.walk_frames = [
@@ -88,15 +88,6 @@ class Enemy(Entity):
         #muda a posição dele com base na velocidade e na direção do inimigo
         self.direction.x = self.x_vel*self.facing
         self.rect.x += self.direction.x
-
-    def natural_sound(self) -> None:
-        """
-        modelagem do som padrão dos inimigos simples
-        """
-
-        #configuração e ativação do som
-        self.sound.set_volume(0.2)
-        self.sound.play()
 
     def die(self) -> None:
         """

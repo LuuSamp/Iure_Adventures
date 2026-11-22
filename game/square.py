@@ -4,6 +4,7 @@ from game.const import *
 from game.helpers import load_image
 from entities.entity import Entity
 from os import path
+from game.audio import SFXAudio
 
 class Rect(pg.sprite.Sprite):
     """
@@ -216,8 +217,7 @@ class CoinSquare(StaticSquare):
         """
         super().__init__(x, y, size, image_path)
         self._player = player
-        self.__coin_sound = pg.mixer.Sound(path.join(self._player.sound_dir, "coin_sound.mp3"))
-        self.__coin_sound.set_volume(0.2)
+        self.__coin_sound = SFXAudio(path.join(self._player.sound_dir, "coin_sound.mp3"), volume=0.2)
     
     def __coin_catch(self) -> None:
         """O Player aumenta em um sua contagem de moedas, o objeto é excluído e há som sonoro confirmando o evento

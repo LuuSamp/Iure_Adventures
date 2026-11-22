@@ -4,6 +4,7 @@ from os import path
 from typing import Tuple
 from game.const import *
 from game.helpers import load_image
+from game.audio import SFXAudio
 
 class Player(Entity):
     """
@@ -46,8 +47,7 @@ class Player(Entity):
         self.animation_delay = 2
         self.animation_counter = 0
         self._coin_count = 0
-        self.jump_sound = pg.mixer.Sound(path.join(self.sound_dir, "jump_sound.mp3"))
-        self.jump_sound.set_volume(0.2)
+        self.jump_sound = SFXAudio(path.join(self.sound_dir, "jump_sound.mp3"), volume=0.2)
 
         self.won = False
         

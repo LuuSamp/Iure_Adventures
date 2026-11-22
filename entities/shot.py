@@ -3,6 +3,7 @@ import pygame as pg
 from game.const import *
 from game.helpers import load_image
 from os import path
+from game.audio import SFXAudio
 
 class Shot(pg.sprite.Sprite):
     """
@@ -23,7 +24,7 @@ class Shot(pg.sprite.Sprite):
         media_dir = path.join(current_dir, "..", "media")
         
         #configurando o som ao atirar o projétil
-        self.sound = pg.mixer.Sound(path.join(media_dir, "sounds/shooting-sound-fx-159024.mp3"))
+        self.sound = SFXAudio(path.join(media_dir, "sounds/shooting-sound-fx-159024.mp3"))
 
         #atributos gerais
         self.x_vel = VEL_BULLET
@@ -145,7 +146,7 @@ class BossShot(pg.sprite.Sprite):
         self.explosion = explosion
 
         #criação do atributo de som 
-        self.sound = pg.mixer.Sound(path.join(current_dir, "../media/sounds/blaster-multiple-14893 (mp3cut.net).mp3"))
+        self.sound = SFXAudio(path.join(current_dir, "../media/sounds/blaster-multiple-14893 (mp3cut.net).mp3"), volume=0.2)
         self.sound.play()
 
     def move(self) -> None:
@@ -213,8 +214,7 @@ class Explosion(pg.sprite.Sprite):
         
         self.explosion_counter = 0
 
-        self.sound = pg.mixer.Sound(path.join(current_dir, "..\media\sounds\mixkit-arcade-game-explosion-2759.mp3"))
-        self.sound.set_volume(2)
+        self.sound = SFXAudio(path.join(current_dir, "..\media\sounds\mixkit-arcade-game-explosion-2759.mp3"), volume=2)
         self.sound.play()
 
     def animation(self):

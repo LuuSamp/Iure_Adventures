@@ -4,6 +4,7 @@ from entities.player import Player
 from game.input_handler import InputHandler
 from game.const import *
 from game.menu import Menu
+from game.audio import SFXAudio, MusicAudio
 
 class Game:
     """
@@ -17,9 +18,8 @@ class Game:
         pygame.init()
         pygame.display.set_caption('Iure Adventures')
         pygame.mixer.init()
-        pygame.mixer.music.load("./media/sounds/background_music.mp3")
-        pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.04)  
+        self.music = MusicAudio("./media/sounds/background_music.mp3", volume=0.04)
+        self.music.play()
         
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()

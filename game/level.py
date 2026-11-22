@@ -8,6 +8,7 @@ from game.helpers import load_image
 from entities.final_boss import FinalBoss
 from os import path
 from entities.princess import PrincessPinho, Smoke
+from game.audio import SFXAudio
 
 class Level:
     """Principal fase do jogo a ser carregada.
@@ -30,8 +31,7 @@ class Level:
         self.level_path = level_path
 
         self.fonte = pygame.font.Font(None, 36)
-        self.winning_song = pygame.mixer.Sound('./media/sounds/level_completed.mp3')
-        self.winning_song.set_volume(0.3)
+        self.winning_song = SFXAudio('./media/sounds/level_completed.mp3', volume=0.3)
         
         self.fade_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert_alpha()
         self.fade_image.fill("black")
